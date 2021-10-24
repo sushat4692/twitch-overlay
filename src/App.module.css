@@ -1,0 +1,35 @@
+.App {
+    @apply relative;
+
+    /* background: #000; */
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+}
+
+.App__cat {
+    @apply absolute;
+
+    left: 322px;
+    top: 0;
+    width: 1220px;
+    height: 84px;
+}
+
+.App__land {
+    @apply absolute;
+
+    left: 0;
+    bottom: 0;
+    width: 1920px;
+    height: 200px;
+}
+
+.App__car {
+    @apply absolute;
+
+    left: 0;
+    bottom: 0;
+    width: 1920px;
+    height: 200px;
+}

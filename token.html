@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <script>
+    if (location.hash) {
+      console.log(`トークン情報は${location.hash}だよ！`);
+    }
+  </script>
+  <body>
+    <a href="https://id.twitch.tv/oauth2/authorize?client_id=(client_id)&redirect_uri=http://localhost:3000/token.html&response_type=token&scope=channel:read:redemptions">Twitch認証</a>
+  </body>
+</html>

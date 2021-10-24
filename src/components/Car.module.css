@@ -1,0 +1,22 @@
+.Car {
+    @apply absolute bottom-0;
+    width: 180px;
+    height: 60px;
+}
+
+@keyframes CarAnimation {
+    0% {
+        transform: translateX(-960px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.Car__inner {
+    background-repeat: no-repeat;
+    width: 180px;
+    height: 60px;
+    transform: translateX(0px);
+    animation: CarAnimation 3s ease-out 0s 1 normal;
+}

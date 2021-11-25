@@ -1,9 +1,10 @@
 .App {
     @apply relative;
 
+    /* background: #000 url(./assets/background.png) no-repeat center center / contain; */
     /* background: #000; */
-    width: 1920px;
-    height: 1080px;
+    width: var(--screen-width);
+    height: var(--screen-height);
     overflow: hidden;
 }
 
@@ -21,7 +22,7 @@
 
     left: 0;
     bottom: 0;
-    width: 1920px;
+    width: var(--screen-width);
     height: 200px;
 }
 
@@ -30,6 +31,6 @@
 
     left: 0;
     bottom: 0;
-    width: 1920px;
+    width: var(--screen-width);
     height: 200px;
 }

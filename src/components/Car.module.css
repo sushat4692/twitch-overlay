@@ -2,6 +2,37 @@
     @apply absolute bottom-0;
     width: 180px;
     height: 60px;
+    z-index: 3;
+    transform-origin: center bottom;
+}
+
+.Car[data-direction="0"] {
+    transform: scale(-1, 1);
+}
+.Car[data-direction="1"] {
+    transform: scale(1, 1);
+}
+
+.Car[data-build="0"] {
+    z-index: 5;
+}
+.Car[data-build="1"] {
+    z-index: 3;
+}
+.Car[data-build="1"][data-direction="0"] {
+    transform: scale(-0.8, 0.8) translateY(-40px);
+}
+.Car[data-build="1"][data-direction="1"] {
+    transform: scale(0.8) translateY(-40px);
+}
+.Car[data-build="2"] {
+    z-index: 1;
+}
+.Car[data-build="2"][data-direction="0"] {
+    transform: scale(-0.6, 0.6) translateY(-80px);
+}
+.Car[data-build="2"][data-direction="1"] {
+    transform: scale(0.6) translateY(-80px);
 }
 
 @keyframes CarAnimation {

@@ -8,14 +8,14 @@ import {prepareBuildSound} from './util/useBuildSound'
 import {prepareCarSound} from './util/useCarSound'
 
 Promise.all([
-  prepareMeowSound(),
-  prepareBuildSound(),
-  prepareCarSound(),
+    prepareMeowSound(),
+    prepareBuildSound(),
+    prepareCarSound(),
 ]).then(() => {
-  ReactDOM.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
-    document.getElementById('root')
-  )
+    ReactDOM.render(
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>,
+        document.getElementById('root')
+    )
 })

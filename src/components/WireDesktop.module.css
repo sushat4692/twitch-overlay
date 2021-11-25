@@ -1,0 +1,10 @@
+.WireDesktop {
+    @apply absolute border-solid border-white overflow-hidden;
+
+    left: calc(48px - var(--wire-border-width));
+    top: calc(48px - var(--wire-border-width));
+    width: calc(1560px + var(--wire-border-width) * 2);
+    height: calc(860px + var(--wire-border-width) * 2);
+    border-width: var(--wire-border-width);
+    border-radius: var(--wire-border-width);
+}

@@ -4,4 +4,18 @@
 
     width: 160px;
     height: 200px;
+    transform: translateX(-50%);
+    transform-origin: center bottom;
+}
+
+.Building[data-build="0"] {
+    z-index: 4;
+}
+.Building[data-build="1"] {
+    z-index: 2;
+    transform: translateX(-50%) scale(0.8) translateY(-40px);
+}
+.Building[data-build="2"] {
+    z-index: 0;
+    transform: translateX(-50%) scale(0.6) translateY(-80px);
 }

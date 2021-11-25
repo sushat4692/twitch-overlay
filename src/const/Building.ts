@@ -24,13 +24,13 @@ export const getSpriteKey = () => {
 }
 
 export const getCurrentSprite = (key: SpriteType) => {
-    return sprites[key];
+    return sprites[key]
 }
 
 export const getRandomSpriteKey = (keis?: SpriteType[]) => {
     if (!keis) {
-        keis = getSpriteKey();
+        keis = getSpriteKey()
     }
-    const index = Math.floor(Math.random() * keis.length);
-    return keis[index];
+    const index = Math.floor(Math.random() * keis.length)
+    return keis[index]
 }

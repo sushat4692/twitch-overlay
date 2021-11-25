@@ -1,1 +1,7 @@
 @tailwind base;
+
+:root {
+    --screen-width: 1920px;
+    --screen-height: 1080px;
+    --wire-border-width: 6px;
+}

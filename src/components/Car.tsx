@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import styles from './Car.module.css'
 
 import {WindowWidth} from '../const/App'
@@ -12,41 +12,41 @@ const CarWidth = 180
 const Car = () => {
     const frameCount = useContext(FrameCountContext)
 
-    const [spriteKey] = useState(getRandomSpriteKey())
+    const spriteKey = useRef(getRandomSpriteKey())
+    const speed = useRef<number>(0)
+    const startFrameTime = useRef<number>((new Date).getTime())
+
     const [x, updateX] = useState<number>(0)
     const [rail, updateRail] = useState<number>(0)
     const [direction, updateDirection] = useState<number>(0)
-    const [speed, updateSpeed] = useState<number>(0)
     const [image, updateImage] = useState<string>('')
     const [index, updateIndex] = useState<number>(0)
-    const [startFrameTime, updateStartFrameTime] = useState<number>((new Date).getTime())
 
     useEffect(() => {
         const direction = Math.floor(Math.random() * 2)
-        const speed = Math.random() + 0.5
         const x = Math.random() * (WindowWidth/2 - CarWidth) + (!direction ? WindowWidth/2 : 0)
+        speed.current = Math.random() + 0.5
 
-        const sprite = getCurrentSprite(spriteKey)
+        const sprite = getCurrentSprite(spriteKey.current)
         updateImage(sprite.img || '')
 
         updateX(x)
         updateDirection(direction)
-        updateSpeed(speed)
         updateRail(Math.floor(Math.random() * 3))
     }, [])
 
     useEffect(() => {
-        const sprite = getCurrentSprite(spriteKey)
+        const sprite = getCurrentSprite(spriteKey.current)
         if (!sprite) {
             return
         }
 
         const length = sprite.frame.reduce((prev, current) => prev+current, 0)
         const currentTime = (new Date).getTime()
-        const frameDuration = currentTime - startFrameTime
+        const frameDuration = currentTime - startFrameTime.current
 
         if (frameDuration > length) {
-            updateStartFrameTime(currentTime)
+            startFrameTime.current = currentTime
         }
 
         const index = (() => {
@@ -64,7 +64,7 @@ const Car = () => {
         updateIndex(index)
 
         updateX(prev => {
-            const next = prev + speed * (direction ? 1 : -1)
+            const next = prev + speed.current * (direction ? 1 : -1)
 
             if (next < 0 - CarWidth) {
                 return WindowWidth
@@ -74,9 +74,9 @@ const Car = () => {
                 return -CarWidth
             }
 
-            return prev + speed * (direction ? 1 : -1)
+            return prev + speed.current * (direction ? 1 : -1)
         })
-    }, [frameCount])
+    }, [frameCount, direction])
 
     return (<div className={styles.Car} style={{
         left: `${x}px`,

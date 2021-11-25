@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, useRef } from 'react'
 import styles from './CatDetail.module.css'
 
 import { getCurrentSprite, SpriteType } from '../const/Cat'
@@ -16,28 +16,29 @@ type Props = {
 const CatDetail: React.FC<Props> = ({spriteKey, duration, step, next}: Props) => {
     const frameCount = useContext(FrameCountContext)
 
-    const [initialize, updateInitialize] = useState<boolean>(false)
+    const initialize = useRef<boolean>(false)
+    const startTime = useRef<number>((new Date).getTime())
+    const startFrameTime = useRef<number>((new Date).getTime())
+    const previousTime = useRef<number>((new Date).getTime())
+    const isNext = useRef<boolean>(false)
+
     const [image, updateImage] = useState<string>('')
-    const [isNext, updateIsNext] = useState<boolean>(false)
     const [index, updateIndex] = useState<number>(0)
-    const [startTime, updateStartTime] = useState<number>((new Date).getTime())
-    const [startFrameTime, updateStartFrameTime] = useState<number>((new Date).getTime())
-    const [previousTime, updatePreviousTime] = useState<number>((new Date).getTime())
 
     useEffect(() => {
-        updateInitialize(true)
+        initialize.current = true
 
         const sprite = getCurrentSprite(spriteKey)
         updateImage(sprite.img || '')
 
-        updateStartTime((new Date).getTime())
-        updateStartFrameTime((new Date).getTime())
-        updatePreviousTime((new Date).getTime())
-        updateIsNext(true)
+        startTime.current = (new Date).getTime()
+        startFrameTime.current = (new Date).getTime()
+        previousTime.current = (new Date).getTime()
+        isNext.current = true
     }, [spriteKey])
 
     useEffect(() => {
-        if (!initialize) {
+        if (!initialize.current) {
             return
         }
 
@@ -48,12 +49,12 @@ const CatDetail: React.FC<Props> = ({spriteKey, duration, step, next}: Props) =>
 
         const length = sprite.frame.reduce((prev, current) => prev+current, 0)
         const currentTime = (new Date).getTime()
-        const upTime = currentTime - startTime
-        const frameDuration = currentTime - startFrameTime
+        const upTime = currentTime - startTime.current
+        const frameDuration = currentTime - startFrameTime.current
 
         if (upTime >= duration) {
-            if (isNext) {
-                updateIsNext(false)
+            if (isNext.current) {
+                isNext.current = false
                 next()
             }
             return
@@ -64,7 +65,7 @@ const CatDetail: React.FC<Props> = ({spriteKey, duration, step, next}: Props) =>
                 return
             }
 
-            updateStartFrameTime(currentTime)
+            startFrameTime.current = currentTime
         }
 
         const index = (() => {
@@ -81,11 +82,11 @@ const CatDetail: React.FC<Props> = ({spriteKey, duration, step, next}: Props) =>
         })()
         updateIndex(index)
 
-        const stepDuration = currentTime - previousTime
-        updatePreviousTime(currentTime)
+        const stepDuration = currentTime - previousTime.current
+        previousTime.current = currentTime
 
         step(stepDuration)
-    }, [frameCount])
+    }, [frameCount, duration, next, spriteKey, step])
 
     return (
         <>

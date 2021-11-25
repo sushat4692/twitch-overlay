@@ -1,4 +1,3 @@
-import { useCallback } from 'react'
 import {audioCtx, playSound} from './playSound'
 
 import Sound1 from '../assets/building-sound-1.mp3'
@@ -16,17 +15,15 @@ export const prepareBuildSound = async () => {
     sound1Buffer = await setupSample(Sound1)
 }
 
-export const useBuildSound = () => {
-    return useCallback(async () => {
-        const buffer = (() => {
-            const index = Math.floor(Math.random() * 5)
+export const playBuildSound = () => {
+    const buffer = (() => {
+        const index = Math.floor(Math.random() * 5)
 
-            switch (index) {
-            default:
-                return sound1Buffer
-            }
-        })()
+        switch (index) {
+        default:
+            return sound1Buffer
+        }
+    })()
 
-        playSound(buffer, 0.1)
-    }, [])
+    playSound(buffer, 0.1)
 }

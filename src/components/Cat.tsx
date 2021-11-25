@@ -17,6 +17,23 @@ const Cat = (): JSX.Element => {
         updateDuration(getTargetSpriteDuration(randomSprite) || 0)
     }, [])
 
+    const nextSprite = useCallback((forceNext?: SpriteType[]) => {
+        const currentSprite = getCurrentSprite(key)
+        if (!currentSprite) {
+            return
+        }
+
+        if (currentSprite.afterReflect) {
+            updateReflect(prev => !prev)
+        }
+
+        const next = getRandomSpriteKey(forceNext || currentSprite.next as SpriteType[])
+
+        const nextDuration = getTargetSpriteDuration(next) || 0
+        updateKey(next)
+        updateDuration(nextDuration)
+    }, [key])
+
     const stepSprite = useCallback((stepDuration: number) => {
         const currentSprite = getCurrentSprite(key)
         if (!currentSprite) {
@@ -37,24 +54,7 @@ const Cat = (): JSX.Element => {
                 return newX
             })
         }
-    }, [key, reflect])
-
-    const nextSprite = useCallback((forceNext?: SpriteType[]) => {
-        const currentSprite = getCurrentSprite(key)
-        if (!currentSprite) {
-            return
-        }
-
-        if (currentSprite.afterReflect) {
-            updateReflect(prev => !prev)
-        }
-
-        const next = getRandomSpriteKey(forceNext || currentSprite.next as SpriteType[])
-
-        const nextDuration = getTargetSpriteDuration(next) || 0
-        updateKey(next)
-        updateDuration(nextDuration)
-    }, [key, reflect])
+    }, [key, reflect, nextSprite])
 
     return (
         <>

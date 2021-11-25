@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import styles from './Building.module.css'
 
 import {WindowWidth} from '../const/App'
@@ -10,17 +10,18 @@ import {FrameCountContext} from '../context/FrameCount'
 const Building = () => {
     const frameCount = useContext(FrameCountContext)
 
-    const [spriteKey] = useState(getRandomSpriteKey())
+    const spriteKey = useRef(getRandomSpriteKey())
+    const startFrameTime = useRef<number>((new Date).getTime())
+
     const [x, updateX] = useState<number>(0)
     const [rail, updateRail] = useState<number>(0)
     const [image, updateImage] = useState<string>('')
     const [index, updateIndex] = useState<number>(0)
-    const [startFrameTime, updateStartFrameTime] = useState<number>((new Date).getTime())
 
     useEffect(() => {
         const x = Math.floor(Math.random() * WindowWidth)
 
-        const sprite = getCurrentSprite(spriteKey)
+        const sprite = getCurrentSprite(spriteKey.current)
         updateImage(sprite.img || '')
 
         updateX(x)
@@ -28,17 +29,17 @@ const Building = () => {
     }, [])
 
     useEffect(() => {
-        const sprite = getCurrentSprite(spriteKey)
+        const sprite = getCurrentSprite(spriteKey.current)
         if (!sprite) {
             return
         }
 
         const length = sprite.frame.reduce((prev, current) => prev+current, 0)
         const currentTime = (new Date).getTime()
-        const frameDuration = currentTime - startFrameTime
+        const frameDuration = currentTime - startFrameTime.current
 
         if (frameDuration > length) {
-            updateStartFrameTime(currentTime)
+            startFrameTime.current = currentTime
         }
 
         const index = (() => {

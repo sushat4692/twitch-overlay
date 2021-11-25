@@ -1,4 +1,3 @@
-import { useCallback } from 'react'
 import {audioCtx, playSound} from './playSound'
 
 import Sound1 from '../assets/cat-meowing-1.mp3'
@@ -28,27 +27,25 @@ export const prepareMeowSound = async () => {
     sound5Buffer = await setupSample(Sound5)
 }
 
-export const useMeowSound = () => {
-    return useCallback(() => {
-        const buffer = (() => {
-            const index = Math.floor(Math.random() * 5)
+export const playMeowSound = () => {
+    const buffer = (() => {
+        const index = Math.floor(Math.random() * 5)
 
-            switch (index) {
-            case 0:
-                return sound1Buffer
-            case 1:
-                return sound2Buffer
-            case 2:
-                return sound3Buffer
-            case 3:
-                return sound4Buffer
-            case 4:
-                return sound5Buffer
-            default:
-                return sound1Buffer
-            }
-        })()
+        switch (index) {
+        case 0:
+            return sound1Buffer
+        case 1:
+            return sound2Buffer
+        case 2:
+            return sound3Buffer
+        case 3:
+            return sound4Buffer
+        case 4:
+            return sound5Buffer
+        default:
+            return sound1Buffer
+        }
+    })()
 
-        playSound(buffer, 0.1)
-    }, [])
+    playSound(buffer, 0.1)
 }

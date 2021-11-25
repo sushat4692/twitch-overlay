@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import styles from './CatDetail.module.css'
 
-import {useAnimationFrameCount} from '../util/useAnimationFrameCount'
 import { getCurrentSprite, SpriteType } from '../const/Cat'
+
+// Context
+import {FrameCountContext} from '../context/FrameCount'
 
 type Props = {
     spriteKey: SpriteType
@@ -12,7 +14,7 @@ type Props = {
 }
 
 const CatDetail: React.FC<Props> = ({spriteKey, duration, step, next}: Props) => {
-    const frameCount = useAnimationFrameCount()
+    const frameCount = useContext(FrameCountContext)
 
     const [initialize, updateInitialize] = useState<boolean>(false)
     const [image, updateImage] = useState<string>('')

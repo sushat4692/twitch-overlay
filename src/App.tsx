@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styles from './App.module.css'
-import { ApiClient } from 'twitch'
-import { PubSubClient } from 'twitch-pubsub-client'
-import { StaticAuthProvider } from 'twitch-auth'
+import { PubSubClient } from '@twurple/pubsub'
+import { StaticAuthProvider } from '@twurple/auth'
 import {v4 as uuid} from 'uuid'
 
 // Components
@@ -16,11 +15,15 @@ import {useMeowSound} from './util/useMeowSound'
 import {useBuildSound} from './util/useBuildSound'
 import {useCarSound} from './util/useCarSound'
 
+// Context
+import {FrameCountContext} from './context/FrameCount'
+
 const CLIENT_ID = import.meta.env.VITE_CLIENT_ID as string
 const CLIENT_TOKEN = import.meta.env.VITE_CLIENT_TOKEN as string
 let imageZoomTimer: ReturnType<typeof setTimeout> | null = null
 
 function App() {
+    const [frameCount, setFrameCount] = useState(0)
     const [cats, updateCats] = useState<{id: string}[]>([
         {id: uuid()},
         {id: uuid()},
@@ -44,7 +47,6 @@ function App() {
     ])
     const [imageZoom, updateImageZoom] = useState(false)
 
-    const [apiClient] = useState(new ApiClient({authProvider: new StaticAuthProvider(CLIENT_ID, CLIENT_TOKEN)}))
     const [pubSubClient] = useState(new PubSubClient())
     const meowSound = useMeowSound()
     const buildSound = useBuildSound()
@@ -52,7 +54,7 @@ function App() {
 
     useEffect(() => {
         (async () => {
-            await pubSubClient.onRedemption(await pubSubClient.registerUserListener(apiClient), async (message) => {
+            await pubSubClient.onRedemption(await pubSubClient.registerUserListener(new StaticAuthProvider(CLIENT_ID, CLIENT_TOKEN)), async (message) => {
                 switch (message.rewardId) {
                 case 'ac64948e-1c7e-4851-a2c8-995e788f7f55':
                     // ネコチャン
@@ -110,28 +112,43 @@ function App() {
                 }
             })
         })()
+
+        const loop = () => {
+            setFrameCount(prevFrameCount => {
+                const nextCount = prevFrameCount + 1
+                if (nextCount > Number.MAX_SAFE_INTEGER - 1000) {
+                    return 0
+                }
+                return nextCount
+            })
+            requestAnimationFrame(loop)
+        }
+
+        requestAnimationFrame(loop)
     }, [])
 
     return (
-        <div className={styles.App}>
-            <div className={styles.App__cat}>
-                {cats.map((cat) => {
-                    return (<Cat key={cat.id} />)
-                })}
-            </div>
-            <div className={styles.App__land}>
-                {builds.map(build => {
-                    return (<Building key={build.id} />)
-                })}
-            </div>
-            <div className={styles.App__car}>
-                {cars.map(car => {
-                    return (<Car key={car.id} />)
-                })}
-            </div>
+        <FrameCountContext.Provider value={frameCount}>
+            <div className={styles.App}>
+                <div className={styles.App__cat}>
+                    {cats.map((cat) => {
+                        return (<Cat key={cat.id} />)
+                    })}
+                </div>
+                <div className={styles.App__land}>
+                    {builds.map(build => {
+                        return (<Building key={build.id} />)
+                    })}
+                </div>
+                <div className={styles.App__car}>
+                    {cars.map(car => {
+                        return (<Car key={car.id} />)
+                    })}
+                </div>
 
-            <Wires imageZoom={imageZoom} />
-        </div>
+                <Wires imageZoom={imageZoom} />
+            </div>
+        </FrameCountContext.Provider>
     )
 }
 

@@ -9,20 +9,19 @@
     "lint:fix": "eslint ./src --ext .js,.ts,.jsx,.tsx --fix"
   },
   "dependencies": {
+    "@twurple/api": "^5.0.9",
+    "@twurple/auth": "^5.0.9",
+    "@twurple/pubsub": "^5.0.9",
     "axios": "^0.24.0",
     "date-fns": "^2.25.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "swiper": "^7.2.0",
-    "twitch": "^4.6.5",
-    "twitch-auth": "^4.6.5",
-    "twitch-pubsub-client": "^4.6.5",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "@types/tmi.js": "^1.7.2",
     "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^5.1.0",
     "@typescript-eslint/parser": "^5.1.0",

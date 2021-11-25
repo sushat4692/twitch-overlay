@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import {format} from 'date-fns'
 
-import {useAnimationFrameCount} from '../util/useAnimationFrameCount'
 import styles from './WireTime.module.css'
 
+// Context
+import {FrameCountContext} from '../context/FrameCount'
+
 const WireTime = () => {
-    const frameCount = useAnimationFrameCount()
+    const frameCount = useContext(FrameCountContext)
     const [date, setDate] = useState(new Date())
     const [showColon, setShowColon] = useState(true)
 

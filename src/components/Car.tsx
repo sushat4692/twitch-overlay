@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styles from './Car.module.css'
 
-import {useAnimationFrameCount} from '../util/useAnimationFrameCount'
 import {WindowWidth} from '../const/App'
 import { getCurrentSprite, getRandomSpriteKey } from '../const/Car'
+
+// Context
+import {FrameCountContext} from '../context/FrameCount'
 
 const CarWidth = 180
 
 const Car = () => {
-    const frameCount = useAnimationFrameCount()
+    const frameCount = useContext(FrameCountContext)
 
     const [spriteKey] = useState(getRandomSpriteKey())
     const [x, updateX] = useState<number>(0)

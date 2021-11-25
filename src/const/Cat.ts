@@ -1,12 +1,20 @@
-import Fall from '../assets/cat_fall.png'
-import Sit from '../assets/cat_sit.png'
-import Sleep from '../assets/cat_sleep.png'
-import Walk from '../assets/cat_walk.png'
-import Spin from '../assets/cat_spin.png'
-import ToSit from '../assets/cat_to_sit.png'
-import ToStand from '../assets/cat_to_stand.png'
+import Fall from '../assets/cat_fall.png';
+import Sit from '../assets/cat_sit.png';
+import Sleep from '../assets/cat_sleep.png';
+import Walk from '../assets/cat_walk.png';
+import Spin from '../assets/cat_spin.png';
+import ToSit from '../assets/cat_to_sit.png';
+import ToStand from '../assets/cat_to_stand.png';
 
-export type SpriteType = 'none' | 'fall' | 'sit' | 'sleep' | 'walk' | 'spin' | 'to_sit' | 'to_stand';
+export type SpriteType =
+    | 'none'
+    | 'fall'
+    | 'sit'
+    | 'sleep'
+    | 'walk'
+    | 'spin'
+    | 'to_sit'
+    | 'to_stand';
 
 export const sprites = {
     none: {
@@ -34,7 +42,10 @@ export const sprites = {
         move: false,
         afterReflect: false,
         next: ['to_stand'],
-        frame: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+        frame: [
+            100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+            100, 100, 100,
+        ],
     },
     sleep: {
         img: Sleep,
@@ -43,7 +54,10 @@ export const sprites = {
         move: false,
         afterReflect: false,
         next: ['to_stand'],
-        frame: [200, 200, 600, 600, 200, 100, 100, 100, 100, 100, 100, 100, 100, 300],
+        frame: [
+            200, 200, 600, 600, 200, 100, 100, 100, 100, 100, 100, 100, 100,
+            300,
+        ],
     },
     walk: {
         img: Walk,
@@ -80,35 +94,35 @@ export const sprites = {
         afterReflect: false,
         next: ['walk', 'spin'],
         frame: [100, 100, 100, 100, 100],
-    }
-}
+    },
+};
 
 export const getSpriteKey = () => {
-    return Object.keys(sprites) as SpriteType[]
-}
+    return Object.keys(sprites) as SpriteType[];
+};
 
 export const getCurrentSprite = (key: SpriteType) => {
-    return sprites[key]
-}
+    return sprites[key];
+};
 
 export const getTargetSpriteDuration = (key: SpriteType) => {
-    const sprite = getCurrentSprite(key)
+    const sprite = getCurrentSprite(key);
     if (!sprite) {
-        return
+        return;
     }
 
     if (!Array.isArray(sprite.duration)) {
-        return sprite.duration
+        return sprite.duration;
     }
 
-    const [min, max] = sprite.duration
-    return Math.floor(Math.random() * (max - min)) + min
-}
+    const [min, max] = sprite.duration;
+    return Math.floor(Math.random() * (max - min)) + min;
+};
 
 export const getRandomSpriteKey = (keis?: SpriteType[]) => {
     if (!keis) {
-        keis = getSpriteKey()
+        keis = getSpriteKey();
     }
-    const index = Math.floor(Math.random() * keis.length)
-    return keis[index]
-}
+    const index = Math.floor(Math.random() * keis.length);
+    return keis[index];
+};

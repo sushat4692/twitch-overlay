@@ -1,0 +1,35 @@
+.WireTopics {
+    @apply absolute z-10;
+
+    top: 120px;
+    left: 20px;
+    width: 460px;
+    transition: transform .3s;
+    will-change: transform;
+}
+
+.WireTopics--hide {
+    transform: translateX(-480px);
+}
+
+.WireTopics__item {
+    @apply relative;
+
+    font-size: 32px;
+    font-weight: bolder;
+    font-family: 'PixelMplus12';
+    -webkit-font-smoothing: none;
+}
+
+.WireTopics__item + .WireTopics__item {
+    margin-top: 10px;
+}
+
+.WireTopics__item__back {
+    -webkit-text-stroke: 5px #fff;
+}
+
+.WireTopics__item__front {
+    @apply absolute inset-0;
+    -webkit-text-stroke: 2px #000;
+}

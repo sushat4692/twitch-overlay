@@ -1,11 +1,14 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 
+import { TopicItem } from '../types/TopicItem';
+import WireTopicItem from './WireTopicItem';
+
 import styles from './WireTopics.module.css';
 const cx = classNames.bind(styles);
 
 type Props = {
-    topics: { id: string; content: string }[];
+    topics: TopicItem[];
     topicShow: boolean;
 };
 
@@ -17,14 +20,7 @@ const WireTopics = ({ topics, topicShow }: Props) => {
                 'WireTopics--hide': !topicShow,
             })}>
             {topics.map((topic) => (
-                <div key={topic.id} className={styles.WireTopics__item}>
-                    <span className={styles.WireTopics__item__back}>
-                        {topic.content}
-                    </span>
-                    <span className={styles.WireTopics__item__front}>
-                        {topic.content}
-                    </span>
-                </div>
+                <WireTopicItem key={topic.id} topic={topic} />
             ))}
         </div>
     );

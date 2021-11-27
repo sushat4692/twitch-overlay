@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ChatClient } from '@twurple/chat';
 import { StaticAuthProvider } from '@twurple/auth';
 import { v4 as uuid } from 'uuid';
 
+import { TopicItem } from '../types/TopicItem';
+
 // Const
 import { CHANNEL_NAME, CLIENT_ID, CLIENT_TOKEN } from '../const/App';
 import { TwitchPrivateMessage } from '@twurple/chat/lib/commands/TwitchPrivateMessage';
-
-console.log(CHANNEL_NAME);
 
 const chatClient = new ChatClient({
     authProvider: new StaticAuthProvider(CLIENT_ID, CLIENT_TOKEN),
@@ -15,10 +15,32 @@ const chatClient = new ChatClient({
 });
 
 export const useTwitchChatEvent = () => {
-    const [topics, updateTopics] = useState<{ id: string; content: string }[]>(
-        []
-    );
+    const [topics, updateTopics] = useState<TopicItem[]>([]);
     const [topicShow, updateTopicShow] = useState<boolean>(true);
+
+    const deleteTopic = useCallback((t: number) => {
+        updateTopics((prev) =>
+            prev.map((p, i) => (i !== t ? p : { ...p, ...{ hiding: true } }))
+        );
+
+        setTimeout(() => {
+            updateTopics((prev) => prev.filter((_, i) => i !== t));
+        }, 400);
+    }, []);
+
+    const popTopic = useCallback(() => {
+        updateTopics((prev) =>
+            prev.map((p, i) =>
+                i !== prev.length - 1 ? p : { ...p, ...{ hiding: true } }
+            )
+        );
+
+        setTimeout(() => {
+            updateTopics((prev) =>
+                prev.filter((_, i) => i !== prev.length - 1)
+            );
+        }, 400);
+    }, []);
 
     useEffect(() => {
         (async () => {
@@ -35,9 +57,10 @@ export const useTwitchChatEvent = () => {
                         return;
                     }
 
-                    const [command, action, content] = message
+                    const [command, action, ...contents] = message
                         .split(' ')
                         .filter((m) => m.length);
+                    const content = contents.join(' ');
 
                     if (command === '!topic' && msg.userInfo.isBroadcaster) {
                         switch (action) {
@@ -45,7 +68,7 @@ export const useTwitchChatEvent = () => {
                                 if (content) {
                                     updateTopics((prev) => [
                                         ...prev,
-                                        { id: uuid(), content },
+                                        { id: uuid(), content, hiding: false },
                                     ]);
                                 }
                                 break;
@@ -56,20 +79,17 @@ export const useTwitchChatEvent = () => {
                                 updateTopicShow(false);
                                 break;
                             case 'pop':
-                                updateTopics((prev) => prev.slice(0, -1));
+                                popTopic();
                                 break;
                             case 'shift':
-                                updateTopics((prev) => prev.slice(1));
+                                deleteTopic(0);
                                 break;
                             case 'delete':
                                 if (
                                     content &&
                                     parseInt(content).toString() == content
                                 ) {
-                                    const t = parseInt(content);
-                                    updateTopics((prev) =>
-                                        prev.filter((_, i) => i !== t)
-                                    );
+                                    deleteTopic(parseInt(content));
                                 }
                                 break;
                             case 'clear':

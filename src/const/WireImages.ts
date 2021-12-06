@@ -13,3 +13,6 @@ export const DefaultSlider = [
     Slider05,
     Slider06,
 ];
+
+export const DefaultLabel = ['いつかのご飯・お菓子', "One day's Meal/Snack"];
+export const DefaultMessage = ['今日はお休み', 'Closed Today'];

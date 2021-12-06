@@ -1,20 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { v4 as uuid } from 'uuid';
 import { PubSubClient } from '@twurple/pubsub';
 import { StaticAuthProvider } from '@twurple/auth';
+
+// Context
+import { ImageDescriptionContext } from '../context/ImageDescription';
 
 // Util
 import { playMeowSound } from './useMeowSound';
 import { playBuildSound } from './useBuildSound';
 import { playCarSound } from './useCarSound';
+import { chatClient } from './useTwitchChatEvent';
 
 // Const
-import { CLIENT_ID, CLIENT_TOKEN } from '../const/App';
+import { CHANNEL_NAME, CLIENT_ID, CLIENT_TOKEN } from '../const/App';
 
 let imageZoomTimer: ReturnType<typeof setTimeout> | null = null;
-const pubSubClient = new PubSubClient();
+export const pubSubClient = new PubSubClient();
 
 export const useTwitchPubSubEvent = () => {
+    const { description } = useContext(ImageDescriptionContext);
+
     const [cats, updateCats] = useState<{ id: string }[]>([
         { id: uuid() },
         { id: uuid() },
@@ -92,6 +98,7 @@ export const useTwitchPubSubEvent = () => {
                             break;
                         }
                         case 'e658cacc-6813-40b9-a8f7-c74e6e9d7deb':
+                            // 写真ズーム
                             updateImageZoom(true);
                             if (imageZoomTimer) {
                                 clearTimeout(imageZoomTimer);
@@ -101,6 +108,16 @@ export const useTwitchPubSubEvent = () => {
                                 imageZoomTimer = null;
                                 updateImageZoom(false);
                             }, 10000);
+                            break;
+                        case 'e4ab3a2d-602f-4174-9218-02cbdcde7bc0':
+                            // 写真説明
+                            chatClient.say(
+                                CHANNEL_NAME,
+                                `@${message.userName} ${
+                                    description ??
+                                    'ごめんなさい、説明がありません… / Sorry, No message...'
+                                }`
+                            );
                             break;
                     }
                 }

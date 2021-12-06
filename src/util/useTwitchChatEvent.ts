@@ -9,7 +9,7 @@ import { TopicItem } from '../types/TopicItem';
 import { CHANNEL_NAME, CLIENT_ID, CLIENT_TOKEN } from '../const/App';
 import { TwitchPrivateMessage } from '@twurple/chat/lib/commands/TwitchPrivateMessage';
 
-const chatClient = new ChatClient({
+export const chatClient = new ChatClient({
     authProvider: new StaticAuthProvider(CLIENT_ID, CLIENT_TOKEN),
     channels: [CHANNEL_NAME],
 });

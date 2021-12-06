@@ -1,63 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import axios from 'axios';
 
+// Context
+import { ImageDescriptionContext } from '../context/ImageDescription';
+
+// Css
 import 'swiper/css';
 import styles from './WireImages.module.css';
-
-import { DefaultSlider } from '../const/WireImages';
 
 type Props = {
     imageZoom: boolean;
 };
 
 const WireImages = ({ imageZoom }: Props) => {
-    const [label, updateLabel] = useState<string[]>([
-        'いつかのご飯・お菓子',
-        "One day's Meal/Snack",
-    ]);
-    const [name, updateName] = useState<string[]>([
-        '今日はお休み',
-        'Closed Today',
-    ]);
-    const [sliders, updateSliders] = useState<string[]>(DefaultSlider);
-
-    useEffect(() => {
-        (async () => {
-            const result = await axios
-                .get(`/image.json?t=${Date.now().toString()}`)
-                .catch((e) => {
-                    console.error(e);
-                });
-
-            if (!result) {
-                return;
-            }
-
-            const {
-                label,
-                message,
-                images,
-            }: { label: string[]; message: string[]; images: string[] } =
-                result.data;
-            if (
-                !label ||
-                !Array.isArray(label) ||
-                !message ||
-                !Array.isArray(message) ||
-                !images ||
-                !Array.isArray(images) ||
-                images.length <= 0
-            ) {
-                return;
-            }
-
-            updateLabel(label);
-            updateName(message);
-            updateSliders(images);
-        })();
-    }, []);
+    const { label, message, images } = useContext(ImageDescriptionContext);
 
     return (
         <div
@@ -65,7 +22,7 @@ const WireImages = ({ imageZoom }: Props) => {
                 imageZoom ? styles['WireImages--zoom'] : ''
             }`}>
             <div className={styles.WireImages__slider}>
-                {sliders.length > 1 ? (
+                {images.length > 1 ? (
                     <Swiper
                         modules={[Autoplay]}
                         autoplay={{ delay: 5000, disableOnInteraction: false }}
@@ -73,7 +30,7 @@ const WireImages = ({ imageZoom }: Props) => {
                         spaceBetween={10}
                         loop={true}
                         className={styles.WireImages__slider__wrapper}>
-                        {sliders.map((slider, index) => {
+                        {images.map((slider, index) => {
                             return (
                                 <SwiperSlide
                                     key={index}
@@ -91,7 +48,7 @@ const WireImages = ({ imageZoom }: Props) => {
                     </Swiper>
                 ) : (
                     <img
-                        src={sliders[0]}
+                        src={images[0]}
                         alt=""
                         className={styles.WireImages__slider__image}
                     />
@@ -106,7 +63,7 @@ const WireImages = ({ imageZoom }: Props) => {
 
             <div className={styles.WireImages__name}>
                 <span className={styles.WireImages__name__text}>
-                    {name.join('\n')}
+                    {message.join('\n')}
                 </span>
             </div>
         </div>

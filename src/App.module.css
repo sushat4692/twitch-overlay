@@ -1,8 +1,6 @@
 .App {
     @apply relative;
 
-    /* background: #000 url(./assets/background.png) no-repeat center center / contain; */
-    /* background: #000; */
     width: var(--screen-width);
     height: var(--screen-height);
     overflow: hidden;

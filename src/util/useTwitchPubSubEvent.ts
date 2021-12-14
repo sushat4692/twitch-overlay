@@ -7,15 +7,17 @@ import { StaticAuthProvider } from '@twurple/auth';
 import { ImageDescriptionContext } from '../context/ImageDescription';
 
 // Util
-import { playMeowSound } from './useMeowSound';
-import { playBuildSound } from './useBuildSound';
-import { playCarSound } from './useCarSound';
+import { play as playMeowSound } from './useMeowSound';
+import { play as playBuildSound } from './useBuildSound';
+import { play as playCarSound } from './useCarSound';
+import { play as playAvatarSound } from './useAvatarSound';
 import { chatClient } from './useTwitchChatEvent';
 
 // Const
 import { CHANNEL_NAME, CLIENT_ID, CLIENT_TOKEN } from '../const/App';
 
 let imageZoomTimer: ReturnType<typeof setTimeout> | null = null;
+let avatarGamingTimer: ReturnType<typeof setTimeout> | null = null;
 export const pubSubClient = new PubSubClient();
 
 export const useTwitchPubSubEvent = () => {
@@ -43,6 +45,8 @@ export const useTwitchPubSubEvent = () => {
         { id: uuid() },
     ]);
     const [imageZoom, updateImageZoom] = useState(false);
+    const [isAvatar8Bit, updateIsAvatar8Bit] = useState(false);
+    const [isAvatarGaming, updateIsAvatarGaming] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -119,11 +123,28 @@ export const useTwitchPubSubEvent = () => {
                                 }`
                             );
                             break;
+                        case '5d4ecec8-f38a-4845-8709-f681ccda6ff3':
+                            // アバター切り替え
+                            updateIsAvatar8Bit((prev) => !prev);
+                            playAvatarSound();
+                            break;
+                        case '77fd6776-1552-4f22-ab8b-9cc4c126c584':
+                            // アバター虹色に光る
+                            updateIsAvatarGaming(true);
+                            if (avatarGamingTimer) {
+                                clearTimeout(avatarGamingTimer);
+                            }
+
+                            avatarGamingTimer = setTimeout(() => {
+                                avatarGamingTimer = null;
+                                updateIsAvatarGaming(false);
+                            }, 10000);
+                            break;
                     }
                 }
             );
         })();
     }, []);
 
-    return { cats, builds, cars, imageZoom };
+    return { cats, builds, cars, imageZoom, isAvatar8Bit, isAvatarGaming };
 };

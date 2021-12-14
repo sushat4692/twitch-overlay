@@ -1,10 +1,10 @@
-import Fall from '../assets/cat_fall.png';
-import Sit from '../assets/cat_sit.png';
-import Sleep from '../assets/cat_sleep.png';
-import Walk from '../assets/cat_walk.png';
-import Spin from '../assets/cat_spin.png';
-import ToSit from '../assets/cat_to_sit.png';
-import ToStand from '../assets/cat_to_stand.png';
+import Fall from '../assets/cat/image-fall.png';
+import Sit from '../assets/cat/image-sit.png';
+import Sleep from '../assets/cat/image-sleep.png';
+import Walk from '../assets/cat/image-walk.png';
+import Spin from '../assets/cat/image-spin.png';
+import ToSit from '../assets/cat/image-to_sit.png';
+import ToStand from '../assets/cat/image-to_stand.png';
 
 export type SpriteType =
     | 'none'

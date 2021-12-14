@@ -1,6 +1,6 @@
-import Car1 from '../assets/car1.png';
-import Car2 from '../assets/car2.png';
-import Car3 from '../assets/car3.png';
+import Car1 from '../assets/car/image1.png';
+import Car2 from '../assets/car/image2.png';
+import Car3 from '../assets/car/image3.png';
 
 export type SpriteType = 'car1' | 'car2' | 'car3';
 

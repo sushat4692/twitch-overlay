@@ -1,10 +1,10 @@
 import { audioCtx, playSound } from './playSound';
 
-import Sound1 from '../assets/car-sound-1.mp3';
+import Sound1 from '../assets/car/sound1.mp3';
 
 let sound1Buffer: AudioBuffer;
 
-export const prepareCarSound = async () => {
+export const prepare = async () => {
     const setupSample = async (file: string) => {
         const response = await fetch(file);
         const arrayBuffer = await response.arrayBuffer();
@@ -16,7 +16,7 @@ export const prepareCarSound = async () => {
     return;
 };
 
-export const playCarSound = () => {
+export const play = () => {
     const buffer = (() => {
         const index = Math.floor(Math.random() * 5);
 

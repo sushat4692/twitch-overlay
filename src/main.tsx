@@ -14,9 +14,10 @@ import {
     DefaultMessage,
 } from './const/WireImages';
 
-import { prepareMeowSound } from './util/useMeowSound';
-import { prepareBuildSound } from './util/useBuildSound';
-import { prepareCarSound } from './util/useCarSound';
+import { prepare as prepareMeowSound } from './util/useMeowSound';
+import { prepare as prepareBuildSound } from './util/useBuildSound';
+import { prepare as prepareCarSound } from './util/useCarSound';
+import { prepare as prepareAvatarSound } from './util/useAvatarSound';
 
 Promise.all([
     (async () => {
@@ -68,6 +69,7 @@ Promise.all([
     prepareMeowSound(),
     prepareBuildSound(),
     prepareCarSound(),
+    prepareAvatarSound(),
 ]).then(([image]) => {
     ReactDOM.render(
         <React.StrictMode>

@@ -1,6 +1,6 @@
 import { audioCtx, playSound } from './playSound';
 
-import Sound1 from '../assets/building/sound1.mp3';
+import Sound1 from '../assets/avatar/sound1.mp3';
 
 let sound1Buffer: AudioBuffer;
 
@@ -13,6 +13,7 @@ export const prepare = async () => {
     };
 
     sound1Buffer = await setupSample(Sound1);
+    return;
 };
 
 export const play = () => {

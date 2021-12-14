@@ -6,6 +6,7 @@ import Wires from './components/Wires';
 import Cat from './components/Cat';
 import Building from './components/Building';
 import Car from './components/Car';
+import Avatar from './components/Avatar';
 
 // Context
 import { FrameCountContext } from './context/FrameCount';
@@ -17,7 +18,8 @@ import { useTwitchChatEvent } from './util/useTwitchChatEvent';
 
 function App() {
     const frameCount = useAnimationFrameCount();
-    const { cats, cars, builds, imageZoom } = useTwitchPubSubEvent();
+    const { cats, cars, builds, imageZoom, isAvatar8Bit, isAvatarGaming } =
+        useTwitchPubSubEvent();
     const { topics, topicShow } = useTwitchChatEvent();
 
     return (
@@ -44,6 +46,8 @@ function App() {
                     topics={topics}
                     topicShow={topicShow}
                 />
+
+                <Avatar is8Bit={isAvatar8Bit} isGaming={isAvatarGaming} />
             </div>
         </FrameCountContext.Provider>
     );

@@ -1,10 +1,10 @@
 import { audioCtx, playSound } from './playSound';
 
-import Sound1 from '../assets/cat-meowing-1.mp3';
-import Sound2 from '../assets/cat-meowing-2.mp3';
-import Sound3 from '../assets/cat-meowing-3.mp3';
-import Sound4 from '../assets/cat-meowing-4.mp3';
-import Sound5 from '../assets/cat-meowing-5.mp3';
+import Sound1 from '../assets/cat/sound1.mp3';
+import Sound2 from '../assets/cat/sound2.mp3';
+import Sound3 from '../assets/cat/sound3.mp3';
+import Sound4 from '../assets/cat/sound4.mp3';
+import Sound5 from '../assets/cat/sound5.mp3';
 
 let sound1Buffer: AudioBuffer;
 let sound2Buffer: AudioBuffer;
@@ -12,7 +12,7 @@ let sound3Buffer: AudioBuffer;
 let sound4Buffer: AudioBuffer;
 let sound5Buffer: AudioBuffer;
 
-export const prepareMeowSound = async () => {
+export const prepare = async () => {
     const setupSample = async (file: string) => {
         const response = await fetch(file);
         const arrayBuffer = await response.arrayBuffer();
@@ -27,7 +27,7 @@ export const prepareMeowSound = async () => {
     sound5Buffer = await setupSample(Sound5);
 };
 
-export const playMeowSound = () => {
+export const play = () => {
     const buffer = (() => {
         const index = Math.floor(Math.random() * 5);
 

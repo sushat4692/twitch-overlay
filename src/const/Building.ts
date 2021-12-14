@@ -1,6 +1,6 @@
-import Building1 from '../assets/building1.png';
-import Building2 from '../assets/building2.png';
-import Building3 from '../assets/building3.png';
+import Building1 from '../assets/building/image1.png';
+import Building2 from '../assets/building/image2.png';
+import Building3 from '../assets/building/image3.png';
 
 export type SpriteType = 'building1' | 'building2' | 'building3';
 

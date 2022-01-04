@@ -3,6 +3,9 @@ import { v4 as uuid } from 'uuid';
 import { PubSubClient } from '@twurple/pubsub';
 import { StaticAuthProvider } from '@twurple/auth';
 
+// Types
+import { AvatarFilter } from '../types/AvatarFilter';
+
 // Context
 import { ImageDescriptionContext } from '../context/ImageDescription';
 
@@ -10,14 +13,20 @@ import { ImageDescriptionContext } from '../context/ImageDescription';
 import { play as playMeowSound } from './useMeowSound';
 import { play as playBuildSound } from './useBuildSound';
 import { play as playCarSound } from './useCarSound';
-import { play as playAvatarSound } from './useAvatarSound';
+import {
+    play as playAvatarSound,
+    playGaming,
+    playGrayScale,
+    playGunya,
+} from './useAvatarSound';
 import { chatClient } from './useTwitchChatEvent';
 
 // Const
 import { CHANNEL_NAME, CLIENT_ID, CLIENT_TOKEN } from '../const/App';
 
 let imageZoomTimer: ReturnType<typeof setTimeout> | null = null;
-let avatarGamingTimer: ReturnType<typeof setTimeout> | null = null;
+let avatarFilterTimer: ReturnType<typeof setTimeout> | null = null;
+let avatarGunyaTimer: ReturnType<typeof setTimeout> | null = null;
 export const pubSubClient = new PubSubClient();
 
 export const useTwitchPubSubEvent = () => {
@@ -46,7 +55,8 @@ export const useTwitchPubSubEvent = () => {
     ]);
     const [imageZoom, updateImageZoom] = useState(false);
     const [isAvatar8Bit, updateIsAvatar8Bit] = useState(false);
-    const [isAvatarGaming, updateIsAvatarGaming] = useState(false);
+    const [isAvatarGunya, updateIsAvatarGunya] = useState(false);
+    const [avatarFilter, updateAvatarFilter] = useState(AvatarFilter.Normal);
 
     useEffect(() => {
         (async () => {
@@ -130,15 +140,42 @@ export const useTwitchPubSubEvent = () => {
                             break;
                         case '77fd6776-1552-4f22-ab8b-9cc4c126c584':
                             // アバター虹色に光る
-                            updateIsAvatarGaming(true);
-                            if (avatarGamingTimer) {
-                                clearTimeout(avatarGamingTimer);
+                            updateAvatarFilter(AvatarFilter.Gaming);
+                            if (avatarFilterTimer) {
+                                clearTimeout(avatarFilterTimer);
                             }
 
-                            avatarGamingTimer = setTimeout(() => {
-                                avatarGamingTimer = null;
-                                updateIsAvatarGaming(false);
+                            avatarFilterTimer = setTimeout(() => {
+                                avatarFilterTimer = null;
+                                updateAvatarFilter(AvatarFilter.Normal);
                             }, 10000);
+                            playGaming();
+                            break;
+                        case 'dd14164c-b966-4bf4-b01a-8fcf0073610a':
+                            // アバター白黒になる
+                            updateAvatarFilter(AvatarFilter.Grayscale);
+                            if (avatarFilterTimer) {
+                                clearTimeout(avatarFilterTimer);
+                            }
+
+                            avatarFilterTimer = setTimeout(() => {
+                                avatarFilterTimer = null;
+                                updateAvatarFilter(AvatarFilter.Normal);
+                            }, 10000);
+                            playGrayScale();
+                            break;
+                        case '14c22763-f7b8-4680-ab2a-2a858d8aa150':
+                            // アバターがぐにゃぐにゃする
+                            updateIsAvatarGunya(true);
+                            if (avatarGunyaTimer) {
+                                clearTimeout(avatarGunyaTimer);
+                            }
+
+                            avatarGunyaTimer = setTimeout(() => {
+                                avatarGunyaTimer = null;
+                                updateIsAvatarGunya(false);
+                            }, 10000);
+                            playGunya();
                             break;
                     }
                 }
@@ -146,5 +183,13 @@ export const useTwitchPubSubEvent = () => {
         })();
     }, []);
 
-    return { cats, builds, cars, imageZoom, isAvatar8Bit, isAvatarGaming };
+    return {
+        cats,
+        builds,
+        cars,
+        imageZoom,
+        isAvatar8Bit,
+        isAvatarGunya,
+        avatarFilter,
+    };
 };

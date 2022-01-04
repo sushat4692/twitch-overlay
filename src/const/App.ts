@@ -9,3 +9,5 @@ export const CLIENT_TOKEN = import.meta.env.VITE_CLIENT_TOKEN as string;
 export const sampleRate = 4410;
 export const fftSize = 1024;
 export const avatarDuration = 30;
+export const threshold = 20;
+export const graphMax = 150;

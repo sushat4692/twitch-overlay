@@ -1,51 +1,33 @@
-@keyframes gaming {
-    100% { background-position-x: 200%; }
-}
-
 .Avatar {
-    position: absolute;
     z-index: 50;
+    position: absolute;
     width: 306px;
     height: 332px;
     left: 1562px;
     top: 791px;
-    background-position: center center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-image: url('../assets/avatar/image-normal-close.png');
-}
-.Avatar[data-open="true"] {
-    background-image: url('../assets/avatar/image-normal-open.png');
+
+    /* position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh; */
 }
 
-.Avatar[data-is8bit="true"] {
-    background-image: url('../assets/avatar/image-8bit-close.png');
-}
-.Avatar[data-is8bit="true"][data-open="true"] {
-    background-image: url('../assets/avatar/image-8bit-open.png');
-}
-
-.Avatar[data-gaming="true"]::after {
-    content: '';
+.Avatar__canvas {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to right, Magenta, yellow, Cyan, Magenta) 0% center / 200%;
-    animation: gaming 2s linear infinite;
-    mix-blend-mode: multiply;
-    mask-image: url('../assets/avatar/image-normal-close.png');
-    mask-size: contain;
-    mask-position: center center;
-}
-.Avatar[data-gaming="true"][data-open="true"]::after {
-    mask-image: url('../assets/avatar/image-normal-open.png');
 }
 
-.Avatar[data-gaming="true"][data-is8bit="true"]::after {
-    mask-image: url('../assets/avatar/image-8bit-close.png');
+.Avatar__volume {
+    @apply absolute left-0 bottom-0 top-0 my-auto w-full h-12 border border-solid border-white bg-black;
 }
-.Avatar[data-gaming="true"][data-is8bit="true"][data-open="true"]::after {
-    mask-image: url('../assets/avatar/image-8bit-open.png');
+.Avatar__volume__bar {
+    @apply absolute left-0 top-0 h-full bg-green-400;
+}
+.Avatar__volume__threshold {
+    @apply absolute left-0 top-0 h-full bg-red-500;
+    width: 1px;
 }

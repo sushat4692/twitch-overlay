@@ -1,5 +1,5 @@
 .WireImages {
-    @apply absolute inset-0 z-50 bg-black bg-opacity-0;
+    @apply absolute inset-0 z-50 bg-black bg-opacity-0 pointer-events-none;
 
     --wire-image-slider-width: 400px;
     --wire-image-slider-height: 300px;
@@ -76,7 +76,8 @@
 
     line-height: 1.2;
     font-family: 'PixelMplus12';
-    font-size: 34px;
+    /* font-size: 34px; */
+    font-size: 28px;
     font-weight: bold;
     -webkit-font-smoothing: none;
 }

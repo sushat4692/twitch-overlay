@@ -18,8 +18,15 @@ import { useTwitchChatEvent } from './util/useTwitchChatEvent';
 
 function App() {
     const frameCount = useAnimationFrameCount();
-    const { cats, cars, builds, imageZoom, isAvatar8Bit, isAvatarGaming } =
-        useTwitchPubSubEvent();
+    const {
+        cats,
+        cars,
+        builds,
+        imageZoom,
+        isAvatar8Bit,
+        isAvatarGunya,
+        avatarFilter,
+    } = useTwitchPubSubEvent();
     const { topics, topicShow } = useTwitchChatEvent();
 
     return (
@@ -47,7 +54,11 @@ function App() {
                     topicShow={topicShow}
                 />
 
-                <Avatar is8Bit={isAvatar8Bit} isGaming={isAvatarGaming} />
+                <Avatar
+                    is8Bit={isAvatar8Bit}
+                    isGunya={isAvatarGunya}
+                    filter={avatarFilter}
+                />
             </div>
         </FrameCountContext.Provider>
     );

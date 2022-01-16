@@ -1,12 +1,17 @@
 import React from 'react';
 import styles from './App.module.css';
 
+// Type
+import { WeatherType } from './types/WeatherType';
+
 // Components
 import Wires from './components/Wires';
 import Cat from './components/Cat';
 import Building from './components/Building';
 import Car from './components/Car';
 import Avatar from './components/Avatar';
+import Rain from './components/Rain';
+import Snow from './components/Snow';
 
 // Context
 import { FrameCountContext } from './context/FrameCount';
@@ -25,6 +30,8 @@ function App() {
         imageZoom,
         isAvatar8Bit,
         isAvatarGunya,
+        isAvatarBigger,
+        weather,
         avatarFilter,
     } = useTwitchPubSubEvent();
     const { topics, topicShow } = useTwitchChatEvent();
@@ -48,17 +55,21 @@ function App() {
                     })}
                 </div>
 
+                <Avatar
+                    is8Bit={isAvatar8Bit}
+                    isGunya={isAvatarGunya}
+                    isBigger={isAvatarBigger}
+                    filter={avatarFilter}
+                />
+
                 <Wires
                     imageZoom={imageZoom}
                     topics={topics}
                     topicShow={topicShow}
                 />
 
-                <Avatar
-                    is8Bit={isAvatar8Bit}
-                    isGunya={isAvatarGunya}
-                    filter={avatarFilter}
-                />
+                {weather === WeatherType.Rain ? <Rain /> : null}
+                {weather === WeatherType.Snow ? <Snow /> : null}
             </div>
         </FrameCountContext.Provider>
     );

@@ -16,8 +16,10 @@
     "axios": "^0.24.0",
     "classnames": "^2.3.1",
     "date-fns": "^2.26.0",
+    "particles.js": "^2.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-tsparticles": "^1.39.0",
     "swiper": "^7.3.1",
     "three": "^0.136.0",
     "uuid": "^8.3.2"

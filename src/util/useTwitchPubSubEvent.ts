@@ -5,6 +5,7 @@ import { StaticAuthProvider } from '@twurple/auth';
 
 // Types
 import { AvatarFilter } from '../types/AvatarFilter';
+import { WeatherType } from '../types/WeatherType';
 
 // Context
 import { ImageDescriptionContext } from '../context/ImageDescription';
@@ -18,6 +19,8 @@ import {
     playGaming,
     playGrayScale,
     playGunya,
+    playZoomin,
+    playZoomout,
 } from './useAvatarSound';
 import { chatClient } from './useTwitchChatEvent';
 
@@ -27,6 +30,8 @@ import { CHANNEL_NAME, CLIENT_ID, CLIENT_TOKEN } from '../const/App';
 let imageZoomTimer: ReturnType<typeof setTimeout> | null = null;
 let avatarFilterTimer: ReturnType<typeof setTimeout> | null = null;
 let avatarGunyaTimer: ReturnType<typeof setTimeout> | null = null;
+let avatarBiggerTimer: ReturnType<typeof setTimeout> | null = null;
+let weatherTimer: ReturnType<typeof setTimeout> | null = null;
 export const pubSubClient = new PubSubClient();
 
 export const useTwitchPubSubEvent = () => {
@@ -56,6 +61,8 @@ export const useTwitchPubSubEvent = () => {
     const [imageZoom, updateImageZoom] = useState(false);
     const [isAvatar8Bit, updateIsAvatar8Bit] = useState(false);
     const [isAvatarGunya, updateIsAvatarGunya] = useState(false);
+    const [isAvatarBigger, updateIsAvatarBigger] = useState(false);
+    const [weather, updateWeather] = useState<WeatherType>(0);
     const [avatarFilter, updateAvatarFilter] = useState(AvatarFilter.Normal);
 
     useEffect(() => {
@@ -177,6 +184,44 @@ export const useTwitchPubSubEvent = () => {
                             }, 10000);
                             playGunya();
                             break;
+                        case 'ac73f2a1-6311-4115-9076-0940da62c889':
+                            // アバターが大きくなる
+                            updateIsAvatarBigger(true);
+                            if (avatarBiggerTimer) {
+                                clearTimeout(avatarBiggerTimer);
+                            }
+
+                            avatarBiggerTimer = setTimeout(() => {
+                                avatarBiggerTimer = null;
+                                updateIsAvatarBigger(false);
+                                playZoomout();
+                            }, 10000);
+                            playZoomin();
+                            break;
+                        case 'b6c72ccb-924f-4b11-9ff2-696b76360ff9':
+                            // 雨を降らせる
+                            updateWeather(WeatherType.Rain);
+                            if (weatherTimer) {
+                                clearTimeout(weatherTimer);
+                            }
+
+                            weatherTimer = setTimeout(() => {
+                                weatherTimer = null;
+                                updateWeather(WeatherType.Normal);
+                            }, 10000);
+                            break;
+                        case '124a28cd-5547-4f56-8514-8926f19540e2':
+                            // 雪を降らせる
+                            updateWeather(WeatherType.Snow);
+                            if (weatherTimer) {
+                                clearTimeout(weatherTimer);
+                            }
+
+                            weatherTimer = setTimeout(() => {
+                                weatherTimer = null;
+                                updateWeather(WeatherType.Normal);
+                            }, 10000);
+                            break;
                     }
                 }
             );
@@ -190,6 +235,8 @@ export const useTwitchPubSubEvent = () => {
         imageZoom,
         isAvatar8Bit,
         isAvatarGunya,
+        isAvatarBigger,
+        weather,
         avatarFilter,
     };
 };

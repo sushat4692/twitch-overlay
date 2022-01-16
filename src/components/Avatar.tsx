@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames/bind';
 
 // Const
 import { threshold, graphMax } from '../const/App';
@@ -10,10 +11,12 @@ import { AvatarFilter } from '../types/AvatarFilter';
 import { useAvatar } from './Avatar.action';
 
 import styles from './Avatar.module.css';
+const cx = classNames.bind(styles);
 
 type Props = {
     is8Bit: boolean;
     isGunya: boolean;
+    isBigger: boolean;
     filter: AvatarFilter;
 };
 
@@ -22,7 +25,9 @@ const AvatarComponent: React.FunctionComponent<Props> = (props) => {
 
     return (
         <>
-            <div className={styles.Avatar} onClick={startHandler}>
+            <div
+                className={cx({ Avatar: true, 'Avatar--zoom': props.isBigger })}
+                onClick={startHandler}>
                 <canvas
                     ref={canvasEl}
                     className={styles.Avatar__canvas}></canvas>

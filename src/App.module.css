@@ -6,6 +6,27 @@
     overflow: hidden;
 }
 
+.App::before {
+    @apply block bg-black;
+
+    content: '';
+    z-index: -1;
+    width: var(--screen-width);
+    height: var(--screen-height);
+    clip-path: polygon(
+        0 0,
+        0 var(--screen-height),
+        calc(var(--desktop-position-left) - var(--wire-border-width) / 2) var(--screen-height),
+        calc(var(--desktop-position-left) - var(--wire-border-width) / 2) calc(var(--desktop-position-top) - var(--wire-border-width) / 2),
+        calc(var(--desktop-position-left) + var(--desktop-width) + var(--wire-border-width) / 2) calc(var(--desktop-position-top) - var(--wire-border-width) / 2),
+        calc(var(--desktop-position-left) + var(--desktop-width) + var(--wire-border-width) / 2) calc(var(--desktop-position-top) + var(--desktop-height) + var(--wire-border-width) / 2),
+        calc(var(--desktop-position-left) - var(--wire-border-width) / 2) calc(var(--desktop-position-top) + var(--desktop-height) + var(--wire-border-width) / 2),
+        calc(var(--desktop-position-left) - var(--wire-border-width) / 2) var(--screen-height),
+        var(--screen-width) var(--screen-height),
+        var(--screen-width) 0
+    );
+}
+
 .App__cat {
     @apply absolute;
 

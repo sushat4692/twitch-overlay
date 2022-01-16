@@ -4,4 +4,10 @@
     --screen-width: 1920px;
     --screen-height: 1080px;
     --wire-border-width: 6px;
+
+    /* Desktop */
+    --desktop-width: 1568px;
+    --desktop-height: 882px;
+    --desktop-position-left: 48px;
+    --desktop-position-top: 48px;
 }

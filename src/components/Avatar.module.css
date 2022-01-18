@@ -50,7 +50,7 @@
 }
 
 .Avatar__volume {
-    @apply absolute left-0 bottom-0 top-0 my-auto w-full h-12 border border-solid border-white bg-black;
+    @apply absolute left-0 top-0 w-full h-12 border border-solid border-white bg-black;
 }
 .Avatar__volume__bar {
     @apply absolute left-0 top-0 h-full bg-green-400;

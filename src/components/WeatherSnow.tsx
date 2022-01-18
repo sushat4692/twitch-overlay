@@ -1,12 +1,12 @@
 import React from 'react';
 import Particles from 'react-tsparticles';
-import styles from './Snow.module.css';
+import styles from './WeatherSnow.module.css';
 
 import SnowImage from '../assets/snow.png';
 
 const Snow = (): JSX.Element => {
     return (
-        <div className={styles.Snow}>
+        <div className={styles.WeatherSnow}>
             <Particles
                 options={{
                     particles: {
@@ -43,12 +43,12 @@ const Snow = (): JSX.Element => {
                             },
                         },
                         size: {
-                            value: 5,
+                            value: 10,
                             random: true,
                             anim: {
                                 enable: false,
                                 speed: 20,
-                                size_min: 0.1,
+                                size_min: 0.2,
                                 sync: false,
                             },
                         },
@@ -57,7 +57,7 @@ const Snow = (): JSX.Element => {
                         },
                         move: {
                             enable: true,
-                            speed: 3, //この数値を小さくするとゆっくりな動きになる
+                            speed: 5, //この数値を小さくするとゆっくりな動きになる
                             direction: 'bottom', //下に向かって落ちる
                             random: true, //動きはランダム
                             straight: false, //動きをとどめない

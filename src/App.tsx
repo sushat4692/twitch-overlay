@@ -10,8 +10,8 @@ import Cat from './components/Cat';
 import Building from './components/Building';
 import Car from './components/Car';
 import Avatar from './components/Avatar';
-import Rain from './components/Rain';
-import Snow from './components/Snow';
+import WeatherRain from './components/WeatherRain';
+import WeatherSnow from './components/WeatherSnow';
 
 // Context
 import { FrameCountContext } from './context/FrameCount';
@@ -68,8 +68,8 @@ function App() {
                     topicShow={topicShow}
                 />
 
-                {weather === WeatherType.Rain ? <Rain /> : null}
-                {weather === WeatherType.Snow ? <Snow /> : null}
+                {weather === WeatherType.Rain ? <WeatherRain /> : null}
+                {weather === WeatherType.Snow ? <WeatherSnow /> : null}
             </div>
         </FrameCountContext.Provider>
     );

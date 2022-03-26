@@ -9,8 +9,13 @@ import {
 } from '../const/Cat';
 import CatDetail from './CatDetail';
 
+// const catAreaWidth = 1136;
+const catAreaWidth = 1416;
+
 const Cat = (): JSX.Element => {
-    const [x, updateX] = useState<number>(Math.floor(Math.random() * 1136));
+    const [x, updateX] = useState<number>(
+        Math.floor(Math.random() * catAreaWidth)
+    );
     const [reflect, updateReflect] = useState<boolean>(true);
     const [key, updateKey] = useState<SpriteType>('none');
     const [duration, updateDuration] = useState<number>(
@@ -61,9 +66,9 @@ const Cat = (): JSX.Element => {
                     if (newX < 0) {
                         nextSprite(['spin']);
                         return 0;
-                    } else if (newX > 1136) {
+                    } else if (newX > catAreaWidth) {
                         nextSprite(['spin']);
-                        return 1136;
+                        return catAreaWidth;
                     }
 
                     return newX;

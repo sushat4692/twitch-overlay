@@ -12,6 +12,7 @@ import Car from './components/Car';
 import Avatar from './components/Avatar';
 import WeatherRain from './components/WeatherRain';
 import WeatherSnow from './components/WeatherSnow';
+import Alert from './components/Alert';
 
 // Context
 import { FrameCountContext } from './context/FrameCount';
@@ -31,6 +32,7 @@ function App() {
         isAvatar8Bit,
         isAvatarGunya,
         isAvatarBigger,
+        isAvatarFocus,
         weather,
         avatarFilter,
     } = useTwitchPubSubEvent();
@@ -59,6 +61,7 @@ function App() {
                     is8Bit={isAvatar8Bit}
                     isGunya={isAvatarGunya}
                     isBigger={isAvatarBigger}
+                    isFocus={isAvatarFocus}
                     filter={avatarFilter}
                 />
 
@@ -70,6 +73,8 @@ function App() {
 
                 {weather === WeatherType.Rain ? <WeatherRain /> : null}
                 {weather === WeatherType.Snow ? <WeatherSnow /> : null}
+
+                <Alert />
             </div>
         </FrameCountContext.Provider>
     );

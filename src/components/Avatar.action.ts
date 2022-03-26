@@ -23,17 +23,22 @@ let renderer: THREE.WebGLRenderer | null = null;
 import vertexShader from './Avatar.Shader.vert';
 import fragmentShader from './Avatar.Shader.frag';
 
+// Utils
+import { focusLine } from '../util/focusLine';
+
 type Props = {
     is8Bit: boolean;
     isGunya: boolean;
+    isFocus: boolean;
     filter: AvatarFilter;
 };
 
-export const useAvatar = ({ is8Bit, isGunya, filter }: Props) => {
+export const useAvatar = ({ is8Bit, isGunya, isFocus, filter }: Props) => {
     const frameCount = useContext(FrameCountContext);
 
     // Three.js
     const canvasEl = useRef<HTMLCanvasElement>(null);
+    const canvas2DEl = useRef<HTMLCanvasElement>(null);
     const scene = useRef<THREE.Scene>();
     const camera = useRef<THREE.PerspectiveCamera>();
     const mesh =
@@ -59,8 +64,11 @@ export const useAvatar = ({ is8Bit, isGunya, filter }: Props) => {
     const [showVolume, updateShowVolume] = useState(false);
     const [volume, updateVolume] = useState(0);
 
+    // FocusLine
+    const focusLineDraw = useRef<ReturnType<typeof focusLine>>();
+
     useEffect(() => {
-        if (!canvasEl.current) {
+        if (!canvasEl.current || !canvas2DEl.current) {
             return;
         }
 
@@ -123,6 +131,17 @@ export const useAvatar = ({ is8Bit, isGunya, filter }: Props) => {
 
         mesh.current = new THREE.Mesh(geo, mat);
         scene.current.add(mesh.current);
+
+        focusLineDraw.current = focusLine(
+            canvas2DEl.current,
+            canvas2DEl.current.width / 2,
+            canvas2DEl.current.height / 2,
+            30,
+            200,
+            100,
+            70,
+            'gray'
+        );
     }, []);
 
     useEffect(() => {
@@ -208,7 +227,12 @@ export const useAvatar = ({ is8Bit, isGunya, filter }: Props) => {
 
         uniforms.current.uTime.value += 1;
         renderer.render(scene.current, camera.current);
-    }, [frameCount]);
+
+        if (!focusLineDraw.current || !isFocus) {
+            return;
+        }
+        focusLineDraw.current.render();
+    }, [frameCount, isFocus]);
 
     const toggleShowVolume = useCallback(() => {
         updateShowVolume((prev) => !prev);
@@ -248,6 +272,7 @@ export const useAvatar = ({ is8Bit, isGunya, filter }: Props) => {
 
     return {
         canvasEl,
+        canvas2DEl,
         showVolume,
         volume,
         startHandler,

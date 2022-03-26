@@ -17,17 +17,20 @@ type Props = {
     is8Bit: boolean;
     isGunya: boolean;
     isBigger: boolean;
+    isFocus: boolean;
     filter: AvatarFilter;
 };
 
 const AvatarComponent: React.FunctionComponent<Props> = (props) => {
-    const { canvasEl, showVolume, volume, startHandler } = useAvatar(props);
+    const { canvasEl, canvas2DEl, showVolume, volume, startHandler } =
+        useAvatar(props);
 
     return (
         <>
             <div
                 className={cx({ Avatar: true, 'Avatar--zoom': props.isBigger })}
-                onClick={startHandler}>
+                // onClick={startHandler}
+            >
                 <canvas
                     ref={canvasEl}
                     className={styles.Avatar__canvas}></canvas>
@@ -46,6 +49,17 @@ const AvatarComponent: React.FunctionComponent<Props> = (props) => {
                             }}></div>
                     </div>
                 ) : null}
+            </div>
+            <div
+                className={cx({
+                    AvatarEffect: true,
+                    'AvatarEffect--active': props.isFocus,
+                    'Avatar--zoom': props.isBigger,
+                })}
+                onClick={startHandler}>
+                <canvas
+                    ref={canvas2DEl}
+                    className={styles.Avatar__canvas}></canvas>
             </div>
         </>
     );

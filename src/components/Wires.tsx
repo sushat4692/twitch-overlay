@@ -3,7 +3,7 @@ import React from 'react';
 import { TopicItem } from '../types/TopicItem';
 
 import WireDesktop from './WireDesktop';
-import WireTime from './WireTime';
+import WireTime from './WireTimeAnalogue';
 import WireTopics from './WireTopics';
 import WireImages from './WireImages';
 
@@ -17,7 +17,7 @@ const Wires = ({ imageZoom, topics, topicShow }: Props) => {
     return (
         <>
             <WireDesktop />
-            <WireTime />
+            {/* <WireTime /> */}
             <WireTopics topics={topics} topicShow={topicShow} />
             <WireImages imageZoom={imageZoom} />
         </>

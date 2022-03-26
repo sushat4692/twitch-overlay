@@ -36,6 +36,20 @@
     transform-origin: 60% 90%;
     animation: AvatarZoomOutAnimation linear 1s forwards;
 }
+.AvatarEffect {
+    z-index: 50;
+    position: absolute;
+    width: 600px;
+    height: 400px;
+    left: 1434px;
+    top: 765px;
+    transform-origin: 60% 90%;
+    animation: AvatarZoomOutAnimation linear 1s forwards;
+    opacity: 0;
+}
+.AvatarEffect--active {
+    opacity: 1;
+}
 
 .Avatar--zoom {
     animation: AvatarZoomInAnimation linear 1s forwards;

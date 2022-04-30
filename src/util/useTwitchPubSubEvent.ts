@@ -14,6 +14,7 @@ import { ImageDescriptionContext } from '../context/ImageDescription';
 import { play as playMeowSound } from './useMeowSound';
 import { play as playBuildSound } from './useBuildSound';
 import { play as playCarSound } from './useCarSound';
+import { play as playDinoSound } from './useDinoSound';
 import {
     play as playAvatarSound,
     playGaming,
@@ -69,6 +70,7 @@ export const useTwitchPubSubEvent = () => {
         { id: uuid() },
         { id: uuid() },
     ]);
+    const [dinos, updateDinos] = useState<{ id: string }[]>([]);
     const [imageZoom, updateImageZoom] = useState(false);
     const [isAvatar8Bit, updateIsAvatar8Bit] = useState(false);
     const [isAvatarGunya, updateIsAvatarGunya] = useState(false);
@@ -79,6 +81,7 @@ export const useTwitchPubSubEvent = () => {
 
     const redemptionHandler = useCallback(
         async (rewardId: string, userName = '') => {
+            console.log(rewardId);
             switch (rewardId) {
                 case 'ac64948e-1c7e-4851-a2c8-995e788f7f55':
                     // ネコチャン
@@ -122,6 +125,11 @@ export const useTwitchPubSubEvent = () => {
                     playCarSound();
                     break;
                 }
+                case 'aa504142-b0e1-4a18-914b-65201ad76f6b':
+                    // 恐竜
+                    updateDinos((prev) => [...prev, { id: uuid() }]);
+                    playDinoSound();
+                    break;
                 case 'e658cacc-6813-40b9-a8f7-c74e6e9d7deb':
                     // 写真ズーム
                     updateImageZoom(true);
@@ -252,7 +260,7 @@ export const useTwitchPubSubEvent = () => {
                     new StaticAuthProvider(CLIENT_ID, CLIENT_TOKEN)
                 ),
                 async (message) => {
-                    await redemptionHandler(message.id, message.userName);
+                    await redemptionHandler(message.rewardId, message.userName);
                 }
             );
         })();
@@ -262,6 +270,7 @@ export const useTwitchPubSubEvent = () => {
         cats,
         builds,
         cars,
+        dinos,
         imageZoom,
         isAvatar8Bit,
         isAvatarGunya,

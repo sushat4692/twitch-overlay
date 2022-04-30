@@ -17,6 +17,7 @@ import {
 import { prepare as prepareMeowSound } from './util/useMeowSound';
 import { prepare as prepareBuildSound } from './util/useBuildSound';
 import { prepare as prepareCarSound } from './util/useCarSound';
+import { prepare as prepareDinoSound } from './util/useDinoSound';
 import { prepare as prepareAvatarSound } from './util/useAvatarSound';
 import { prepare as prepareAlertSound } from './util/useAlertSound';
 
@@ -70,6 +71,7 @@ Promise.all([
     prepareMeowSound(),
     prepareBuildSound(),
     prepareCarSound(),
+    prepareDinoSound(),
     prepareAvatarSound(),
     prepareAlertSound(),
 ]).then(([image]) => {

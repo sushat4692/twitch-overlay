@@ -55,3 +55,12 @@
     width: var(--screen-width);
     height: 200px;
 }
+
+.App__dino {
+    @apply absolute;
+
+    left: 0;
+    bottom: 0;
+    width: var(--screen-width);
+    height: 200px;
+}

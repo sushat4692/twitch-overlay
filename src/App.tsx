@@ -9,6 +9,7 @@ import Wires from './components/Wires';
 import Cat from './components/Cat';
 import Building from './components/Building';
 import Car from './components/Car';
+import Dino from './components/Dino';
 import Avatar from './components/Avatar';
 import WeatherRain from './components/WeatherRain';
 import WeatherSnow from './components/WeatherSnow';
@@ -27,6 +28,7 @@ function App() {
     const {
         cats,
         cars,
+        dinos,
         builds,
         imageZoom,
         isAvatar8Bit,
@@ -54,6 +56,11 @@ function App() {
                 <div className={styles.App__car}>
                     {cars.map((car) => {
                         return <Car key={car.id} />;
+                    })}
+                </div>
+                <div className={styles.App__dino}>
+                    {dinos.map((dino) => {
+                        return <Dino key={dino.id} />;
                     })}
                 </div>
 

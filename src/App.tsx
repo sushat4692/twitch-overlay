@@ -11,6 +11,7 @@ import Building from './components/Building';
 import Car from './components/Car';
 import Dino from './components/Dino';
 import Avatar from './components/Avatar';
+import Weather from './components/Weather';
 import WeatherRain from './components/WeatherRain';
 import WeatherSnow from './components/WeatherSnow';
 import Alert from './components/Alert';
@@ -35,10 +36,16 @@ function App() {
         isAvatarGunya,
         isAvatarBigger,
         isAvatarFocus,
+        isAvatarGlitch,
         weather,
         avatarFilter,
     } = useTwitchPubSubEvent();
-    const { topics, topicShow } = useTwitchChatEvent();
+    const { topics, topicShow } = useTwitchChatEvent({
+        cats,
+        cars,
+        dinos,
+        builds,
+    });
 
     return (
         <FrameCountContext.Provider value={frameCount}>
@@ -69,6 +76,7 @@ function App() {
                     isGunya={isAvatarGunya}
                     isBigger={isAvatarBigger}
                     isFocus={isAvatarFocus}
+                    isGlitch={isAvatarGlitch}
                     filter={avatarFilter}
                 />
 
@@ -78,8 +86,9 @@ function App() {
                     topicShow={topicShow}
                 />
 
-                {weather === WeatherType.Rain ? <WeatherRain /> : null}
-                {weather === WeatherType.Snow ? <WeatherSnow /> : null}
+                {/* {weather === WeatherType.Rain ? <WeatherRain /> : null} */}
+                {/* {weather === WeatherType.Snow ? <WeatherSnow /> : null} */}
+                <Weather weather={weather} />
 
                 <Alert />
             </div>

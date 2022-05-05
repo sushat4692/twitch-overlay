@@ -7,4 +7,5 @@
     height: calc(var(--desktop-height) + var(--wire-border-width) * 2);
     border-width: var(--wire-border-width);
     border-radius: var(--wire-border-width);
+    z-index: -1;
 }

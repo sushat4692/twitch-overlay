@@ -10,6 +10,7 @@ import { FrameCountContext } from '../context/FrameCount';
 const CarWidth = 180;
 
 const Car = () => {
+    const isInited = useRef(false);
     const frameCount = useContext(FrameCountContext);
 
     const spriteKey = useRef(getRandomSpriteKey());
@@ -23,6 +24,11 @@ const Car = () => {
     const [index, updateIndex] = useState<number>(0);
 
     useEffect(() => {
+        if (isInited.current) {
+            return;
+        }
+        isInited.current = true;
+
         const direction = Math.floor(Math.random() * 2);
         const x =
             Math.random() * (WindowWidth / 2 - CarWidth) +
@@ -35,6 +41,10 @@ const Car = () => {
         updateX(x);
         updateDirection(direction);
         updateRail(Math.floor(Math.random() * 3));
+
+        return () => {
+            isInited.current = false;
+        };
     }, []);
 
     useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import styles from './Cat.module.css';
 
 import {
@@ -13,6 +13,7 @@ import CatDetail from './CatDetail';
 const catAreaWidth = 1416;
 
 const Cat = (): JSX.Element => {
+    const isInited = useRef(false);
     const [x, updateX] = useState<number>(
         Math.floor(Math.random() * catAreaWidth)
     );
@@ -23,10 +24,19 @@ const Cat = (): JSX.Element => {
     );
 
     useEffect(() => {
+        if (isInited.current) {
+            return;
+        }
+        isInited.current = true;
+
         const randomSprite = getRandomSpriteKey(['fall']);
 
         updateKey(randomSprite);
         updateDuration(getTargetSpriteDuration(randomSprite) || 0);
+
+        return () => {
+            isInited.current = false;
+        };
     }, []);
 
     const nextSprite = useCallback(

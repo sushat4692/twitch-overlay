@@ -7,6 +7,7 @@ import SoundGunya from '../assets/avatar/sound-gunya.mp3';
 import SoundFocus from '../assets/avatar/sound-focus.mp3';
 import SoundZoomin from '../assets/avatar/sound-zoomin.mp3';
 import SoundZoomout from '../assets/avatar/sound-zoomout.mp3';
+import SoundGlitch from '../assets/avatar/sound-glitch.mp3';
 
 let sound1Buffer: AudioBuffer;
 let soundGrayScaleBuffer: AudioBuffer;
@@ -15,6 +16,7 @@ let soundGunyaBuffer: AudioBuffer;
 let soundFocusBuffer: AudioBuffer;
 let soundZoominBuffer: AudioBuffer;
 let soundZoomoutBuffer: AudioBuffer;
+let soundGlitchBuffer: AudioBuffer;
 
 export const prepare = async () => {
     const setupSample = async (file: string) => {
@@ -31,6 +33,7 @@ export const prepare = async () => {
     soundFocusBuffer = await setupSample(SoundFocus);
     soundZoominBuffer = await setupSample(SoundZoomin);
     soundZoomoutBuffer = await setupSample(SoundZoomout);
+    soundGlitchBuffer = await setupSample(SoundGlitch);
     return;
 };
 
@@ -69,4 +72,8 @@ export const playZoomin = () => {
 
 export const playZoomout = () => {
     playSound(soundZoomoutBuffer, 0.2);
+};
+
+export const playGlitch = () => {
+    playSound(soundGlitchBuffer, 0.1, 10);
 };

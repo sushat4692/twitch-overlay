@@ -1,91 +1,78 @@
-import React from 'react';
-import Particles from 'react-tsparticles';
-import styles from './WeatherSnow.module.css';
+import React, {
+    useCallback,
+    useState,
+    useEffect,
+    useContext,
+    useMemo,
+    useRef,
+} from 'react';
+import { Graphics } from '@inlet/react-pixi';
+import * as PIXI from 'pixi.js';
+import { random } from '../util/Random';
 
-import SnowImage from '../assets/snow.png';
+// Const
+import { WindowWidth, WindowHeight } from '../const/App';
 
-const Snow = (): JSX.Element => {
-    return (
-        <div className={styles.WeatherSnow}>
-            <Particles
-                options={{
-                    particles: {
-                        number: {
-                            value: 100, //この数値を変更すると雪の数が増減できる
-                            density: {
-                                enable: true,
-                                value_area: 800,
-                            },
-                        },
-                        color: {
-                            value: '#ffffff',
-                        },
-                        shape: {
-                            type: 'image', //形状は画像を指定
-                            stroke: {
-                                width: 3,
-                                color: '#fff',
-                            },
-                            image: {
-                                src: SnowImage, //画像を指定
-                                width: 120,
-                                height: 120,
-                            },
-                        },
-                        opacity: {
-                            value: 0.7,
-                            random: false,
-                            anim: {
-                                enable: false,
-                                speed: 1,
-                                opacity_min: 0.1,
-                                sync: false,
-                            },
-                        },
-                        size: {
-                            value: 10,
-                            random: true,
-                            anim: {
-                                enable: false,
-                                speed: 20,
-                                size_min: 0.2,
-                                sync: false,
-                            },
-                        },
-                        line_linked: {
-                            enable: false,
-                        },
-                        move: {
-                            enable: true,
-                            speed: 5, //この数値を小さくするとゆっくりな動きになる
-                            direction: 'bottom', //下に向かって落ちる
-                            random: true, //動きはランダム
-                            straight: false, //動きをとどめない
-                            out_mode: 'out', //画面の外に出るように描写
-                            bounce: false, //跳ね返りなし
-                            attract: {
-                                enable: true,
-                                rotateX: 300,
-                                rotateY: 1200,
-                            },
-                        },
-                    },
-                    interactivity: {
-                        detect_on: 'canvas',
-                        events: {
-                            onhover: {
-                                enable: false,
-                            },
-                            onclick: {
-                                enable: false,
-                            },
-                            resize: true,
-                        },
-                    },
-                    retina_detect: true,
-                }}></Particles>
-        </div>
+// Context
+import { FrameCountContext } from '../context/FrameCount';
+
+const SnowSize = 7;
+const SnowSpeed = 1.5;
+const SnowAccelerationMax = 2;
+
+const WeatherSnow: React.FunctionComponent = () => {
+    const frameCount = useContext(FrameCountContext);
+
+    const a = useRef(0);
+    const [x, setX] = useState(random(0, WindowWidth));
+    const [y, setY] = useState(random(0, WindowHeight));
+
+    const scale = useMemo(() => {
+        return Math.random() * 2;
+    }, []);
+
+    useEffect(() => {
+        setY((prev) => {
+            if (prev > WindowHeight + SnowSize) {
+                prev = -SnowSize;
+            }
+
+            return prev + SnowSpeed * scale;
+        });
+
+        a.current = a.current + (Math.random() - 0.5) * 0.5;
+        if (a.current > SnowAccelerationMax) {
+            a.current = SnowAccelerationMax;
+        }
+        if (a.current < -SnowAccelerationMax) {
+            a.current = -SnowAccelerationMax;
+        }
+
+        setX((prev) => {
+            prev = prev + a.current;
+
+            if (prev > WindowWidth + SnowSize) {
+                prev = -SnowSize;
+            }
+            if (prev < -SnowSize) {
+                prev = WindowWidth + SnowSize;
+            }
+
+            return prev;
+        });
+    }, [frameCount, scale]);
+
+    const draw = useCallback(
+        (g: PIXI.Graphics) => {
+            g.clear();
+            g.beginFill(0xffffff, 0.7);
+            g.drawCircle(0, 0, SnowSize * scale);
+            g.endFill();
+        },
+        [scale]
     );
+
+    return <Graphics draw={draw} x={x} y={y} />;
 };
 
-export default Snow;
+export default WeatherSnow;

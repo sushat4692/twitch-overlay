@@ -7,7 +7,7 @@
 }
 
 .App::before {
-    @apply block bg-black;
+    @apply block bg-black relative;
 
     content: '';
     z-index: -1;

@@ -10,6 +10,7 @@ import { FrameCountContext } from '../context/FrameCount';
 const DinoWidth = 160;
 
 const Dino = () => {
+    const isInited = useRef(false);
     const frameCount = useContext(FrameCountContext);
 
     const spriteKey = useRef(getRandomSpriteKey());
@@ -23,6 +24,11 @@ const Dino = () => {
     const [index, updateIndex] = useState<number>(0);
 
     useEffect(() => {
+        if (isInited.current) {
+            return;
+        }
+        isInited.current = true;
+
         const direction = Math.floor(Math.random() * 2);
         const x = direction ? WindowWidth + DinoWidth : -DinoWidth;
         speed.current = 0.5;
@@ -33,6 +39,10 @@ const Dino = () => {
         updateX(x);
         updateDirection(direction);
         updateRail(Math.floor(Math.random() * 3));
+
+        return () => {
+            isInited.current = false;
+        };
     }, []);
 
     useEffect(() => {

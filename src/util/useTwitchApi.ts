@@ -11,10 +11,16 @@ const apiClient = new ApiClient({
 });
 
 export const useGetNewFollower = (callback: (username: string) => void) => {
+    const isInited = useRef(false);
     const latestFollower = useRef<string[]>([]);
     const timer = useRef<ReturnType<typeof setInterval>>();
 
     useEffect(() => {
+        if (isInited.current) {
+            return;
+        }
+        isInited.current = true;
+
         (async () => {
             const currentUser = await apiClient.users.getUserByName(
                 CHANNEL_NAME
@@ -48,6 +54,7 @@ export const useGetNewFollower = (callback: (username: string) => void) => {
         })();
 
         return () => {
+            isInited.current = false;
             if (timer.current) {
                 clearInterval(timer.current);
             }

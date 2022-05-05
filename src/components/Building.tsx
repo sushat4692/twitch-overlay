@@ -8,6 +8,7 @@ import { getCurrentSprite, getRandomSpriteKey } from '../const/Building';
 import { FrameCountContext } from '../context/FrameCount';
 
 const Building = () => {
+    const isInited = useRef(false);
     const frameCount = useContext(FrameCountContext);
 
     const spriteKey = useRef(getRandomSpriteKey());
@@ -19,6 +20,11 @@ const Building = () => {
     const [index, updateIndex] = useState<number>(0);
 
     useEffect(() => {
+        if (isInited.current) {
+            return;
+        }
+        isInited.current = true;
+
         const x = Math.floor(Math.random() * WindowWidth);
 
         const sprite = getCurrentSprite(spriteKey.current);
@@ -26,6 +32,10 @@ const Building = () => {
 
         updateX(x);
         updateRail(Math.floor(Math.random() * 3));
+
+        return () => {
+            isInited.current = false;
+        };
     }, []);
 
     useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,6 +10,8 @@ import { chatClient } from '../util/useTwitchChatEvent';
 import { playFollow, playSub, playRaid } from '../util/useAlertSound';
 
 const AlertComponent: React.FunctionComponent = () => {
+    const isInited = useRef(false);
+
     useGetNewFollower((username) => {
         toast(`Thank you for following, ${username}!`);
         setTimeout(() => {
@@ -18,6 +20,11 @@ const AlertComponent: React.FunctionComponent = () => {
     });
 
     useEffect(() => {
+        if (isInited.current) {
+            return;
+        }
+        isInited.current = true;
+
         // chatClient.onAnyMessage((message) => {
         //     console.log(message);
         // });
@@ -123,6 +130,10 @@ const AlertComponent: React.FunctionComponent = () => {
                 playSub();
             }, 500);
         });
+
+        return () => {
+            isInited.current = false;
+        };
     }, []);
 
     return (

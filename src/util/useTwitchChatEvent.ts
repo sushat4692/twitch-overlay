@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { ChatClient } from '@twurple/chat';
 import { StaticAuthProvider } from '@twurple/auth';
 import { v4 as uuid } from 'uuid';
 import { TwitchPrivateMessage } from '@twurple/chat/lib/commands/TwitchPrivateMessage';
 
+// Types
 import { TopicItem } from '../types/TopicItem';
 
 // Const
@@ -44,38 +45,41 @@ const useTopicActions = () => {
         }, 400);
     }, []);
 
-    const topicCommand = useCallback((action: string, content: string) => {
-        switch (action) {
-            case 'push':
-                if (content) {
-                    updateTopics((prev) => [
-                        ...prev,
-                        { id: uuid(), content, hiding: false },
-                    ]);
-                }
-                break;
-            case 'show':
-                updateTopicShow(true);
-                break;
-            case 'hide':
-                updateTopicShow(false);
-                break;
-            case 'pop':
-                popTopic();
-                break;
-            case 'shift':
-                deleteTopic(0);
-                break;
-            case 'delete':
-                if (content && parseInt(content).toString() == content) {
-                    deleteTopic(parseInt(content));
-                }
-                break;
-            case 'clear':
-                updateTopics([]);
-                break;
-        }
-    }, []);
+    const topicCommand = useCallback(
+        (action: string, content: string) => {
+            switch (action) {
+                case 'push':
+                    if (content) {
+                        updateTopics((prev) => [
+                            ...prev,
+                            { id: uuid(), content, hiding: false },
+                        ]);
+                    }
+                    break;
+                case 'show':
+                    updateTopicShow(true);
+                    break;
+                case 'hide':
+                    updateTopicShow(false);
+                    break;
+                case 'pop':
+                    popTopic();
+                    break;
+                case 'shift':
+                    deleteTopic(0);
+                    break;
+                case 'delete':
+                    if (content && parseInt(content).toString() == content) {
+                        deleteTopic(parseInt(content));
+                    }
+                    break;
+                case 'clear':
+                    updateTopics([]);
+                    break;
+            }
+        },
+        [deleteTopic, popTopic]
+    );
 
     return { topics, topicShow, topicCommand };
 };
@@ -125,37 +129,104 @@ const useTranslateActions = () => {
     );
 };
 
-export const useTwitchChatEvent = () => {
+export const useTwitchChatEvent = ({
+    cats,
+    cars,
+    dinos,
+    builds,
+}: {
+    cats: { id: string }[];
+    cars: { id: string }[];
+    dinos: { id: string }[];
+    builds: { id: string }[];
+}) => {
+    const isInited = useRef(false);
+    const [queue, setQueue] = useState<
+        {
+            channel: string;
+            user: string;
+            message: string;
+            msg: TwitchPrivateMessage;
+        }[]
+    >([]);
     const { topics, topicShow, topicCommand } = useTopicActions();
     const translateCommand = useTranslateActions();
 
+    const currentCommand = useCallback(
+        (replyTo) => {
+            const message = `現在の表示数 : 猫(${cats.length})、車(${cars.length})、建物(${builds.length})、恐竜(${dinos.length}) / Current numbers: Cats(${cats.length}), Cars(${cars.length}), Builds(${builds.length}) and Dinos(${dinos.length})`;
+            chatClient.say(CHANNEL_NAME, message, { replyTo });
+        },
+        [cats, cars, dinos, builds]
+    );
+
+    const processQueue = useCallback(
+        async ({
+            channel,
+            user,
+            message,
+            msg,
+        }: {
+            channel: string;
+            user: string;
+            message: string;
+            msg: TwitchPrivateMessage;
+        }) => {
+            console.log({ channel, user, message, msg });
+            if (channel !== `#${CHANNEL_NAME}`) {
+                return;
+            }
+
+            const [command, action, ...contents] = message
+                .split(' ')
+                .filter((m) => m.length);
+            const content = contents.join(' ');
+
+            if (command === '!topic' && msg.userInfo.isBroadcaster) {
+                topicCommand(action, content);
+            }
+
+            if (command === '!translate') {
+                translateCommand(msg, action, content);
+            }
+
+            if (command === '!current') {
+                currentCommand(msg);
+            }
+        },
+        [currentCommand, topicCommand, translateCommand]
+    );
+
     useEffect(() => {
+        if (!queue.length) {
+            return;
+        }
+
+        const current = queue[0];
+        processQueue(current);
+        setQueue(queue.filter((q) => q.msg.id !== current.msg.id));
+    }, [queue, processQueue]);
+
+    useEffect(() => {
+        if (isInited.current) {
+            return;
+        }
+        isInited.current = true;
+
         (async () => {
             await chatClient.connect();
 
             chatClient.onMessage(
-                async (
+                (
                     channel: string,
                     user: string,
                     message: string,
                     msg: TwitchPrivateMessage
                 ) => {
-                    if (channel !== `#${CHANNEL_NAME}`) {
-                        return;
-                    }
-
-                    const [command, action, ...contents] = message
-                        .split(' ')
-                        .filter((m) => m.length);
-                    const content = contents.join(' ');
-
-                    if (command === '!topic' && msg.userInfo.isBroadcaster) {
-                        topicCommand(action, content);
-                    }
-
-                    if (command === '!translate') {
-                        translateCommand(msg, action, content);
-                    }
+                    setQueue((prev) => [
+                        ...prev,
+                        { channel, user, message, msg },
+                    ]);
                 }
             );
         })();

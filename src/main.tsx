@@ -20,6 +20,7 @@ import { prepare as prepareCarSound } from './util/useCarSound';
 import { prepare as prepareDinoSound } from './util/useDinoSound';
 import { prepare as prepareAvatarSound } from './util/useAvatarSound';
 import { prepare as prepareAlertSound } from './util/useAlertSound';
+import { prepare as prepareWeatherSound } from './util/useWeatherSound';
 
 Promise.all([
     (async () => {
@@ -74,6 +75,7 @@ Promise.all([
     prepareDinoSound(),
     prepareAvatarSound(),
     prepareAlertSound(),
+    prepareWeatherSound(),
 ]).then(([image]) => {
     ReactDOM.render(
         <React.StrictMode>

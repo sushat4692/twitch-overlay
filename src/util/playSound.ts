@@ -1,6 +1,6 @@
 export const audioCtx = new AudioContext();
 
-export const playSound = (buffer: AudioBuffer, gain: number) => {
+export const playSound = (buffer: AudioBuffer, gain: number, limit = 0) => {
     const gainNode = audioCtx.createGain();
     gainNode.gain.value = gain;
     gainNode.connect(audioCtx.destination);
@@ -9,4 +9,8 @@ export const playSound = (buffer: AudioBuffer, gain: number) => {
     source.buffer = buffer;
     source.connect(gainNode);
     source.start(0);
+
+    if (limit > 0) {
+        source.stop(limit);
+    }
 };

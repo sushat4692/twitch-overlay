@@ -3,10 +3,12 @@ import { audioCtx, playSound } from './playSound';
 import SoundFollow from '../assets/alert/follow.mp3';
 import SoundSub from '../assets/alert/sub.mp3';
 import SoundRaid from '../assets/alert/raid.mp3';
+import SoundLvup from '../assets/alert/lvup.mp3';
 
 let soundFollowBuffer: AudioBuffer;
 let soundSubBuffer: AudioBuffer;
 let soundRaidBuffer: AudioBuffer;
+let soundLvupBuffer: AudioBuffer;
 
 export const prepare = async () => {
     const setupSample = async (file: string) => {
@@ -19,6 +21,7 @@ export const prepare = async () => {
     soundFollowBuffer = await setupSample(SoundFollow);
     soundSubBuffer = await setupSample(SoundSub);
     soundRaidBuffer = await setupSample(SoundRaid);
+    soundLvupBuffer = await setupSample(SoundLvup);
     return;
 };
 
@@ -32,4 +35,8 @@ export const playSub = () => {
 
 export const playRaid = () => {
     playSound(soundRaidBuffer, 0.2);
+};
+
+export const playLvup = () => {
+    playSound(soundLvupBuffer, 0.1);
 };

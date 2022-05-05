@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames/bind';
+import { Stage } from '@inlet/react-pixi';
 
 // Const
 import { threshold, graphMax } from '../const/App';
@@ -18,11 +19,12 @@ type Props = {
     isGunya: boolean;
     isBigger: boolean;
     isFocus: boolean;
+    isGlitch: boolean;
     filter: AvatarFilter;
 };
 
 const AvatarComponent: React.FunctionComponent<Props> = (props) => {
-    const { canvasEl, canvas2DEl, showVolume, volume, startHandler } =
+    const { AvatarSprite, canvas2DEl, showVolume, volume, startHandler } =
         useAvatar(props);
 
     return (
@@ -31,9 +33,21 @@ const AvatarComponent: React.FunctionComponent<Props> = (props) => {
                 className={cx({ Avatar: true, 'Avatar--zoom': props.isBigger })}
                 // onClick={startHandler}
             >
-                <canvas
+                {/* <canvas
                     ref={canvasEl}
-                    className={styles.Avatar__canvas}></canvas>
+                    className={styles.Avatar__canvas}></canvas> */}
+                <Stage
+                    width={306}
+                    height={332}
+                    options={{
+                        backgroundAlpha: 0,
+                        width: 306,
+                        height: 332,
+                        resolution: 2,
+                        antialias: false,
+                    }}>
+                    <AvatarSprite />
+                </Stage>
                 {showVolume ? (
                     <div className={styles.Avatar__volume}>
                         <div

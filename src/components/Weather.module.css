@@ -1,0 +1,16 @@
+.Weather {
+    @apply absolute z-50 left-0 top-0 pointer-events-none transition-opacity;
+}
+.Weather[data-weather="0"] {
+    @apply opacity-0;
+}
+
+.Weather__mask {
+    @apply absolute inset-0 pointer-events-none;
+}
+.Weather__mask--rain {
+    background: url(../assets/weather/rain-lightmap.png) no-repeat center center / cover;
+}
+.Weather__mask--snow {
+    background: url(../assets/weather/snow-lightmap.png) no-repeat center center / cover;
+}

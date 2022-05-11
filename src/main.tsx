@@ -1,8 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 import axios from 'axios';
+import { RecoilRoot } from 'recoil';
+
+// Styles
+import 'react-toastify/dist/ReactToastify.css';
+import 'swiper/css';
+import './index.css';
+
+// Components
+import App from './App';
 
 import {
     ImageDescriptionContext,
@@ -79,9 +86,11 @@ Promise.all([
 ]).then(([image]) => {
     ReactDOM.render(
         <React.StrictMode>
-            <ImageDescriptionContext.Provider value={image}>
-                <App />
-            </ImageDescriptionContext.Provider>
+            <RecoilRoot>
+                <ImageDescriptionContext.Provider value={image}>
+                    <App />
+                </ImageDescriptionContext.Provider>
+            </RecoilRoot>
         </React.StrictMode>,
         document.getElementById('root')
     );

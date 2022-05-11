@@ -10,4 +10,24 @@
     --desktop-height: 882px;
     --desktop-position-left: 48px;
     --desktop-position-top: 48px;
+
+    /* Alert */
+    --toastify-toast-width: 560px;
+}
+
+/* Alert */
+.Toastify__toast-container {
+    position: absolute;
+}
+
+.Toastify__toast {
+    box-shadow: none;
+    background: #000;
+    color: #fff;
+    border: var(--wire-border-width) solid #fff;
+    border-radius: var(--wire-border-width);
+    line-height: 1.2;
+    font-family: 'PixelMplus12';
+    font-size: 32px;
+    padding: 16px;
 }

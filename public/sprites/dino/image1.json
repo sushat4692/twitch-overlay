@@ -1,0 +1,45 @@
+{
+	"frames": {
+		"dino-image1-0.png": {
+			"frame": {"x":0,"y":0,"w":160,"h":200},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":160,"h":200},
+			"sourceSize": {"w":160,"h":200},
+			"anchor": {"x":0,"y":0}
+		},
+		"dino-image1-1.png": {
+			"frame": {"x":160,"y":0,"w":160,"h":200},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":160,"h":200},
+			"sourceSize": {"w":160,"h":200},
+			"anchor": {"x":0,"y":0}
+		},
+		"dino-image1-2.png": {
+			"frame": {"x":320,"y":0,"w":160,"h":200},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":160,"h":200},
+			"sourceSize": {"w":160,"h":200},
+			"anchor": {"x":0,"y":0}
+		},
+		"dino-image1-3.png": {
+			"frame": {"x":480,"y":0,"w":160,"h":200},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":160,"h":200},
+			"sourceSize": {"w":160,"h":200},
+			"anchor": {"x":0,"y":0}
+		}
+	},
+	"animations": {
+		"dino-image1": ["dino-image1-0.png","dino-image1-1.png","dino-image1-2.png","dino-image1-3.png"]
+	},
+	"meta": {
+		"image": "image1.png",
+		"format": "RGBA8888",
+		"size": {"w":640,"h":200},
+		"scale": "1"
+	}
+}

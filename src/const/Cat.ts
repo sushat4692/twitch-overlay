@@ -1,11 +1,3 @@
-import Fall from '../assets/cat/image-fall.png';
-import Sit from '../assets/cat/image-sit.png';
-import Sleep from '../assets/cat/image-sleep.png';
-import Walk from '../assets/cat/image-walk.png';
-import Spin from '../assets/cat/image-spin.png';
-import ToSit from '../assets/cat/image-to_sit.png';
-import ToStand from '../assets/cat/image-to_stand.png';
-
 export type SpriteType =
     | 'none'
     | 'fall'
@@ -24,76 +16,71 @@ export const sprites = {
         move: false,
         afterReflect: false,
         next: [],
-        frame: [Infinity],
+        speed: Infinity,
     },
     fall: {
-        img: Fall,
+        img: 'cat-fall',
         duration: 400,
         loop: true,
         move: false,
         afterReflect: false,
         next: ['to_sit', 'walk', 'spin'],
-        frame: [50, 50, 50, 50, 50, 50, 50, 50],
+        speed: 0.2,
     },
     sit: {
-        img: Sit,
+        img: 'cat-sit',
         duration: [1200, 2000],
         loop: true,
         move: false,
         afterReflect: false,
         next: ['to_stand'],
-        frame: [
-            100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-            100, 100, 100,
-        ],
+        speed: 0.15,
     },
     sleep: {
-        img: Sleep,
+        img: 'cat-sleep',
         duration: [2400, 3000],
         loop: true,
         move: false,
         afterReflect: false,
         next: ['to_stand'],
-        frame: [
-            200, 200, 600, 600, 200, 100, 100, 100, 100, 100, 100, 100, 100,
-            300,
-        ],
+        speed: 0.05,
     },
     walk: {
-        img: Walk,
+        img: 'cat-walk',
         duration: [640, 3200],
         loop: true,
         move: true,
         afterReflect: false,
         next: ['spin', 'to_sit'],
         frame: [100, 100, 100, 100, 100],
+        speed: 0.14,
     },
     spin: {
-        img: Spin,
+        img: 'cat-spin',
         duration: 500,
         loop: false,
         move: false,
         afterReflect: true,
         next: ['walk'],
-        frame: [100, 100, 100, 100, 100],
+        speed: 0.15,
     },
     to_sit: {
-        img: ToSit,
+        img: 'cat-to_sit',
         duration: 500,
         loop: false,
         move: false,
         afterReflect: false,
         next: ['sit', 'sleep'],
-        frame: [100, 100, 100, 100, 100],
+        speed: 0.2,
     },
     to_stand: {
-        img: ToStand,
+        img: 'cat-to_stand',
         duration: 500,
         loop: false,
         move: false,
         afterReflect: false,
         next: ['walk', 'spin'],
-        frame: [100, 100, 100, 100, 100],
+        speed: 0.15,
     },
 };
 

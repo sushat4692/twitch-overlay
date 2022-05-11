@@ -1,28 +1,39 @@
 import React from 'react';
-import classNames from 'classnames/bind';
+import styled from '@emotion/styled';
+import tw from 'twin.macro';
 
+// Types
 import { TopicItem } from '../types/TopicItem';
-import WireTopicItem from './WireTopicItem';
 
-import styles from './WireTopics.module.css';
-const cx = classNames.bind(styles);
+// Components
+import WireTopicItem from './WireTopicItem';
+const Wrapper = styled('div')<{ topicShow: boolean }>(({ topicShow }) => [
+    tw`absolute z-10`,
+    {
+        top: `120px`,
+        left: `20px`,
+        width: `460px`,
+        transition: `transform .3s`,
+        willChange: `transform`,
+    },
+    topicShow
+        ? null
+        : {
+              transform: `translateX(-480px)`,
+          },
+]);
 
 type Props = {
     topics: TopicItem[];
     topicShow: boolean;
 };
-
 const WireTopics = ({ topics, topicShow }: Props) => {
     return (
-        <div
-            className={cx({
-                WireTopics: true,
-                'WireTopics--hide': !topicShow,
-            })}>
+        <Wrapper topicShow={topicShow}>
             {topics.map((topic) => (
                 <WireTopicItem key={topic.id} topic={topic} />
             ))}
-        </div>
+        </Wrapper>
     );
 };
 

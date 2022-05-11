@@ -12,6 +12,12 @@ import { CHANNEL_NAME, CLIENT_ID, CHAT_CLIENT_TOKEN } from '../const/App';
 import TranslatePabpabWords from '../const/TranslatePabpab';
 import TranslateDudbearWords from '../const/TranslateDudbear';
 
+// Atoms
+import { useValue as useCatsValue } from '../atoms/cats';
+import { useValue as useCarsValue } from '../atoms/cars';
+import { useValue as useBuildsValue } from '../atoms/builds';
+import { useValue as useDinosValue } from '../atoms/dinos';
+
 export const chatClient = new ChatClient({
     authProvider: new StaticAuthProvider(CLIENT_ID, CHAT_CLIENT_TOKEN),
     channels: [CHANNEL_NAME],
@@ -129,17 +135,12 @@ const useTranslateActions = () => {
     );
 };
 
-export const useTwitchChatEvent = ({
-    cats,
-    cars,
-    dinos,
-    builds,
-}: {
-    cats: { id: string }[];
-    cars: { id: string }[];
-    dinos: { id: string }[];
-    builds: { id: string }[];
-}) => {
+export const useTwitchChatEvent = () => {
+    const cats = useCatsValue();
+    const cars = useCarsValue();
+    const builds = useBuildsValue();
+    const dinos = useDinosValue();
+
     const isInited = useRef(false);
     const [queue, setQueue] = useState<
         {
@@ -172,7 +173,7 @@ export const useTwitchChatEvent = ({
             message: string;
             msg: TwitchPrivateMessage;
         }) => {
-            console.log({ channel, user, message, msg });
+            // console.log({ channel, user, message, msg });
             if (channel !== `#${CHANNEL_NAME}`) {
                 return;
             }

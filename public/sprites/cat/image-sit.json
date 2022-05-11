@@ -1,0 +1,158 @@
+{
+	"frames": {
+		"cat-image-sit-0.png": {
+			"frame": {"x":0,"y":0,"w":84,"h":84},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":84,"h":84},
+			"sourceSize": {"w":84,"h":84},
+			"anchor": {"x":0,"y":0}
+		},
+		"cat-image-sit-1.png": {
+			"frame": {"x":84,"y":0,"w":84,"h":84},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":84,"h":84},
+			"sourceSize": {"w":84,"h":84},
+			"anchor": {"x":0,"y":0}
+		},
+		"cat-image-sit-2.png": {
+			"frame": {"x":168,"y":0,"w":84,"h":84},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":84,"h":84},
+			"sourceSize": {"w":84,"h":84},
+			"anchor": {"x":0,"y":0}
+		},
+		"cat-image-sit-3.png": {
+			"frame": {"x":252,"y":0,"w":84,"h":84},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":84,"h":84},
+			"sourceSize": {"w":84,"h":84},
+			"anchor": {"x":0,"y":0}
+		},
+		"cat-image-sit-4.png": {
+			"frame": {"x":336,"y":0,"w":84,"h":84},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":84,"h":84},
+			"sourceSize": {"w":84,"h":84},
+			"anchor": {"x":0,"y":0}
+		},
+		"cat-image-sit-5.png": {
+			"frame": {"x":420,"y":0,"w":84,"h":84},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":84,"h":84},
+			"sourceSize": {"w":84,"h":84},
+			"anchor": {"x":0,"y":0}
+		},
+		"cat-image-sit-6.png": {
+			"frame": {"x":504,"y":0,"w":84,"h":84},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":84,"h":84},
+			"sourceSize": {"w":84,"h":84},
+			"anchor": {"x":0,"y":0}
+		},
+		"cat-image-sit-7.png": {
+			"frame": {"x":588,"y":0,"w":84,"h":84},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":84,"h":84},
+			"sourceSize": {"w":84,"h":84},
+			"anchor": {"x":0,"y":0}
+		},
+		"cat-image-sit-8.png": {
+			"frame": {"x":672,"y":0,"w":84,"h":84},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":84,"h":84},
+			"sourceSize": {"w":84,"h":84},
+			"anchor": {"x":0,"y":0}
+		},
+		"cat-image-sit-9.png": {
+			"frame": {"x":756,"y":0,"w":84,"h":84},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":84,"h":84},
+			"sourceSize": {"w":84,"h":84},
+			"anchor": {"x":0,"y":0}
+		},
+		"cat-image-sit-10.png": {
+			"frame": {"x":840,"y":0,"w":84,"h":84},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":84,"h":84},
+			"sourceSize": {"w":84,"h":84},
+			"anchor": {"x":0,"y":0}
+		},
+		"cat-image-sit-11.png": {
+			"frame": {"x":924,"y":0,"w":84,"h":84},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":84,"h":84},
+			"sourceSize": {"w":84,"h":84},
+			"anchor": {"x":0,"y":0}
+		},
+		"cat-image-sit-12.png": {
+			"frame": {"x":1008,"y":0,"w":84,"h":84},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":84,"h":84},
+			"sourceSize": {"w":84,"h":84},
+			"anchor": {"x":0,"y":0}
+		},
+		"cat-image-sit-13.png": {
+			"frame": {"x":1092,"y":0,"w":84,"h":84},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":84,"h":84},
+			"sourceSize": {"w":84,"h":84},
+			"anchor": {"x":0,"y":0}
+		},
+		"cat-image-sit-14.png": {
+			"frame": {"x":1176,"y":0,"w":84,"h":84},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":84,"h":84},
+			"sourceSize": {"w":84,"h":84},
+			"anchor": {"x":0,"y":0}
+		},
+		"cat-image-sit-15.png": {
+			"frame": {"x":1260,"y":0,"w":84,"h":84},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":84,"h":84},
+			"sourceSize": {"w":84,"h":84},
+			"anchor": {"x":0,"y":0}
+		}
+	},
+	"animations": {
+		"cat-image-sit": [
+			"cat-image-sit-0.png",
+			"cat-image-sit-1.png",
+			"cat-image-sit-2.png",
+			"cat-image-sit-3.png",
+			"cat-image-sit-4.png",
+			"cat-image-sit-5.png",
+			"cat-image-sit-6.png",
+			"cat-image-sit-7.png",
+			"cat-image-sit-8.png",
+			"cat-image-sit-9.png",
+			"cat-image-sit-10.png",
+			"cat-image-sit-11.png",
+			"cat-image-sit-12.png",
+			"cat-image-sit-13.png",
+			"cat-image-sit-14.png",
+			"cat-image-sit-15.png"
+		]
+	},
+	"meta": {
+		"image": "image-sit.png",
+		"format": "RGBA8888",
+		"size": {"w":1344,"h":84},
+		"scale": "1"
+	}
+}

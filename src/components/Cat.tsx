@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import styles from './Cat.module.css';
+import { Container } from '@inlet/react-pixi';
 
 import {
     getCurrentSprite,
@@ -89,21 +89,23 @@ const Cat = (): JSX.Element => {
     );
 
     return (
-        <>
-            <div
-                className={styles.Cat}
-                style={{
-                    left: `${x}px`,
-                    transform: `scaleX(${reflect ? -1 : 1})`,
-                }}>
-                <CatDetail
-                    spriteKey={key}
-                    duration={duration}
-                    step={stepSprite}
-                    next={nextSprite}
-                />
-            </div>
-        </>
+        <Container
+            width={84}
+            height={84}
+            anchor={0}
+            scale={{
+                x: reflect ? -1 : 1,
+                y: 1,
+            }}
+            y={0}
+            x={x}>
+            <CatDetail
+                spriteKey={key}
+                duration={duration}
+                step={stepSprite}
+                next={nextSprite}
+            />
+        </Container>
     );
 };
 

@@ -1,11 +1,8 @@
-import Car1 from '../assets/dino/image1.png';
-
 export type SpriteType = 'dino1';
 
 export const sprites = {
     dino1: {
-        img: Car1,
-        frame: [200, 200, 200, 200],
+        img: 'dino-image1',
     },
 };
 

@@ -1,23 +1,19 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
-import styles from './Building.module.css';
+import React, { useState, useEffect, useRef } from 'react';
+import { AnimatedSprite, useApp } from '@inlet/react-pixi';
+import * as PIXI from 'pixi.js';
 
 import { WindowWidth } from '../const/App';
 import { getCurrentSprite, getRandomSpriteKey } from '../const/Building';
 
-// Context
-import { FrameCountContext } from '../context/FrameCount';
-
 const Building = () => {
+    const app = useApp();
     const isInited = useRef(false);
-    const frameCount = useContext(FrameCountContext);
 
     const spriteKey = useRef(getRandomSpriteKey());
-    const startFrameTime = useRef<number>(new Date().getTime());
 
     const [x, updateX] = useState<number>(0);
     const [rail, updateRail] = useState<number>(0);
-    const [image, updateImage] = useState<string>('');
-    const [index, updateIndex] = useState<number>(0);
+    const [image, updateImage] = useState<PIXI.Texture[]>([]);
 
     useEffect(() => {
         if (isInited.current) {
@@ -28,7 +24,13 @@ const Building = () => {
         const x = Math.floor(Math.random() * WindowWidth);
 
         const sprite = getCurrentSprite(spriteKey.current);
-        updateImage(sprite.img || '');
+        if (app.loader.resources[sprite.img]) {
+            updateImage(
+                Object.keys(app.loader.resources[sprite.img].data.frames).map(
+                    (frame) => PIXI.Texture.from(frame)
+                )
+            );
+        }
 
         updateX(x);
         updateRail(Math.floor(Math.random() * 3));
@@ -38,48 +40,21 @@ const Building = () => {
         };
     }, []);
 
-    useEffect(() => {
-        const sprite = getCurrentSprite(spriteKey.current);
-        if (!sprite) {
-            return;
-        }
-
-        const length = sprite.frame.reduce(
-            (prev, current) => prev + current,
-            0
-        );
-        const currentTime = new Date().getTime();
-        const frameDuration = currentTime - startFrameTime.current;
-
-        if (frameDuration > length) {
-            startFrameTime.current = currentTime;
-        }
-
-        const index = (() => {
-            let index = 0;
-            let sum = 0;
-
-            sprite.frame.some((frame, i) => {
-                sum += frame;
-                index = i;
-                return frameDuration <= sum;
-            });
-
-            return index;
-        })();
-        updateIndex(index);
-    }, [frameCount]);
-
-    return (
-        <div
-            className={styles.Building}
-            data-build={rail}
-            style={{
-                left: `${x}px`,
-                backgroundImage: `url(${image})`,
-                backgroundPositionX: `${-160 * index}px`,
-            }}></div>
-    );
+    return image.length ? (
+        <AnimatedSprite
+            textures={image}
+            isPlaying
+            x={x}
+            y={-50 * rail}
+            animationSpeed={0.2}
+            anchor={{ y: 1, x: 1 }}
+            scale={{
+                x: 1 - 0.2 * rail,
+                y: 1 - 0.2 * rail,
+            }}
+            zIndex={3 - rail}
+        />
+    ) : null;
 };
 
 export default Building;

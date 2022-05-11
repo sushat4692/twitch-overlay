@@ -36,23 +36,23 @@ import fragmentShader from './Avatar.Shader.frag';
 // Utils
 import { focusLine } from '../util/focusLine';
 
-type Props = {
-    is8Bit: boolean;
-    isGunya: boolean;
-    isFocus: boolean;
-    isGlitch: boolean;
-    filter: AvatarFilter;
-};
+// Atoms
+import { useValue as useIsAvatar8BitValue } from '../atoms/isAvatar8Bit';
+import { useValue as useIsAvatarGunyaValue } from '../atoms/isAvatarGunya';
+import { useValue as useIsAvatarFocusValue } from '../atoms/isAvatarFocus';
+import { useValue as useIsAvatarGlitchValue } from '../atoms/isAvatarGlitch';
+import { useValue as useAvatarFilterValue } from '../atoms/avatarFilter';
 
-export const useAvatar = ({
-    is8Bit,
-    isGunya,
-    isFocus,
-    isGlitch,
-    filter,
-}: Props) => {
+export const useAvatar = () => {
     const isInited = useRef(false);
     const frameCount = useContext(FrameCountContext);
+
+    const is8Bit = useIsAvatar8BitValue();
+    const isGunya = useIsAvatarGunyaValue();
+    const isFocus = useIsAvatarFocusValue();
+    const isGlitch = useIsAvatarGlitchValue();
+    const filter = useAvatarFilterValue();
+
     const [texture, setTexture] = useState(PIXI.Texture.from(ImageNormalClose));
     // const [filters, setFilters] = useState(new PIXI.Shader({vertexSrc: vertexShader, fragmentSrc: fragmentShader},{}));
 
@@ -98,7 +98,7 @@ export const useAvatar = ({
                     boundary: 0,
                     amplitude: [10, 10],
                     waveLength: [200, 200],
-                    time: (frameCount / 5) % 21,
+                    time: frameCount / 5,
                 })
             );
         }
@@ -123,6 +123,7 @@ export const useAvatar = ({
                 filters={filters}
                 width={306}
                 height={332}
+                anchor={[0.6, 0.9]}
             />
         );
     }, [filter, isFocus, isGunya, isGlitch, texture, frameCount]);

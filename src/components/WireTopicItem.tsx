@@ -1,10 +1,52 @@
 import React, { useRef, useEffect } from 'react';
-import classNames from 'classnames/bind';
+import styled from '@emotion/styled';
+import { keyframes } from '@emotion/react';
+import tw from 'twin.macro';
 
+// Types
 import { TopicItem } from '../types/TopicItem';
 
-import styles from './WireTopics.module.css';
-const cx = classNames.bind(styles);
+// Keyframes
+const itemShow = keyframes({
+    '0%': {
+        transform: `translateX(-480px)`,
+    },
+    '100%': {
+        transform: `translateX(0px)`,
+    },
+});
+const itemHide = keyframes({
+    '0%': {
+        transform: `translateX(0)`,
+    },
+    '100%': {
+        maxHeight: 0,
+        transform: `translateX(-480px)`,
+        paddingBottom: 0,
+    },
+});
+
+// Components
+const Item = styled('div')<{ hiding: boolean }>(({ hiding }) => [
+    tw`relative`,
+    {
+        fontSize: `32px`,
+        fontWeight: `700`,
+        fontFamily: `'Noto Sans JP', sans-serif`,
+        transform: `translateX(0)`,
+        willChange: `transform`,
+        paddingBottom: `10px`,
+        animation: `${itemShow} 0.4s ease-in-out 1`,
+    },
+    hiding
+        ? {
+              transform: `translateX(-480px)`,
+              animation: `${itemHide} 0.4s ease-in-out 1`,
+          }
+        : null,
+]);
+const ItemBack = styled('span')({ WebkitTextStroke: '8px #fff' });
+const ItemFront = styled('span')(tw`absolute inset-0`);
 
 type Props = {
     topic: TopicItem;
@@ -19,19 +61,10 @@ const WireTopicItem = ({ topic }: Props) => {
     }, []);
 
     return (
-        <div
-            ref={el}
-            className={cx({
-                WireTopics__item: true,
-                'WireTopics__item--hide': topic.hiding,
-            })}>
-            <span className={styles.WireTopics__item__back}>
-                {topic.content}
-            </span>
-            <span className={styles.WireTopics__item__front}>
-                {topic.content}
-            </span>
-        </div>
+        <Item ref={el} hiding={topic.hiding}>
+            <ItemBack>{topic.content}</ItemBack>
+            <ItemFront>{topic.content}</ItemFront>
+        </Item>
     );
 };
 

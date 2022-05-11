@@ -1,8 +1,22 @@
-import { useState, useEffect, useContext, useCallback, useRef } from 'react';
+import { useEffect, useContext, useCallback, useRef } from 'react';
 import { v4 as uuid } from 'uuid';
 import { PubSubClient } from '@twurple/pubsub';
 import { StaticAuthProvider } from '@twurple/auth';
 import { toast } from 'react-toastify';
+
+// Atoms
+import { useSetter as useCatsSetter } from '../atoms/cats';
+import { useSetter as useCarsSetter } from '../atoms/cars';
+import { useSetter as useBuildsSetter } from '../atoms/builds';
+import { useSetter as useDinosSetter } from '../atoms/dinos';
+import { useSetter as useIsImageZoomSetter } from '../atoms/isImageZoom';
+import { useSetter as useIsAvatar8BitSetter } from '../atoms/isAvatar8Bit';
+import { useSetter as useIsAvatarGunyaSetter } from '../atoms/isAvatarGunya';
+import { useSetter as useIsAvatarBiggerSetter } from '../atoms/isAvatarBigger';
+import { useSetter as useIsAvatarFocusSetter } from '../atoms/isAvatarFocus';
+import { useSetter as useIsAvatarGlitchSetter } from '../atoms/isAvatarGlitch';
+import { useSetter as useWetherSetter } from '../atoms/weather';
+import { useSetter as useAvatarFilterSetter } from '../atoms/avatarFilter';
 
 // Types
 import { AvatarFilter } from '../types/AvatarFilter';
@@ -55,13 +69,7 @@ export const useTwitchPubSubEvent = () => {
     const isInited = useRef(false);
     const { description } = useContext(ImageDescriptionContext);
 
-    const [cats, updateCats] = useState<{ id: string }[]>([
-        { id: uuid() },
-        { id: uuid() },
-        { id: uuid() },
-        { id: uuid() },
-        { id: uuid() },
-    ]);
+    const updateCats = useCatsSetter();
     const pushCats = (num = 1) => {
         const pusher: { id: string }[] = [];
         for (let i = 0; i < num; i += 1) {
@@ -84,13 +92,7 @@ export const useTwitchPubSubEvent = () => {
         });
     };
 
-    const [builds, updateBuilds] = useState<{ id: string }[]>([
-        { id: uuid() },
-        { id: uuid() },
-        { id: uuid() },
-        { id: uuid() },
-        { id: uuid() },
-    ]);
+    const updateBuilds = useBuildsSetter();
     const pushBuilds = (num = 1) => {
         const pusher: { id: string }[] = [];
         for (let i = 0; i < num; i += 1) {
@@ -113,13 +115,7 @@ export const useTwitchPubSubEvent = () => {
         });
     };
 
-    const [cars, updateCars] = useState<{ id: string }[]>([
-        { id: uuid() },
-        { id: uuid() },
-        { id: uuid() },
-        { id: uuid() },
-        { id: uuid() },
-    ]);
+    const updateCars = useCarsSetter();
     const pushCars = (num = 1) => {
         const pusher: { id: string }[] = [];
         for (let i = 0; i < num; i += 1) {
@@ -142,7 +138,7 @@ export const useTwitchPubSubEvent = () => {
         });
     };
 
-    const [dinos, updateDinos] = useState<{ id: string }[]>([]);
+    const updateDinos = useDinosSetter();
     const pushDinos = (num = 1) => {
         const pusher: { id: string }[] = [];
         for (let i = 0; i < num; i += 1) {
@@ -165,18 +161,18 @@ export const useTwitchPubSubEvent = () => {
         });
     };
 
-    const [imageZoom, updateImageZoom] = useState(false);
-    const [isAvatar8Bit, updateIsAvatar8Bit] = useState(false);
-    const [isAvatarGunya, updateIsAvatarGunya] = useState(false);
-    const [isAvatarBigger, updateIsAvatarBigger] = useState(false);
-    const [isAvatarFocus, updateIsAvatarFocus] = useState(false);
-    const [isAvatarGlitch, updateIsAvatarGlitch] = useState(false);
-    const [weather, updateWeather] = useState<WeatherType>(0);
-    const [avatarFilter, updateAvatarFilter] = useState(AvatarFilter.Normal);
+    const updateImageZoom = useIsImageZoomSetter();
+    const updateIsAvatar8Bit = useIsAvatar8BitSetter();
+    const updateIsAvatarGunya = useIsAvatarGunyaSetter();
+    const updateIsAvatarBigger = useIsAvatarBiggerSetter();
+    const updateIsAvatarFocus = useIsAvatarFocusSetter();
+    const updateIsAvatarGlitch = useIsAvatarGlitchSetter();
+    const updateWeather = useWetherSetter();
+    const updateAvatarFilter = useAvatarFilterSetter();
 
     const redemptionHandler = useCallback(
         async (rewardId: string, userName = '') => {
-            console.log(rewardId);
+            // console.log(rewardId);
             switch (rewardId) {
                 case 'ac64948e-1c7e-4851-a2c8-995e788f7f55':
                     // ネコチャン
@@ -374,19 +370,4 @@ export const useTwitchPubSubEvent = () => {
             );
         })();
     }, []);
-
-    return {
-        cats,
-        builds,
-        cars,
-        dinos,
-        imageZoom,
-        isAvatar8Bit,
-        isAvatarGunya,
-        isAvatarBigger,
-        isAvatarFocus,
-        isAvatarGlitch,
-        weather,
-        avatarFilter,
-    };
 };

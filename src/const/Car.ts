@@ -1,21 +1,14 @@
-import Car1 from '../assets/car/image1.png';
-import Car2 from '../assets/car/image2.png';
-import Car3 from '../assets/car/image3.png';
-
 export type SpriteType = 'car1' | 'car2' | 'car3';
 
 export const sprites = {
     car1: {
-        img: Car1,
-        frame: [100, 100, 100],
+        img: 'car-image1',
     },
     car2: {
-        img: Car2,
-        frame: [100, 100, 100],
+        img: 'car-image2',
     },
     car3: {
-        img: Car3,
-        frame: [100, 100, 100],
+        img: 'car-image3',
     },
 };
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import styles from './Dino.module.css';
+import { AnimatedSprite, useApp } from '@inlet/react-pixi';
+import * as PIXI from 'pixi.js';
 
 import { WindowWidth } from '../const/App';
 import { getCurrentSprite, getRandomSpriteKey } from '../const/Dino';
@@ -10,18 +11,17 @@ import { FrameCountContext } from '../context/FrameCount';
 const DinoWidth = 160;
 
 const Dino = () => {
+    const app = useApp();
     const isInited = useRef(false);
     const frameCount = useContext(FrameCountContext);
 
     const spriteKey = useRef(getRandomSpriteKey());
     const speed = useRef<number>(0);
-    const startFrameTime = useRef<number>(new Date().getTime());
 
     const [x, updateX] = useState<number>(0);
     const [rail, updateRail] = useState<number>(0);
     const [direction, updateDirection] = useState<number>(0);
-    const [image, updateImage] = useState<string>('');
-    const [index, updateIndex] = useState<number>(0);
+    const [image, updateImage] = useState<PIXI.Texture[]>([]);
 
     useEffect(() => {
         if (isInited.current) {
@@ -34,7 +34,13 @@ const Dino = () => {
         speed.current = 0.5;
 
         const sprite = getCurrentSprite(spriteKey.current);
-        updateImage(sprite.img || '');
+        if (app.loader.resources[sprite.img]) {
+            updateImage(
+                Object.keys(app.loader.resources[sprite.img].data.frames).map(
+                    (frame) => PIXI.Texture.from(frame)
+                )
+            );
+        }
 
         updateX(x);
         updateDirection(direction);
@@ -46,36 +52,6 @@ const Dino = () => {
     }, []);
 
     useEffect(() => {
-        const sprite = getCurrentSprite(spriteKey.current);
-        if (!sprite) {
-            return;
-        }
-
-        const length = sprite.frame.reduce(
-            (prev, current) => prev + current,
-            0
-        );
-        const currentTime = new Date().getTime();
-        const frameDuration = currentTime - startFrameTime.current;
-
-        if (frameDuration > length) {
-            startFrameTime.current = currentTime;
-        }
-
-        const index = (() => {
-            let index = 0;
-            let sum = 0;
-
-            sprite.frame.some((frame, i) => {
-                sum += frame;
-                index = i;
-                return frameDuration <= sum;
-            });
-
-            return index;
-        })();
-        updateIndex(index);
-
         updateX((prev) => {
             const next = prev + speed.current * (direction ? 1 : -1);
 
@@ -91,22 +67,21 @@ const Dino = () => {
         });
     }, [frameCount, direction]);
 
-    return (
-        <div
-            className={styles.Dino}
-            style={{
-                left: `${x}px`,
+    return image.length ? (
+        <AnimatedSprite
+            textures={image}
+            isPlaying
+            x={x}
+            y={-50 * rail}
+            animationSpeed={0.05}
+            anchor={{ y: 1, x: 1 }}
+            scale={{
+                x: (1 - 0.2 * rail) * (direction ? 1 : -1),
+                y: 1 - 0.2 * rail,
             }}
-            data-build={rail}
-            data-direction={direction}>
-            <div
-                className={styles.Dino__inner}
-                style={{
-                    backgroundImage: `url(${image})`,
-                    backgroundPositionX: `${-DinoWidth * index}px`,
-                }}></div>
-        </div>
-    );
+            zIndex={3 - rail}
+        />
+    ) : null;
 };
 
 export default Dino;

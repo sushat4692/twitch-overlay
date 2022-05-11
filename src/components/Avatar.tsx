@@ -1,80 +1,101 @@
-import React from 'react';
-import classNames from 'classnames/bind';
-import { Stage } from '@inlet/react-pixi';
-
-// Const
-import { threshold, graphMax } from '../const/App';
-
-// Type
-import { AvatarFilter } from '../types/AvatarFilter';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Container, Sprite } from '@inlet/react-pixi';
 
 // Action
 import { useAvatar } from './Avatar.action';
 
-import styles from './Avatar.module.css';
-const cx = classNames.bind(styles);
+// Utils
+import { sleep } from '../util/timer';
 
-type Props = {
-    is8Bit: boolean;
-    isGunya: boolean;
-    isBigger: boolean;
-    isFocus: boolean;
-    isGlitch: boolean;
-    filter: AvatarFilter;
-};
+// Components
+import AvatarZoom from './AvatarZoom';
+import AvatarVolume from './AvatarVolume';
 
-const AvatarComponent: React.FunctionComponent<Props> = (props) => {
-    const { AvatarSprite, canvas2DEl, showVolume, volume, startHandler } =
-        useAvatar(props);
+// Atoms
+import { useValue as useIsAvatarBiggerValue } from '../atoms/isAvatarBigger';
+import { useValue as useIsAvatarFocusValue } from '../atoms/isAvatarFocus';
+
+const AvatarComponent: React.FunctionComponent = () => {
+    const isBigger = useIsAvatarBiggerValue();
+    const isFocus = useIsAvatarFocusValue();
+
+    const { AvatarSprite, showVolume, volume, startHandler } = useAvatar();
+
+    const [scale, setScale] = useState(1.3);
+    useEffect(() => {
+        if (isBigger) {
+            (async () => {
+                setScale(2);
+                await sleep(100);
+                setScale(1.3);
+                await sleep(100);
+                setScale(2);
+                await sleep(100);
+                setScale(1.3);
+                await sleep(100);
+                setScale(2);
+            })();
+        } else {
+            (async () => {
+                setScale(1.3);
+                await sleep(100);
+                setScale(2);
+                await sleep(100);
+                setScale(1.3);
+                await sleep(100);
+                setScale(2);
+                await sleep(100);
+                setScale(1.3);
+            })();
+        }
+    }, [isBigger]);
+
+    const mask = React.useRef<any>();
+    const AvatarZoomMask = useMemo(() => {
+        const canvas = document.createElement('canvas');
+        canvas.setAttribute('width', `1000`);
+        canvas.setAttribute('height', `1000`);
+        const ctx = canvas.getContext('2d');
+
+        if (!ctx) {
+            return;
+        }
+
+        const gradient = ctx.createRadialGradient(500, 500, 200, 500, 500, 500);
+        gradient.addColorStop(0, 'white');
+        gradient.addColorStop(1, 'black');
+
+        ctx.beginPath();
+        ctx.arc(500, 500, 500, 0, Math.PI * 2, true);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+
+        return canvas;
+    }, []);
 
     return (
         <>
-            <div
-                className={cx({ Avatar: true, 'Avatar--zoom': props.isBigger })}
-                // onClick={startHandler}
-            >
-                {/* <canvas
-                    ref={canvasEl}
-                    className={styles.Avatar__canvas}></canvas> */}
-                <Stage
-                    width={306}
-                    height={332}
-                    options={{
-                        backgroundAlpha: 0,
-                        width: 306,
-                        height: 332,
-                        resolution: 2,
-                        antialias: false,
-                    }}>
-                    <AvatarSprite />
-                </Stage>
-                {showVolume ? (
-                    <div className={styles.Avatar__volume}>
-                        <div
-                            className={styles.Avatar__volume__bar}
-                            style={{
-                                width: `${(volume / graphMax) * 100}%`,
-                            }}></div>
+            <Container
+                x={1765}
+                y={1085}
+                scale={scale}
+                interactive={true}
+                pointerdown={startHandler}>
+                <AvatarSprite />
+            </Container>
 
-                        <div
-                            className={styles.Avatar__volume__threshold}
-                            style={{
-                                left: `${(threshold / graphMax) * 100}%`,
-                            }}></div>
-                    </div>
-                ) : null}
-            </div>
-            <div
-                className={cx({
-                    AvatarEffect: true,
-                    'AvatarEffect--active': props.isFocus,
-                    'Avatar--zoom': props.isBigger,
-                })}
-                onClick={startHandler}>
-                <canvas
-                    ref={canvas2DEl}
-                    className={styles.Avatar__canvas}></canvas>
-            </div>
+            {isFocus && (
+                <Container x={1765} y={1085} scale={scale} mask={mask.current}>
+                    <AvatarZoom />
+                    <Sprite
+                        source={AvatarZoomMask}
+                        ref={mask}
+                        anchor={[0.52, 0.68]}
+                    />
+                </Container>
+            )}
+
+            <AvatarVolume show={showVolume} volume={volume} />
         </>
     );
 };

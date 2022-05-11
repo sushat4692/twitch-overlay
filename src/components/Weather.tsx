@@ -1,58 +1,25 @@
 import React, { useCallback, useMemo } from 'react';
-import styles from './Weather.module.css';
-import { Stage as PixiStage, Container } from '@inlet/react-pixi';
+import { Container, Sprite } from '@inlet/react-pixi';
 import * as PIXI from 'pixi.js';
 
-// Const
-import { WindowWidth, WindowHeight } from '../const/App';
-
-// Context
-import { FrameCountContext } from '../context/FrameCount';
-
+// Components
 import WeatherSnow from './WeatherSnow';
 import WeatherRain from './WeatherRain';
+
+// Atoms
+import { useValue as useWeatherValue } from '../atoms/weather';
 
 // Types
 import { WeatherType } from '../types/WeatherType';
 
-// Bridge
-type ContextBridgeProps = {
-    Context: React.Context<number>;
-    render: (children: React.ReactNode) => React.ReactNode;
-};
-const ContextBridge: React.FunctionComponent<ContextBridgeProps> = ({
-    children,
-    Context,
-    render,
-}) => {
-    return (
-        <Context.Consumer>
-            {(value) =>
-                render(
-                    <Context.Provider value={value}>
-                        {children}
-                    </Context.Provider>
-                )
-            }
-        </Context.Consumer>
-    );
-};
+// Assets
+import RainLightmap from '../assets/weather/rain-lightmap.png';
+import SnowLightmap from '../assets/weather/snow-lightmap.png';
+import { WindowHeight, WindowWidth } from '../const/App';
 
-type StageProps = React.ComponentProps<typeof PixiStage>;
-const Stage: React.FunctionComponent<StageProps> = ({ children, ...props }) => {
-    return (
-        <ContextBridge
-            Context={FrameCountContext}
-            render={(children) => <PixiStage {...props}>{children}</PixiStage>}>
-            {children}
-        </ContextBridge>
-    );
-};
+const Weather: React.FunctionComponent = () => {
+    const weather = useWeatherValue();
 
-type Props = {
-    weather: WeatherType;
-};
-const Weather: React.FunctionComponent<Props> = ({ weather }) => {
     const WeatherDraw = useCallback(() => {
         switch (weather) {
             case WeatherType.Rain:
@@ -88,26 +55,31 @@ const Weather: React.FunctionComponent<Props> = ({ weather }) => {
     }, [weather]);
 
     return (
-        <div className={styles.Weather} data-weather={weather}>
-            <Stage
-                width={WindowWidth}
-                height={WindowHeight}
-                options={{ backgroundAlpha: 0 }}>
-                <Container filters={filters}>
-                    <WeatherDraw />
-                </Container>
-            </Stage>
+        <>
+            <Container filters={filters}>
+                <WeatherDraw />
+            </Container>
 
             {weather === WeatherType.Rain && (
-                <div
-                    className={`${styles.Weather__mask} ${styles['Weather__mask--rain']}`}></div>
+                <Sprite
+                    image={RainLightmap}
+                    x={0}
+                    y={0}
+                    width={WindowWidth}
+                    height={WindowHeight}
+                />
             )}
 
             {weather === WeatherType.Snow && (
-                <div
-                    className={`${styles.Weather__mask} ${styles['Weather__mask--snow']}`}></div>
+                <Sprite
+                    image={SnowLightmap}
+                    x={0}
+                    y={0}
+                    width={WindowWidth}
+                    height={WindowHeight}
+                />
             )}
-        </div>
+        </>
     );
 };
 

@@ -1,21 +1,14 @@
-import Building1 from '../assets/building/image1.png';
-import Building2 from '../assets/building/image2.png';
-import Building3 from '../assets/building/image3.png';
-
 export type SpriteType = 'building1' | 'building2' | 'building3';
 
 export const sprites = {
     building1: {
-        img: Building1,
-        frame: [100, 100, 100],
+        img: 'building-image1',
     },
     building2: {
-        img: Building2,
-        frame: [100, 100, 100],
+        img: 'building-image2',
     },
     building3: {
-        img: Building3,
-        frame: [100, 100, 100],
+        img: 'building-image3',
     },
 };
 

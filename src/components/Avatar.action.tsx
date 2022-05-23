@@ -15,7 +15,7 @@ import {
 } from 'pixi-filters';
 
 // Const
-import { sampleRate, threshold, fftSize, avatarDuration } from '../const/App';
+import { threshold, fftSize, avatarDuration } from '../const/App';
 
 // Type
 import { AvatarFilter } from '../types/AvatarFilter';
@@ -29,12 +29,11 @@ import ImageNormalOpen from '../assets/avatar/image-normal-open.png';
 import Image8bitClose from '../assets/avatar/image-8bit-close.png';
 import Image8bitOpen from '../assets/avatar/image-8bit-open.png';
 
-// Webgl Shader
-// import vertexShader from './Avatar.Shader.vert';
-import fragmentShader from './Avatar.Shader.frag';
-
 // Utils
-import { focusLine } from '../util/focusLine';
+import Lipsync from '../util/LipSync';
+
+// Webgl Shader
+import fragmentShader from './Avatar.Shader.frag';
 
 // Atoms
 import { useValue as useIsAvatar8BitValue } from '../atoms/isAvatar8Bit';
@@ -60,10 +59,12 @@ export const useAvatar = () => {
     const isStartedMic = useRef(false);
     const [showVolume, updateShowVolume] = useState(false);
     const [volume, updateVolume] = useState(0);
-
-    // FocusLine
-    const canvas2DEl = useRef<HTMLCanvasElement>(null);
-    const focusLineDraw = useRef<ReturnType<typeof focusLine>>();
+    const [energy, updateEnergy] = useState<
+        [number, number, number, number, number]
+    >([0, 0, 0, 0, 0]);
+    const [bsw, updateBsw] = useState<[number, number, number]>([0, 0, 0]);
+    const [float, updateFloat] = useState<Float32Array>(new Float32Array());
+    const [byte, updateByte] = useState<Uint8Array>(new Uint8Array());
 
     const AvatarSprite = useCallback(() => {
         const filters: any[] = [];
@@ -129,29 +130,16 @@ export const useAvatar = () => {
     }, [filter, isFocus, isGunya, isGlitch, texture, frameCount]);
 
     useEffect(() => {
-        if (!canvas2DEl.current) {
-            return;
-        }
-
         if (isInited.current) {
             return;
         }
         isInited.current = true;
 
-        focusLineDraw.current = focusLine(
-            canvas2DEl.current,
-            canvas2DEl.current.width / 2,
-            canvas2DEl.current.height / 2,
-            30,
-            200,
-            100,
-            70,
-            'gray'
-        );
+        window.addEventListener('click', startHandler);
 
-        return () => {
-            isInited.current = false;
-        };
+        // return () => {
+        //     isInited.current = false;
+        // };
     }, []);
 
     useEffect(() => {
@@ -179,13 +167,6 @@ export const useAvatar = () => {
         }
     }, [is8Bit, frameCount, volume]);
 
-    useEffect(() => {
-        if (!focusLineDraw.current || !isFocus) {
-            return;
-        }
-        focusLineDraw.current.render();
-    }, [frameCount, isFocus]);
-
     const toggleShowVolume = useCallback(() => {
         updateShowVolume((prev) => !prev);
     }, []);
@@ -196,26 +177,19 @@ export const useAvatar = () => {
         }
         isStartedMic.current = true;
 
-        const audioCtx = new AudioContext({ sampleRate });
-        const stream = await navigator.mediaDevices.getUserMedia({
-            audio: true,
-        });
-        const source = audioCtx.createMediaStreamSource(stream);
-
-        const analyzer = audioCtx.createAnalyser();
-        analyzer.smoothingTimeConstant = 0.3;
-        analyzer.fftSize = fftSize;
-
-        source.connect(analyzer);
+        const lipSync = new Lipsync({ fftSize });
+        await lipSync.startMic();
 
         const check = () => {
-            const array = new Uint8Array(analyzer.frequencyBinCount);
-            analyzer.getByteFrequencyData(array);
-            const volume =
-                array.reduce((prev, current) => prev + current, 0) /
-                array.length;
+            const result = lipSync.update();
 
-            updateVolume(volume);
+            if (result) {
+                updateVolume(result.volume);
+                updateBsw(result.bsw);
+                updateEnergy(result.energy);
+                updateFloat(result.float);
+                updateByte(result.byte);
+            }
 
             requestAnimationFrame(check);
         };
@@ -224,9 +198,12 @@ export const useAvatar = () => {
 
     return {
         AvatarSprite,
-        canvas2DEl,
         showVolume,
         volume,
+        bsw,
+        energy,
+        float,
+        byte,
         startHandler,
     };
 };

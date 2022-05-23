@@ -19,7 +19,8 @@ const AvatarComponent: React.FunctionComponent = () => {
     const isBigger = useIsAvatarBiggerValue();
     const isFocus = useIsAvatarFocusValue();
 
-    const { AvatarSprite, showVolume, volume, startHandler } = useAvatar();
+    const { AvatarSprite, showVolume, volume, bsw, energy, float, byte } =
+        useAvatar();
 
     const [scale, setScale] = useState(1.3);
     useEffect(() => {
@@ -75,12 +76,7 @@ const AvatarComponent: React.FunctionComponent = () => {
 
     return (
         <>
-            <Container
-                x={1765}
-                y={1085}
-                scale={scale}
-                interactive={true}
-                pointerdown={startHandler}>
+            <Container x={1765} y={1085} scale={scale}>
                 <AvatarSprite />
             </Container>
 
@@ -95,7 +91,14 @@ const AvatarComponent: React.FunctionComponent = () => {
                 </Container>
             )}
 
-            <AvatarVolume show={showVolume} volume={volume} />
+            <AvatarVolume
+                show={showVolume}
+                volume={volume}
+                bsw={bsw}
+                energy={energy}
+                float={float}
+                byte={byte}
+            />
         </>
     );
 };

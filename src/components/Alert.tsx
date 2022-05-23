@@ -23,9 +23,9 @@ const AlertComponent: React.FunctionComponent = () => {
         }
         isInited.current = true;
 
-        // chatClient.onAnyMessage((message) => {
-        //     console.log(message);
-        // });
+        chatClient.onAnyMessage((message) => {
+            console.log(message);
+        });
 
         chatClient.onMessage((_, __, ___, message) => {
             if (message.isCheer) {

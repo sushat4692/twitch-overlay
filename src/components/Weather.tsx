@@ -43,13 +43,13 @@ const Weather: React.FunctionComponent = () => {
     }, [weather]);
 
     const filters = useMemo(() => {
-        switch (weather) {
-            case WeatherType.Snow: {
-                const blurFilter = new PIXI.filters.BlurFilter();
-                blurFilter.blur = 2;
-                return [blurFilter];
-            }
-        }
+        // switch (weather) {
+        //     case WeatherType.Snow: {
+        //         const blurFilter = new PIXI.filters.BlurFilter();
+        //         blurFilter.blur = 2;
+        //         return [blurFilter];
+        //     }
+        // }
 
         return null;
     }, [weather]);

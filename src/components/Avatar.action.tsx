@@ -4,6 +4,7 @@ import React, {
     useCallback,
     useState,
     useContext,
+    useMemo,
 } from 'react';
 import * as PIXI from 'pixi.js';
 import { Sprite } from '@inlet/react-pixi';
@@ -24,8 +25,10 @@ import { AvatarFilter } from '../types/AvatarFilter';
 import { FrameCountContext } from '../context/FrameCount';
 
 // Images
+import ImageNormalMute from '../assets/avatar/image-normal-mute.png';
 import ImageNormalClose from '../assets/avatar/image-normal-close.png';
 import ImageNormalOpen from '../assets/avatar/image-normal-open.png';
+import Image8bitMute from '../assets/avatar/image-8bit-mute.png';
 import Image8bitClose from '../assets/avatar/image-8bit-close.png';
 import Image8bitOpen from '../assets/avatar/image-8bit-open.png';
 
@@ -54,6 +57,14 @@ export const useAvatar = () => {
 
     const [texture, setTexture] = useState(PIXI.Texture.from(ImageNormalClose));
     // const [filters, setFilters] = useState(new PIXI.Shader({vertexSrc: vertexShader, fragmentSrc: fragmentShader},{}));
+
+    const muteTexture = useMemo(() => {
+        if (is8Bit) {
+            return PIXI.Texture.from(Image8bitMute);
+        } else {
+            return PIXI.Texture.from(ImageNormalMute);
+        }
+    }, [is8Bit]);
 
     // Mic
     const isStartedMic = useRef(false);
@@ -119,15 +130,26 @@ export const useAvatar = () => {
         }
 
         return (
-            <Sprite
-                texture={texture}
-                filters={filters}
-                width={306}
-                height={332}
-                anchor={[0.6, 0.9]}
-            />
+            <>
+                <Sprite
+                    texture={texture}
+                    filters={filters}
+                    width={306}
+                    height={332}
+                    anchor={[0.6, 0.9]}
+                />
+                {!isStartedMic.current && (
+                    <Sprite
+                        texture={muteTexture}
+                        filters={filters}
+                        width={306}
+                        height={332}
+                        anchor={[0.6, 0.9]}
+                    />
+                )}
+            </>
         );
-    }, [filter, isFocus, isGunya, isGlitch, texture, frameCount]);
+    }, [filter, isFocus, isGunya, isGlitch, muteTexture, texture, frameCount]);
 
     useEffect(() => {
         if (isInited.current) {

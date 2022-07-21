@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 
 import { useGetNewFollower } from '../util/useTwitchApi';
-import { chatClient } from '../util/useTwitchChatEvent';
+import { chatClient } from '../util/chatClient';
 
 import { playFollow, playSub, playRaid } from '../util/useAlertSound';
 

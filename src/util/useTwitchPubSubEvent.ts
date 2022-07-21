@@ -42,7 +42,7 @@ import {
 } from './useAvatarSound';
 import { playRain, playSnow } from './useWeatherSound';
 import { playLvup } from './useAlertSound';
-import { chatClient } from './useTwitchChatEvent';
+import { chatClient } from './chatClient';
 
 // Const
 import { CHANNEL_NAME, CLIENT_ID, CLIENT_TOKEN } from '../const/App';

@@ -1,6 +1,4 @@
 import { useCallback, useEffect, useState, useRef } from 'react';
-import { ChatClient } from '@twurple/chat';
-import { StaticAuthProvider } from '@twurple/auth';
 import { v4 as uuid } from 'uuid';
 import { TwitchPrivateMessage } from '@twurple/chat/lib/commands/TwitchPrivateMessage';
 
@@ -8,7 +6,7 @@ import { TwitchPrivateMessage } from '@twurple/chat/lib/commands/TwitchPrivateMe
 import { TopicItem } from '../types/TopicItem';
 
 // Const
-import { CHANNEL_NAME, CLIENT_ID, CHAT_CLIENT_TOKEN } from '../const/App';
+import { CHANNEL_NAME } from '../const/App';
 import TranslatePabpabWords from '../const/TranslatePabpab';
 import TranslateDudbearWords from '../const/TranslateDudbear';
 
@@ -17,11 +15,9 @@ import { useValue as useCatsValue } from '../atoms/cats';
 import { useValue as useCarsValue } from '../atoms/cars';
 import { useValue as useBuildsValue } from '../atoms/builds';
 import { useValue as useDinosValue } from '../atoms/dinos';
+import { useTwitchChatBattle } from './useTwitchChatBattle';
 
-export const chatClient = new ChatClient({
-    authProvider: new StaticAuthProvider(CLIENT_ID, CHAT_CLIENT_TOKEN),
-    channels: [CHANNEL_NAME],
-});
+import { chatClient } from './chatClient';
 
 const useTopicActions = () => {
     const [topics, updateTopics] = useState<TopicItem[]>([]);
@@ -161,6 +157,8 @@ export const useTwitchChatEvent = () => {
         [cats, cars, dinos, builds]
     );
 
+    const battleCommand = useTwitchChatBattle();
+
     const processQueue = useCallback(
         async ({
             channel,
@@ -194,8 +192,12 @@ export const useTwitchChatEvent = () => {
             if (command === '!current') {
                 currentCommand(msg);
             }
+
+            if (command === '!battle') {
+                battleCommand(msg, action);
+            }
         },
-        [currentCommand, topicCommand, translateCommand]
+        [currentCommand, topicCommand, translateCommand, battleCommand]
     );
 
     useEffect(() => {

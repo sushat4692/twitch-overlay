@@ -17,6 +17,7 @@ import Car from './components/Car';
 import Dino from './components/Dino';
 import Avatar from './components/Avatar';
 import Weather from './components/Weather';
+import Battle from './components/Battle';
 
 const Animate: React.FunctionComponent = () => {
     const app = useApp();
@@ -77,6 +78,7 @@ const Animate: React.FunctionComponent = () => {
             </Container>
 
             <Avatar />
+            <Battle />
             <Weather />
         </>
     ) : null;

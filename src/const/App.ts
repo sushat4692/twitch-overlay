@@ -7,14 +7,6 @@ export const CLIENT_TOKEN = import.meta.env.VITE_CLIENT_TOKEN as string;
 export const CHAT_CLIENT_TOKEN = import.meta.env
     .VITE_CHAT_CLIENT_TOKEN as string;
 
-// Twitter
-export const TWITTER_CLIENT_ID = import.meta.env
-    .VITE_TWITTER_CLIENT_ID as string;
-export const WITTER_CLIENT_SECRET = import.meta.env
-    .VITE_TWITTER_CLIENT_SECRET as string;
-export const TWITTER_CLIENT_TOKEN = import.meta.env
-    .VITE_TWITTER_CLIENT_TOKEN as string;
-
 // Mic
 export const sampleRate = 4410;
 export const fftSize = 1024;

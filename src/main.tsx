@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { RecoilRoot } from 'recoil';
+import * as PIXI from 'pixi.js';
+PIXI.TextMetrics.BASELINE_SYMBOL = 'あ';
 
 // Styles
 import 'react-toastify/dist/ReactToastify.css';
@@ -28,6 +30,7 @@ import { prepare as prepareDinoSound } from './util/useDinoSound';
 import { prepare as prepareAvatarSound } from './util/useAvatarSound';
 import { prepare as prepareAlertSound } from './util/useAlertSound';
 import { prepare as prepareWeatherSound } from './util/useWeatherSound';
+import { prepare as prepareBattleSound } from './util/useBattleSound';
 
 Promise.all([
     (async () => {
@@ -83,6 +86,7 @@ Promise.all([
     prepareAvatarSound(),
     prepareAlertSound(),
     prepareWeatherSound(),
+    prepareBattleSound(),
 ]).then(([image]) => {
     ReactDOM.render(
         <React.StrictMode>

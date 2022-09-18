@@ -2,25 +2,25 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Container } from '@inlet/react-pixi';
 
 import {
-    getCurrentSprite,
-    getRandomSpriteKey,
-    getTargetSpriteDuration,
-    SpriteType,
-} from '../const/Cat';
-import CatDetail from './CatDetail';
+    getCatCurrentSprite,
+    getCatRandomSpriteKey,
+    getCatTargetSpriteDuration,
+    CatSpriteType,
+} from '@/const';
+import { CatDetail } from '@/components';
 
 // const catAreaWidth = 1136;
 const catAreaWidth = 1416;
 
-const Cat = (): JSX.Element => {
+export const Cat: React.FC = () => {
     const isInited = useRef(false);
     const [x, updateX] = useState<number>(
         Math.floor(Math.random() * catAreaWidth)
     );
     const [reflect, updateReflect] = useState<boolean>(true);
-    const [key, updateKey] = useState<SpriteType>('none');
+    const [key, updateKey] = useState<CatSpriteType>('none');
     const [duration, updateDuration] = useState<number>(
-        getTargetSpriteDuration('none') || 0
+        getCatTargetSpriteDuration('none') || 0
     );
 
     useEffect(() => {
@@ -29,10 +29,10 @@ const Cat = (): JSX.Element => {
         }
         isInited.current = true;
 
-        const randomSprite = getRandomSpriteKey(['fall']);
+        const randomSprite = getCatRandomSpriteKey(['fall']);
 
         updateKey(randomSprite);
-        updateDuration(getTargetSpriteDuration(randomSprite) || 0);
+        updateDuration(getCatTargetSpriteDuration(randomSprite) || 0);
 
         return () => {
             isInited.current = false;
@@ -40,8 +40,8 @@ const Cat = (): JSX.Element => {
     }, []);
 
     const nextSprite = useCallback(
-        (forceNext?: SpriteType[]) => {
-            const currentSprite = getCurrentSprite(key);
+        (forceNext?: CatSpriteType[]) => {
+            const currentSprite = getCatCurrentSprite(key);
             if (!currentSprite) {
                 return;
             }
@@ -50,11 +50,11 @@ const Cat = (): JSX.Element => {
                 updateReflect((prev) => !prev);
             }
 
-            const next = getRandomSpriteKey(
-                forceNext || (currentSprite.next as SpriteType[])
+            const next = getCatRandomSpriteKey(
+                forceNext || (currentSprite.next as CatSpriteType[])
             );
 
-            const nextDuration = getTargetSpriteDuration(next) || 0;
+            const nextDuration = getCatTargetSpriteDuration(next) || 0;
             updateKey(next);
             updateDuration(nextDuration);
         },
@@ -63,7 +63,7 @@ const Cat = (): JSX.Element => {
 
     const stepSprite = useCallback(
         (stepDuration: number) => {
-            const currentSprite = getCurrentSprite(key);
+            const currentSprite = getCatCurrentSprite(key);
             if (!currentSprite) {
                 return;
             }
@@ -108,5 +108,3 @@ const Cat = (): JSX.Element => {
         </Container>
     );
 };
-
-export default Cat;

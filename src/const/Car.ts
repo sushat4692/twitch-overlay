@@ -1,6 +1,6 @@
-export type SpriteType = 'car1' | 'car2' | 'car3';
+export type CarSpriteType = 'car1' | 'car2' | 'car3';
 
-export const sprites = {
+export const carSprites = {
     car1: {
         img: 'car-image1',
     },
@@ -12,17 +12,17 @@ export const sprites = {
     },
 };
 
-export const getSpriteKey = () => {
-    return Object.keys(sprites) as SpriteType[];
+export const getCarSpriteKey = () => {
+    return Object.keys(carSprites) as CarSpriteType[];
 };
 
-export const getCurrentSprite = (key: SpriteType) => {
-    return sprites[key];
+export const getCarCurrentSprite = (key: CarSpriteType) => {
+    return carSprites[key];
 };
 
-export const getRandomSpriteKey = (keis?: SpriteType[]) => {
+export const getCarRandomSpriteKey = (keis?: CarSpriteType[]) => {
     if (!keis) {
-        keis = getSpriteKey();
+        keis = getCarSpriteKey();
     }
     const index = Math.floor(Math.random() * keis.length);
     return keis[index];

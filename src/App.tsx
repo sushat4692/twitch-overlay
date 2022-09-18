@@ -4,24 +4,28 @@ import tw from 'twin.macro';
 import { useRecoilBridgeAcrossReactRoots_UNSTABLE } from 'recoil';
 
 // Components
-import Alert from './components/Alert';
 import { Stage as PixiStage } from '@inlet/react-pixi';
-import Animate from './Animate';
-import WireDesktop from './components/WireDesktop';
-// import WireTime from './components/WireTimeAnalogue';
-import WireTopics from './components/WireTopics';
-import WireImages from './components/WireImages';
+import {
+    Animate,
+    Alert,
+    WireDesktop,
+    //WireTimeAnalogue,
+    WireTopics,
+    WireImages,
+} from '@/components';
 
 // Context
-import { FrameCountContext } from './context/FrameCount';
+import { FrameCountContext } from '@/context';
 
 // Util
-import { useAnimationFrameCount } from './util/useAnimationFrameCount';
-import { useTwitchPubSubEvent } from './util/useTwitchPubSubEvent';
-import { useTwitchChatEvent } from './util/useTwitchChatEvent';
+import {
+    useAnimationFrameCount,
+    useTwitchPubSubEvent,
+    useTwitchChatEvent,
+} from '@/util';
 
 // Const
-import { WindowWidth, WindowHeight } from './const/App';
+import { WindowWidth, WindowHeight } from '@/const';
 
 // Component
 const Wrapper = styled('div')([
@@ -58,7 +62,7 @@ type ContextBridgeProps = {
     Context: React.Context<number>;
     render: (children: React.ReactNode) => React.ReactNode;
 };
-const ContextBridge: React.FunctionComponent<ContextBridgeProps> = ({
+const ContextBridge: React.FC<ContextBridgeProps> = ({
     children,
     Context,
     render,
@@ -81,7 +85,7 @@ const ContextBridge: React.FunctionComponent<ContextBridgeProps> = ({
 };
 
 type StageProps = React.ComponentProps<typeof PixiStage>;
-const Stage: React.FunctionComponent<StageProps> = ({ children, ...props }) => {
+const Stage: React.FC<StageProps> = ({ children, ...props }) => {
     return (
         <ContextBridge
             Context={FrameCountContext}
@@ -92,7 +96,7 @@ const Stage: React.FunctionComponent<StageProps> = ({ children, ...props }) => {
 };
 const StyledStage = styled(Stage)([tw`absolute inset-0 z-50`]);
 
-function App() {
+export const App: React.FC = () => {
     const frameCount = useAnimationFrameCount();
     useTwitchPubSubEvent();
     const { topics, topicShow } = useTwitchChatEvent();
@@ -117,6 +121,4 @@ function App() {
             </Wrapper>
         </FrameCountContext.Provider>
     );
-}
-
-export default App;
+};

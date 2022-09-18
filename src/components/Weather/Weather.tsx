@@ -1,23 +1,23 @@
 import React, { useCallback, useMemo } from 'react';
 import { Container, Sprite } from '@inlet/react-pixi';
-import * as PIXI from 'pixi.js';
 
 // Components
-import WeatherSnow from './WeatherSnow';
-import WeatherRain from './WeatherRain';
+import { WeatherSnow, WeatherRain } from '@/components';
+
+// Const
+import { WindowHeight, WindowWidth } from '@/const';
 
 // Atoms
-import { useValue as useWeatherValue } from '../atoms/weather';
+import { useWeatherValue } from '@/atoms';
 
 // Types
-import { WeatherType } from '../types/WeatherType';
+import { WeatherType } from '@/types';
 
 // Assets
-import RainLightmap from '../assets/weather/rain-lightmap.png';
-import SnowLightmap from '../assets/weather/snow-lightmap.png';
-import { WindowHeight, WindowWidth } from '../const/App';
+import RainLightmap from '@/assets/weather/rain-lightmap.png';
+import SnowLightmap from '@/assets/weather/snow-lightmap.png';
 
-const Weather: React.FunctionComponent = () => {
+export const Weather: React.FC = () => {
     const weather = useWeatherValue();
 
     const WeatherDraw = useCallback(() => {
@@ -82,5 +82,3 @@ const Weather: React.FunctionComponent = () => {
         </>
     );
 };
-
-export default Weather;

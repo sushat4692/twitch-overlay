@@ -2,24 +2,28 @@ import React, { useRef, useEffect } from 'react';
 import { Container, useApp } from '@inlet/react-pixi';
 
 // Const
-import { WindowHeight } from './const/App';
+import { WindowHeight } from '@/const';
 
 // Atoms
-import { useValue as useCatsValue } from './atoms/cats';
-import { useValue as useCarsValue } from './atoms/cars';
-import { useValue as useBuildsValue } from './atoms/builds';
-import { useValue as useDinosValue } from './atoms/dinos';
+import {
+    useCatsValue,
+    useCarsValue,
+    useBuildsValue,
+    useDinosValue,
+} from '@/atoms';
 
 // Components
-import Cat from './components/Cat';
-import Building from './components/Building';
-import Car from './components/Car';
-import Dino from './components/Dino';
-import Avatar from './components/Avatar';
-import Weather from './components/Weather';
-import Battle from './components/Battle';
+import {
+    Cat,
+    Building,
+    Car,
+    Dino,
+    Avatar,
+    Weather,
+    Battle,
+} from '@/components';
 
-const Animate: React.FunctionComponent = () => {
+export const Animate: React.FC = () => {
     const app = useApp();
     const inited = useRef(false);
     const loaded = useRef(false);
@@ -83,5 +87,3 @@ const Animate: React.FunctionComponent = () => {
         </>
     ) : null;
 };
-
-export default Animate;

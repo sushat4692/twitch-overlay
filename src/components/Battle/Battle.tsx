@@ -8,14 +8,21 @@ import React, {
 import { Container, Graphics, Sprite } from '@inlet/react-pixi';
 import * as PIXI from 'pixi.js';
 
-import { WindowHeight } from '../const/App';
-import BattleHPBar from './Battle/HPBar';
-import BattleMessage from './Battle/Message';
-import { FrameCountContext } from '../context/FrameCount';
-import { useState as useBattleState } from '../atoms/battle';
+// Const
+import { WindowHeight } from '@/const';
 
-import DemonKingImage from '../assets/battle/DemonKing.png';
-import SlimeImage from '../assets/battle/Slime.png';
+// Context
+import { FrameCountContext } from '@/context';
+
+// Atoms
+import { useBattleState } from '@/atoms';
+
+// Assets
+import DemonKingImage from '@/assets/battle/DemonKing.png';
+import SlimeImage from '@/assets/battle/Slime.png';
+
+// Components
+import { BattleHPBar, BattleMessage } from '@/components';
 
 import {
     playEncount,
@@ -26,9 +33,9 @@ import {
     playGameOver,
     playYourAttack,
     playYourCritical,
-} from '../util/useBattleSound';
+} from '@/util/useBattleSound';
 
-const Battle: React.FC = () => {
+export const Battle: React.FC = () => {
     const frameCount = useContext(FrameCountContext);
     const [battle, setBattle] = useBattleState();
     const [isBrink, setIsBrink] = useState(false);
@@ -232,5 +239,3 @@ const Battle: React.FC = () => {
         </Container>
     ) : null;
 };
-
-export default Battle;

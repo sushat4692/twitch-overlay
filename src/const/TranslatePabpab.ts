@@ -1,4 +1,4 @@
-const Words: { [key: string]: string } = {
+export const PabpabWords: { [key: string]: string } = {
     pukapuka: 'slowly(relaxed, "What will be, will be")',
     purechi: 'friend',
     saldine: 'island(Saldine Island)',
@@ -53,5 +53,3 @@ const Words: { [key: string]: string } = {
     ニ: 'あなた(それ)',
     ノ: '違う(ダメ)',
 };
-
-export default Words;

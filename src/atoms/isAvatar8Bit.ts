@@ -5,15 +5,15 @@ const state = atom({
     default: false,
 });
 
-export const useState = () => {
+export const useIsAvatar8BitState = () => {
     return useRecoilState(state);
 };
 
-export const useSetter = () => {
-    const [, setState] = useState();
+export const useIsAvatar8BitSetter = () => {
+    const [, setState] = useIsAvatar8BitState();
     return setState;
 };
 
-export const useValue = () => {
+export const useIsAvatar8BitValue = () => {
     return useRecoilValue(state);
 };

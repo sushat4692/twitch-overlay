@@ -1,22 +1,22 @@
-export type SpriteType = 'dino1';
+export type DinoSpriteType = 'dino1';
 
-export const sprites = {
+export const dinoSprites = {
     dino1: {
         img: 'dino-image1',
     },
 };
 
-export const getSpriteKey = () => {
-    return Object.keys(sprites) as SpriteType[];
+export const getDinoSpriteKey = () => {
+    return Object.keys(dinoSprites) as DinoSpriteType[];
 };
 
-export const getCurrentSprite = (key: SpriteType) => {
-    return sprites[key];
+export const getDinoCurrentSprite = (key: DinoSpriteType) => {
+    return dinoSprites[key];
 };
 
-export const getRandomSpriteKey = (keis?: SpriteType[]) => {
+export const getDinoRandomSpriteKey = (keis?: DinoSpriteType[]) => {
     if (!keis) {
-        keis = getSpriteKey();
+        keis = getDinoSpriteKey();
     }
     const index = Math.floor(Math.random() * keis.length);
     return keis[index];

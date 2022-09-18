@@ -1,4 +1,4 @@
-const Words: { [key: string]: string } = {
+export const DudbearWords: { [key: string]: string } = {
     'Dada dadda?': 'Want to buy a lamp?',
     'Bub?': 'Used when one does not understand',
     Dubababa: 'Many(very)',
@@ -38,5 +38,3 @@ const Words: { [key: string]: string } = {
     'ま？': '？',
     ぐ: '少し',
 };
-
-export default Words;

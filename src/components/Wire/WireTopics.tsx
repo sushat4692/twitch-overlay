@@ -3,10 +3,10 @@ import styled from '@emotion/styled';
 import tw from 'twin.macro';
 
 // Types
-import { TopicItem } from '../types/TopicItem';
+import { TopicItem } from '@/types';
 
 // Components
-import WireTopicItem from './WireTopicItem';
+import { WireTopicItem } from '@/components';
 const Wrapper = styled('div')<{ topicShow: boolean }>(({ topicShow }) => [
     tw`absolute z-10`,
     {
@@ -27,7 +27,7 @@ type Props = {
     topics: TopicItem[];
     topicShow: boolean;
 };
-const WireTopics = ({ topics, topicShow }: Props) => {
+export const WireTopics = ({ topics, topicShow }: Props) => {
     return (
         <Wrapper topicShow={topicShow}>
             {topics.map((topic) => (
@@ -36,5 +36,3 @@ const WireTopics = ({ topics, topicShow }: Props) => {
         </Wrapper>
     );
 };
-
-export default WireTopics;

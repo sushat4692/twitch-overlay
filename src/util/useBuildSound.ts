@@ -1,10 +1,10 @@
-import { audioCtx, playSound } from './playSound';
+import { audioCtx, playSound } from '@/util/playSound';
 
-import Sound1 from '../assets/building/sound1.mp3';
+import Sound1 from '@/assets/building/sound1.mp3';
 
 let sound1Buffer: AudioBuffer;
 
-export const prepare = async () => {
+export const prepareBuildSound = async () => {
     const setupSample = async (file: string) => {
         const response = await fetch(file);
         const arrayBuffer = await response.arrayBuffer();
@@ -15,7 +15,7 @@ export const prepare = async () => {
     sound1Buffer = await setupSample(Sound1);
 };
 
-export const play = () => {
+export const playBuildSound = () => {
     const buffer = (() => {
         const index = Math.floor(Math.random() * 5);
 

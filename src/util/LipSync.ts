@@ -1,4 +1,4 @@
-export default class Lipsync {
+export class Lipsync {
     private fBins: number[] = [];
     private refFBins = [0, 500, 700, 3000, 6000];
 

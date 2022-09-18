@@ -1,37 +1,37 @@
 import { useEffect, useContext, useCallback, useRef } from 'react';
 import { v4 as uuid } from 'uuid';
 import { PubSubClient } from '@twurple/pubsub';
-import { StaticAuthProvider } from '@twurple/auth';
 import { toast } from 'react-toastify';
 
 // Atoms
-import { useSetter as useCatsSetter } from '../atoms/cats';
-import { useSetter as useCarsSetter } from '../atoms/cars';
-import { useSetter as useBuildsSetter } from '../atoms/builds';
-import { useSetter as useDinosSetter } from '../atoms/dinos';
-import { useSetter as useIsImageZoomSetter } from '../atoms/isImageZoom';
-import { useSetter as useIsAvatar8BitSetter } from '../atoms/isAvatar8Bit';
-import { useSetter as useIsAvatarGunyaSetter } from '../atoms/isAvatarGunya';
-import { useSetter as useIsAvatarBiggerSetter } from '../atoms/isAvatarBigger';
-import { useSetter as useIsAvatarFocusSetter } from '../atoms/isAvatarFocus';
-import { useSetter as useIsAvatarGlitchSetter } from '../atoms/isAvatarGlitch';
-import { useSetter as useWetherSetter } from '../atoms/weather';
-import { useSetter as useAvatarFilterSetter } from '../atoms/avatarFilter';
+import {
+    useCatsSetter,
+    useCarsSetter,
+    useBuildsSetter,
+    useDinosSetter,
+    useIsImageZoomSetter,
+    useIsAvatar8BitSetter,
+    useIsAvatarGunyaSetter,
+    useIsAvatarBiggerSetter,
+    useIsAvatarFocusSetter,
+    useIsAvatarGlitchSetter,
+    useWeatherSetter,
+    useAvatarFilterSetter,
+} from '@/atoms';
 
 // Types
-import { AvatarFilter } from '../types/AvatarFilter';
-import { WeatherType } from '../types/WeatherType';
+import { AvatarFilter, WeatherType } from '@/types';
 
 // Context
-import { ImageDescriptionContext } from '../context/ImageDescription';
+import { ImageDescriptionContext } from '@/context';
 
 // Util
-import { play as playMeowSound } from './useMeowSound';
-import { play as playBuildSound } from './useBuildSound';
-import { play as playCarSound } from './useCarSound';
-import { play as playDinoSound } from './useDinoSound';
 import {
-    play as playAvatarSound,
+    playMeowSound,
+    playBuildSound,
+    playCarSound,
+    playDinoSound,
+    playAvatarSound,
     playGaming,
     playGrayScale,
     playGunya,
@@ -39,13 +39,14 @@ import {
     playZoomin,
     playZoomout,
     playGlitch,
-} from './useAvatarSound';
-import { playRain, playSnow } from './useWeatherSound';
-import { playLvup } from './useAlertSound';
-import { chatClient } from './chatClient';
+    playRain,
+    playSnow,
+    playLvup,
+    chatClient,
+} from '@/util';
 
 // Const
-import { CHANNEL_NAME, CLIENT_ID, CLIENT_TOKEN } from '../const/App';
+import { CHANNEL_NAME, authProvider } from '@/const';
 
 let imageZoomTimer: ReturnType<typeof setTimeout> | null = null;
 let avatarFilterTimer: ReturnType<typeof setTimeout> | null = null;
@@ -167,7 +168,7 @@ export const useTwitchPubSubEvent = () => {
     const updateIsAvatarBigger = useIsAvatarBiggerSetter();
     const updateIsAvatarFocus = useIsAvatarFocusSetter();
     const updateIsAvatarGlitch = useIsAvatarGlitchSetter();
-    const updateWeather = useWetherSetter();
+    const updateWeather = useWeatherSetter();
     const updateAvatarFilter = useAvatarFilterSetter();
 
     const redemptionHandler = useCallback(
@@ -361,9 +362,7 @@ export const useTwitchPubSubEvent = () => {
 
         (async () => {
             await pubSubClient.onRedemption(
-                await pubSubClient.registerUserListener(
-                    new StaticAuthProvider(CLIENT_ID, CLIENT_TOKEN)
-                ),
+                await pubSubClient.registerUserListener(authProvider),
                 async (message) => {
                     await redemptionHandler(message.rewardId, message.userName);
                 }

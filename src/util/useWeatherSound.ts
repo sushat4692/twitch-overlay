@@ -1,4 +1,4 @@
-import { audioCtx, playSound } from './playSound';
+import { audioCtx, playSound } from '@/util/playSound';
 
 import SoundRain from '../assets/weather/rain.mp3';
 import SoundSnow from '../assets/weather/snow.mp3';
@@ -6,7 +6,7 @@ import SoundSnow from '../assets/weather/snow.mp3';
 let soundRainBuffer: AudioBuffer;
 let soundSnowBuffer: AudioBuffer;
 
-export const prepare = async () => {
+export const prepareWeatherSound = async () => {
     const setupSample = async (file: string) => {
         const response = await fetch(file);
         const arrayBuffer = await response.arrayBuffer();

@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import tw from 'twin.macro';
 
-export default styled('div')([
+export const WireDesktop = styled('div')([
     tw`absolute border-solid border-white overflow-hidden`,
     {
         left: `calc(var(--desktop-position-left) - var(--wire-border-width))`,

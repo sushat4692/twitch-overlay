@@ -4,7 +4,7 @@ import { keyframes } from '@emotion/react';
 import tw from 'twin.macro';
 
 // Types
-import { TopicItem } from '../types/TopicItem';
+import { TopicItem } from '@/types';
 
 // Keyframes
 const itemShow = keyframes({
@@ -52,7 +52,7 @@ type Props = {
     topic: TopicItem;
 };
 
-const WireTopicItem = ({ topic }: Props) => {
+export const WireTopicItem = ({ topic }: Props) => {
     const el = useRef<HTMLDivElement>(null);
     useEffect(() => {
         if (el.current) {
@@ -67,5 +67,3 @@ const WireTopicItem = ({ topic }: Props) => {
         </Item>
     );
 };
-
-export default WireTopicItem;

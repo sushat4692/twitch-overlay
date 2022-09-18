@@ -1,13 +1,13 @@
-import { audioCtx, playSound } from './playSound';
+import { audioCtx, playSound } from '@/util/playSound';
 
-import Sound1 from '../assets/avatar/sound1.mp3';
-import SoundGrayScale from '../assets/avatar/sound-grayscale.mp3';
-import SoundGaming from '../assets/avatar/sound-gaming.mp3';
-import SoundGunya from '../assets/avatar/sound-gunya.mp3';
-import SoundFocus from '../assets/avatar/sound-focus.mp3';
-import SoundZoomin from '../assets/avatar/sound-zoomin.mp3';
-import SoundZoomout from '../assets/avatar/sound-zoomout.mp3';
-import SoundGlitch from '../assets/avatar/sound-glitch.mp3';
+import Sound1 from '@/assets/avatar/sound1.mp3';
+import SoundGrayScale from '@/assets/avatar/sound-grayscale.mp3';
+import SoundGaming from '@/assets/avatar/sound-gaming.mp3';
+import SoundGunya from '@/assets/avatar/sound-gunya.mp3';
+import SoundFocus from '@/assets/avatar/sound-focus.mp3';
+import SoundZoomin from '@/assets/avatar/sound-zoomin.mp3';
+import SoundZoomout from '@/assets/avatar/sound-zoomout.mp3';
+import SoundGlitch from '@/assets/avatar/sound-glitch.mp3';
 
 let sound1Buffer: AudioBuffer;
 let soundGrayScaleBuffer: AudioBuffer;
@@ -18,7 +18,7 @@ let soundZoominBuffer: AudioBuffer;
 let soundZoomoutBuffer: AudioBuffer;
 let soundGlitchBuffer: AudioBuffer;
 
-export const prepare = async () => {
+export const prepareAvatarSound = async () => {
     const setupSample = async (file: string) => {
         const response = await fetch(file);
         const arrayBuffer = await response.arrayBuffer();
@@ -37,7 +37,7 @@ export const prepare = async () => {
     return;
 };
 
-export const play = () => {
+export const playAvatarSound = () => {
     const buffer = (() => {
         const index = Math.floor(Math.random() * 5);
 

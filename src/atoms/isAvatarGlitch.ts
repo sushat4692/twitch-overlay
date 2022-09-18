@@ -5,15 +5,15 @@ const state = atom({
     default: false,
 });
 
-export const useState = () => {
+export const useIsAvatarGlitchState = () => {
     return useRecoilState(state);
 };
 
-export const useSetter = () => {
-    const [, setState] = useState();
+export const useIsAvatarGlitchSetter = () => {
+    const [, setState] = useIsAvatarGlitchState();
     return setState;
 };
 
-export const useValue = () => {
+export const useIsAvatarGlitchValue = () => {
     return useRecoilValue(state);
 };

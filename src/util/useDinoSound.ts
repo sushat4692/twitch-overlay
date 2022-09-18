@@ -1,10 +1,10 @@
-import { audioCtx, playSound } from './playSound';
+import { audioCtx, playSound } from '@/util/playSound';
 
-import Sound1 from '../assets/dino/sound1.mp3';
+import Sound1 from '@/assets/dino/sound1.mp3';
 
 let sound1Buffer: AudioBuffer;
 
-export const prepare = async () => {
+export const prepareDinoSound = async () => {
     const setupSample = async (file: string) => {
         const response = await fetch(file);
         const arrayBuffer = await response.arrayBuffer();
@@ -16,7 +16,7 @@ export const prepare = async () => {
     return;
 };
 
-export const play = () => {
+export const playDinoSound = () => {
     const buffer = (() => {
         const index = Math.floor(Math.random() * 5);
 

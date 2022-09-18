@@ -5,10 +5,10 @@ import styled from '@emotion/styled';
 import tw from 'twin.macro';
 
 // Context
-import { ImageDescriptionContext } from '../context/ImageDescription';
+import { ImageDescriptionContext } from '@/context';
 
 // Atoms
-import { useValue as useIsImageZoomValue } from '../atoms/isImageZoom';
+import { useIsImageZoomValue } from '@/atoms';
 
 // Components
 const Wrapper = styled('div')<{ isImageZoom: boolean }>(({ isImageZoom }) => [
@@ -125,7 +125,7 @@ const ImageNameText = styled('span')([
     },
 ]);
 
-const WireImages: React.FC = () => {
+export const WireImages: React.FC = () => {
     const { label, message, images } = useContext(ImageDescriptionContext);
     const isImageZoom = useIsImageZoomValue();
 
@@ -162,5 +162,3 @@ const WireImages: React.FC = () => {
         </Wrapper>
     );
 };
-
-export default WireImages;

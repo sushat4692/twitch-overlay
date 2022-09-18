@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from 'react';
 import * as PIXI from 'pixi.js';
 
 // Context
-import { FrameCountContext } from '../context/FrameCount';
+import { FrameCountContext } from '@/context';
 
 // Components
 import { Graphics } from '@inlet/react-pixi';
@@ -139,7 +139,7 @@ const useFocusLine = (
     };
 };
 
-const AvatarZoom: React.FunctionComponent = () => {
+export const AvatarZoom: React.FC = () => {
     const frameCount = useContext(FrameCountContext);
     const focusLine = useFocusLine(
         { width: 800, height: 800 },
@@ -161,5 +161,3 @@ const AvatarZoom: React.FunctionComponent = () => {
 
     return <Graphics draw={draw} pivot={[0, 170]} />;
 };
-
-export default AvatarZoom;

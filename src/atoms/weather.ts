@@ -1,20 +1,20 @@
 import { atom, useRecoilState, useRecoilValue } from 'recoil';
-import { WeatherType } from '../types/WeatherType';
+import { WeatherType } from '@/types';
 
 const state = atom<WeatherType>({
     key: 'weather',
     default: WeatherType.Normal,
 });
 
-export const useState = () => {
+export const useWeatherState = () => {
     return useRecoilState(state);
 };
 
-export const useSetter = () => {
-    const [, setState] = useState();
+export const useWeatherSetter = () => {
+    const [, setState] = useWeatherState();
     return setState;
 };
 
-export const useValue = () => {
+export const useWeatherValue = () => {
     return useRecoilValue(state);
 };

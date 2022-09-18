@@ -2,19 +2,19 @@ import React, { useEffect, useState, useContext, useRef, Ref } from 'react';
 import { AnimatedSprite, useApp } from '@inlet/react-pixi';
 import * as PIXI from 'pixi.js';
 
-import { getCurrentSprite, SpriteType } from '../const/Cat';
+import { getCatCurrentSprite, CatSpriteType } from '@/const';
 
 // Context
-import { FrameCountContext } from '../context/FrameCount';
+import { FrameCountContext } from '@/context';
 
 type Props = {
-    spriteKey: SpriteType;
+    spriteKey: CatSpriteType;
     duration: number;
     step: (duration: number) => void;
     next: () => void;
 };
 
-const CatDetail: React.FC<Props> = ({
+export const CatDetail: React.FC<Props> = ({
     spriteKey,
     duration,
     step,
@@ -37,7 +37,7 @@ const CatDetail: React.FC<Props> = ({
     useEffect(() => {
         initialize.current = true;
 
-        const sprite = getCurrentSprite(spriteKey);
+        const sprite = getCatCurrentSprite(spriteKey);
         if (sprite.img && app.loader.resources[sprite.img]) {
             updateImage(
                 Object.keys(app.loader.resources[sprite.img].data.frames).map(
@@ -65,7 +65,7 @@ const CatDetail: React.FC<Props> = ({
             return;
         }
 
-        const sprite = getCurrentSprite(spriteKey);
+        const sprite = getCatCurrentSprite(spriteKey);
         if (!sprite) {
             return;
         }
@@ -103,5 +103,3 @@ const CatDetail: React.FC<Props> = ({
         </>
     );
 };
-
-export default CatDetail;

@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import tw from 'twin.macro';
 
 // Context
-import { FrameCountContext } from '../context/FrameCount';
+import { FrameCountContext } from '@/context';
 
 // Components
 const Wrap = styled('div')([
@@ -55,7 +55,7 @@ const Second = styled('span')([
     },
 ]);
 
-const WireTimeAnalogue = () => {
+export const WireTimeAnalogue = () => {
     const frameCount = useContext(FrameCountContext);
     const [hourDeg, setHourDeg] = useState(0);
     const [minuteDeg, setMinuteDeg] = useState(0);
@@ -79,5 +79,3 @@ const WireTimeAnalogue = () => {
         </Wrap>
     );
 };
-
-export default WireTimeAnalogue;

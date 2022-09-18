@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import tw from 'twin.macro';
 
 // Context
-import { FrameCountContext } from '../context/FrameCount';
+import { FrameCountContext } from '@/context';
 
 // Components
 const Wrapper = styled('div')([

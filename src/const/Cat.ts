@@ -1,4 +1,4 @@
-export type SpriteType =
+export type CatSpriteType =
     | 'none'
     | 'fall'
     | 'sit'
@@ -8,7 +8,7 @@ export type SpriteType =
     | 'to_sit'
     | 'to_stand';
 
-export const sprites = {
+export const catSprites = {
     none: {
         img: null,
         duration: Infinity,
@@ -84,16 +84,16 @@ export const sprites = {
     },
 };
 
-export const getSpriteKey = () => {
-    return Object.keys(sprites) as SpriteType[];
+export const getCatSpriteKey = () => {
+    return Object.keys(catSprites) as CatSpriteType[];
 };
 
-export const getCurrentSprite = (key: SpriteType) => {
-    return sprites[key];
+export const getCatCurrentSprite = (key: CatSpriteType) => {
+    return catSprites[key];
 };
 
-export const getTargetSpriteDuration = (key: SpriteType) => {
-    const sprite = getCurrentSprite(key);
+export const getCatTargetSpriteDuration = (key: CatSpriteType) => {
+    const sprite = getCatCurrentSprite(key);
     if (!sprite) {
         return;
     }
@@ -106,9 +106,9 @@ export const getTargetSpriteDuration = (key: SpriteType) => {
     return Math.floor(Math.random() * (max - min)) + min;
 };
 
-export const getRandomSpriteKey = (keis?: SpriteType[]) => {
+export const getCatRandomSpriteKey = (keis?: CatSpriteType[]) => {
     if (!keis) {
-        keis = getSpriteKey();
+        keis = getCatSpriteKey();
     }
     const index = Math.floor(Math.random() * keis.length);
     return keis[index];

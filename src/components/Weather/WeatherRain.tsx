@@ -1,18 +1,18 @@
 import React, { useCallback, useState, useEffect, useContext } from 'react';
 import { Graphics } from '@inlet/react-pixi';
 import * as PIXI from 'pixi.js';
-import { random } from '../util/Random';
+import { random } from '@/util';
 
 // Const
-import { WindowWidth, WindowHeight } from '../const/App';
+import { WindowWidth, WindowHeight } from '@/const';
 
 // Context
-import { FrameCountContext } from '../context/FrameCount';
+import { FrameCountContext } from '@/context';
 
 const RainSize = 100;
 const RainSpeed = 50;
 
-const WeatherSnow: React.FunctionComponent = () => {
+export const WeatherRain: React.FC = () => {
     const frameCount = useContext(FrameCountContext);
 
     const [x, setX] = useState(random(0, WindowWidth));
@@ -38,5 +38,3 @@ const WeatherSnow: React.FunctionComponent = () => {
 
     return <Graphics draw={draw} x={x} y={y} />;
 };
-
-export default WeatherSnow;

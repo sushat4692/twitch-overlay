@@ -2,20 +2,24 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { AnimatedSprite, useApp } from '@inlet/react-pixi';
 import * as PIXI from 'pixi.js';
 
-import { WindowWidth } from '../const/App';
-import { getCurrentSprite, getRandomSpriteKey } from '../const/Car';
+// Const
+import {
+    WindowWidth,
+    getCarCurrentSprite,
+    getCarRandomSpriteKey,
+} from '@/const';
 
 // Context
-import { FrameCountContext } from '../context/FrameCount';
+import { FrameCountContext } from '@/context';
 
 const CarWidth = 180;
 
-const Car = () => {
+export const Car: React.FC = () => {
     const app = useApp();
     const isInited = useRef(false);
     const frameCount = useContext(FrameCountContext);
 
-    const spriteKey = useRef(getRandomSpriteKey());
+    const spriteKey = useRef(getCarRandomSpriteKey());
     const speed = useRef<number>(0);
 
     const [x, updateX] = useState<number>(0);
@@ -35,7 +39,7 @@ const Car = () => {
             (!direction ? WindowWidth / 2 : 0);
         speed.current = Math.random() + 0.5;
 
-        const sprite = getCurrentSprite(spriteKey.current);
+        const sprite = getCarCurrentSprite(spriteKey.current);
         if (app.loader.resources[sprite.img]) {
             updateImage(
                 Object.keys(app.loader.resources[sprite.img].data.frames).map(
@@ -85,5 +89,3 @@ const Car = () => {
         />
     ) : null;
 };
-
-export default Car;

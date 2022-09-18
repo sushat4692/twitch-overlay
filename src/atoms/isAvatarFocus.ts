@@ -5,15 +5,15 @@ const state = atom({
     default: false,
 });
 
-export const useState = () => {
+export const useIsAvatarFocusState = () => {
     return useRecoilState(state);
 };
 
-export const useSetter = () => {
-    const [, setState] = useState();
+export const useIsAvatarFocusSetter = () => {
+    const [, setState] = useIsAvatarFocusState();
     return setState;
 };
 
-export const useValue = () => {
+export const useIsAvatarFocusValue = () => {
     return useRecoilValue(state);
 };

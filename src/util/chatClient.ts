@@ -1,10 +1,10 @@
 import { ChatClient } from '@twurple/chat';
-import { StaticAuthProvider } from '@twurple/auth';
 
 // Const
-import { CHANNEL_NAME, CLIENT_ID, CHAT_CLIENT_TOKEN } from '../const/App';
+import { CHANNEL_NAME } from '@/const/App';
+import { authProvider } from '@/const/AuthProvider';
 
 export const chatClient = new ChatClient({
-    authProvider: new StaticAuthProvider(CLIENT_ID, CHAT_CLIENT_TOKEN),
+    authProvider,
     channels: [CHANNEL_NAME],
 });

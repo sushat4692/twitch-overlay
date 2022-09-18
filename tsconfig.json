@@ -15,6 +15,9 @@
     "noEmit": true,
     "jsx": "react",
     // "jsxImportSource": "@emotion/react",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["./src"],
   "ts-node": {

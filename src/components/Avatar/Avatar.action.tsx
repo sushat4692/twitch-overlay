@@ -16,34 +16,38 @@ import {
 } from 'pixi-filters';
 
 // Const
-import { threshold, fftSize, avatarDuration } from '../const/App';
+import { threshold, fftSize, avatarDuration } from '@/const';
 
 // Type
-import { AvatarFilter } from '../types/AvatarFilter';
+import { AvatarFilter } from '@/types';
 
 // Context
-import { FrameCountContext } from '../context/FrameCount';
+import { FrameCountContext } from '@/context';
 
 // Images
-import ImageNormalMute from '../assets/avatar/image-normal-mute.png';
-import ImageNormalClose from '../assets/avatar/image-normal-close.png';
-import ImageNormalOpen from '../assets/avatar/image-normal-open.png';
-import Image8bitMute from '../assets/avatar/image-8bit-mute.png';
-import Image8bitClose from '../assets/avatar/image-8bit-close.png';
-import Image8bitOpen from '../assets/avatar/image-8bit-open.png';
+import ImageNormalMute from '@/assets/avatar/image-normal-mute.png';
+import ImageNormalClose from '@/assets/avatar/image-normal-close.png';
+import ImageNormalOpen from '@/assets/avatar/image-normal-open.png';
+import Image8bitMute from '@/assets/avatar/image-8bit-mute.png';
+import Image8bitClose from '@/assets/avatar/image-8bit-close.png';
+import Image8bitOpen from '@/assets/avatar/image-8bit-open.png';
 
 // Utils
-import Lipsync from '../util/LipSync';
+import { Lipsync } from '@/util';
 
 // Webgl Shader
 import fragmentShader from './Avatar.Shader.frag';
 
 // Atoms
-import { useValue as useIsAvatar8BitValue } from '../atoms/isAvatar8Bit';
-import { useValue as useIsAvatarGunyaValue } from '../atoms/isAvatarGunya';
-import { useValue as useIsAvatarFocusValue } from '../atoms/isAvatarFocus';
-import { useValue as useIsAvatarGlitchValue } from '../atoms/isAvatarGlitch';
-import { useValue as useAvatarFilterValue } from '../atoms/avatarFilter';
+import {
+    useIsAvatar8BitValue,
+    useIsAvatarGunyaValue,
+    useIsAvatarFocusValue,
+    useIsAvatarGlitchValue,
+    useAvatarFilterValue,
+} from '@/atoms';
+
+const lipSync = new Lipsync({ fftSize });
 
 export const useAvatar = () => {
     const isInited = useRef(false);
@@ -67,7 +71,7 @@ export const useAvatar = () => {
     }, [is8Bit]);
 
     // Mic
-    const isStartedMic = useRef(false);
+    const isStartedMic = useRef(0);
     const [showVolume, updateShowVolume] = useState(false);
     const [volume, updateVolume] = useState(0);
     const [energy, updateEnergy] = useState<
@@ -138,7 +142,7 @@ export const useAvatar = () => {
                     height={332}
                     anchor={[0.6, 0.9]}
                 />
-                {!isStartedMic.current && (
+                {isStartedMic.current === 0 && (
                     <Sprite
                         texture={muteTexture}
                         filters={filters}
@@ -159,9 +163,27 @@ export const useAvatar = () => {
 
         window.addEventListener('click', startHandler);
 
-        // return () => {
-        //     isInited.current = false;
-        // };
+        const check = () => {
+            const result = lipSync.update();
+
+            if (result) {
+                updateVolume(result.volume);
+                updateBsw(result.bsw);
+                updateEnergy(result.energy);
+                updateFloat(result.float);
+                updateByte(result.byte);
+            }
+
+            if (isInited.current) {
+                requestAnimationFrame(check);
+            }
+        };
+        check();
+
+        return () => {
+            lipSync.stop();
+            isInited.current = false;
+        };
     }, []);
 
     useEffect(() => {
@@ -194,28 +216,21 @@ export const useAvatar = () => {
     }, []);
 
     const startHandler = useCallback(async () => {
-        if (isStartedMic.current) {
-            return toggleShowVolume();
+        isStartedMic.current += 1;
+
+        switch (isStartedMic.current) {
+            case 1:
+                await lipSync.startMic();
+                break;
+            case 2:
+                toggleShowVolume();
+                break;
+            case 3:
+                toggleShowVolume();
+                lipSync.stop();
+                isStartedMic.current = 0;
+                break;
         }
-        isStartedMic.current = true;
-
-        const lipSync = new Lipsync({ fftSize });
-        await lipSync.startMic();
-
-        const check = () => {
-            const result = lipSync.update();
-
-            if (result) {
-                updateVolume(result.volume);
-                updateBsw(result.bsw);
-                updateEnergy(result.energy);
-                updateFloat(result.float);
-                updateByte(result.byte);
-            }
-
-            requestAnimationFrame(check);
-        };
-        check();
     }, [toggleShowVolume]);
 
     return {

@@ -2,20 +2,24 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { AnimatedSprite, useApp } from '@inlet/react-pixi';
 import * as PIXI from 'pixi.js';
 
-import { WindowWidth } from '../const/App';
-import { getCurrentSprite, getRandomSpriteKey } from '../const/Dino';
+// Const
+import {
+    WindowWidth,
+    getDinoCurrentSprite,
+    getDinoRandomSpriteKey,
+} from '@/const';
 
 // Context
-import { FrameCountContext } from '../context/FrameCount';
+import { FrameCountContext } from '@/context';
 
 const DinoWidth = 160;
 
-const Dino = () => {
+export const Dino = () => {
     const app = useApp();
     const isInited = useRef(false);
     const frameCount = useContext(FrameCountContext);
 
-    const spriteKey = useRef(getRandomSpriteKey());
+    const spriteKey = useRef(getDinoRandomSpriteKey());
     const speed = useRef<number>(0);
 
     const [x, updateX] = useState<number>(0);
@@ -33,7 +37,7 @@ const Dino = () => {
         const x = direction ? WindowWidth + DinoWidth : -DinoWidth;
         speed.current = 0.5;
 
-        const sprite = getCurrentSprite(spriteKey.current);
+        const sprite = getDinoCurrentSprite(spriteKey.current);
         if (app.loader.resources[sprite.img]) {
             updateImage(
                 Object.keys(app.loader.resources[sprite.img].data.frames).map(
@@ -83,5 +87,3 @@ const Dino = () => {
         />
     ) : null;
 };
-
-export default Dino;

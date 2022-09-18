@@ -1,6 +1,6 @@
-export type SpriteType = 'building1' | 'building2' | 'building3';
+export type BuildingSpriteType = 'building1' | 'building2' | 'building3';
 
-export const sprites = {
+export const buildingSprites = {
     building1: {
         img: 'building-image1',
     },
@@ -12,17 +12,17 @@ export const sprites = {
     },
 };
 
-export const getSpriteKey = () => {
-    return Object.keys(sprites) as SpriteType[];
+export const getBuildingSpriteKey = () => {
+    return Object.keys(buildingSprites) as BuildingSpriteType[];
 };
 
-export const getCurrentSprite = (key: SpriteType) => {
-    return sprites[key];
+export const getBuildingCurrentSprite = (key: BuildingSpriteType) => {
+    return buildingSprites[key];
 };
 
-export const getRandomSpriteKey = (keis?: SpriteType[]) => {
+export const getBuildingRandomSpriteKey = (keis?: BuildingSpriteType[]) => {
     if (!keis) {
-        keis = getSpriteKey();
+        keis = getBuildingSpriteKey();
     }
     const index = Math.floor(Math.random() * keis.length);
     return keis[index];

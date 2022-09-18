@@ -3,21 +3,21 @@ import { v4 as uuid } from 'uuid';
 import { TwitchPrivateMessage } from '@twurple/chat/lib/commands/TwitchPrivateMessage';
 
 // Types
-import { TopicItem } from '../types/TopicItem';
+import { TopicItem } from '@/types/TopicItem';
 
 // Const
-import { CHANNEL_NAME } from '../const/App';
-import TranslatePabpabWords from '../const/TranslatePabpab';
-import TranslateDudbearWords from '../const/TranslateDudbear';
+import { CHANNEL_NAME, PabpabWords, DudbearWords } from '@/const';
 
 // Atoms
-import { useValue as useCatsValue } from '../atoms/cats';
-import { useValue as useCarsValue } from '../atoms/cars';
-import { useValue as useBuildsValue } from '../atoms/builds';
-import { useValue as useDinosValue } from '../atoms/dinos';
-import { useTwitchChatBattle } from './useTwitchChatBattle';
+import {
+    useCatsValue,
+    useCarsValue,
+    useBuildsValue,
+    useDinosValue,
+} from '@/atoms';
 
-import { chatClient } from './chatClient';
+// Util
+import { useTwitchChatBattle, chatClient } from '@/util';
 
 const useTopicActions = () => {
     const [topics, updateTopics] = useState<TopicItem[]>([]);
@@ -112,9 +112,9 @@ const useTranslateActions = () => {
             const message = (() => {
                 switch (action) {
                     case 'pabpab':
-                        return translateWord(content, TranslatePabpabWords);
+                        return translateWord(content, PabpabWords);
                     case 'dudbear': {
-                        return translateWord(content, TranslateDudbearWords);
+                        return translateWord(content, DudbearWords);
                     }
                 }
 

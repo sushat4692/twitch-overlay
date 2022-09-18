@@ -1,21 +1,16 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Container, Sprite } from '@inlet/react-pixi';
 
-// Action
-import { useAvatar } from './Avatar.action';
-
 // Utils
-import { sleep } from '../util/timer';
+import { sleep } from '@/util';
 
 // Components
-import AvatarZoom from './AvatarZoom';
-import AvatarVolume from './AvatarVolume';
+import { AvatarZoom, AvatarVolume, useAvatar } from '@/components';
 
 // Atoms
-import { useValue as useIsAvatarBiggerValue } from '../atoms/isAvatarBigger';
-import { useValue as useIsAvatarFocusValue } from '../atoms/isAvatarFocus';
+import { useIsAvatarBiggerValue, useIsAvatarFocusValue } from '@/atoms';
 
-const AvatarComponent: React.FunctionComponent = () => {
+export const Avatar: React.FC = () => {
     const isBigger = useIsAvatarBiggerValue();
     const isFocus = useIsAvatarFocusValue();
 
@@ -102,5 +97,3 @@ const AvatarComponent: React.FunctionComponent = () => {
         </>
     );
 };
-
-export default AvatarComponent;

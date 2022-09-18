@@ -5,15 +5,15 @@ const state = atom({
     default: false,
 });
 
-export const useState = () => {
+export const useIsAvatarBiggerState = () => {
     return useRecoilState(state);
 };
 
-export const useSetter = () => {
-    const [, setState] = useState();
+export const useIsAvatarBiggerSetter = () => {
+    const [, setState] = useIsAvatarBiggerState();
     return setState;
 };
 
-export const useValue = () => {
+export const useIsAvatarBiggerValue = () => {
     return useRecoilValue(state);
 };

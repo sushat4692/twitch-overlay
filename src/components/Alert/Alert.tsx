@@ -1,13 +1,16 @@
 import React, { useEffect, useRef } from 'react';
-
 import { ToastContainer, toast } from 'react-toastify';
 
-import { useGetNewFollower } from '../util/useTwitchApi';
-import { chatClient } from '../util/chatClient';
+// Utils
+import {
+    useGetNewFollower,
+    chatClient,
+    playFollow,
+    playSub,
+    playRaid,
+} from '@/util';
 
-import { playFollow, playSub, playRaid } from '../util/useAlertSound';
-
-const AlertComponent: React.FunctionComponent = () => {
+export const Alert: React.FC = () => {
     const isInited = useRef(false);
 
     useGetNewFollower((username) => {
@@ -146,5 +149,3 @@ const AlertComponent: React.FunctionComponent = () => {
         />
     );
 };
-
-export default AlertComponent;

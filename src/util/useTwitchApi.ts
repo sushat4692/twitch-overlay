@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react';
 
 import { ApiClient } from '@twurple/api';
-import { StaticAuthProvider } from '@twurple/auth';
 
 // Const
-import { CHANNEL_NAME, CLIENT_ID, CLIENT_TOKEN } from '../const/App';
+import { CHANNEL_NAME } from '@/const/App';
+import { authProvider } from '@/const/AuthProvider';
 
 const apiClient = new ApiClient({
-    authProvider: new StaticAuthProvider(CLIENT_ID, CLIENT_TOKEN),
+    authProvider,
 });
 
 export const useGetNewFollower = (callback: (username: string) => void) => {

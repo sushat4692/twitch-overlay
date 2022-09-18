@@ -5,7 +5,7 @@ import { TextStyle } from 'pixi.js';
 type Props = {
     label: string;
 };
-const BattleMessage: React.FC<Props> = ({ label }: Props) => {
+export const BattleMessage: React.FC<Props> = ({ label }: Props) => {
     const textStyle = useMemo(
         () =>
             new TextStyle({
@@ -27,5 +27,3 @@ const BattleMessage: React.FC<Props> = ({ label }: Props) => {
         />
     );
 };
-
-export default BattleMessage;

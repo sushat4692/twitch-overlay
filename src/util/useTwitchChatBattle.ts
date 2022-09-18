@@ -1,16 +1,16 @@
 import { PrivateMessage } from '@twurple/chat/lib';
 import { TwitchPrivateMessage } from '@twurple/chat/lib/commands/TwitchPrivateMessage';
 import { useCallback, useEffect } from 'react';
-import { useState } from '../atoms/battle';
-import { CHANNEL_NAME } from '../const/App';
-import { chatClient } from './chatClient';
+import { useBattleState } from '@/atoms';
+import { CHANNEL_NAME } from '@/const';
+import { chatClient } from '@/util';
 
 const getRandomArbitrary = (min: number, max: number) => {
     return Math.floor(Math.random() * (max - min)) + min;
 };
 
 export const useTwitchChatBattle = () => {
-    const [battle, setBattle] = useState();
+    const [battle, setBattle] = useBattleState();
 
     const battleStart = useCallback(
         (msg: TwitchPrivateMessage) => {

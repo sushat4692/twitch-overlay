@@ -1,16 +1,16 @@
-import { audioCtx, playSound } from './playSound';
+import { audioCtx, playSound } from '@/util/playSound';
 
-import SoundFollow from '../assets/alert/follow.mp3';
-import SoundSub from '../assets/alert/sub.mp3';
-import SoundRaid from '../assets/alert/raid.mp3';
-import SoundLvup from '../assets/alert/lvup.mp3';
+import SoundFollow from '@/assets/alert/follow.mp3';
+import SoundSub from '@/assets/alert/sub.mp3';
+import SoundRaid from '@/assets/alert/raid.mp3';
+import SoundLvup from '@/assets/alert/lvup.mp3';
 
 let soundFollowBuffer: AudioBuffer;
 let soundSubBuffer: AudioBuffer;
 let soundRaidBuffer: AudioBuffer;
 let soundLvupBuffer: AudioBuffer;
 
-export const prepare = async () => {
+export const prepareAlertSound = async () => {
     const setupSample = async (file: string) => {
         const response = await fetch(file);
         const arrayBuffer = await response.arrayBuffer();

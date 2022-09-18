@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { Container, Graphics, Text } from '@inlet/react-pixi';
 import * as PIXI from 'pixi.js';
-import { TextStyle } from 'pixi.js';
 
 type Props = {
     x: number;
@@ -11,7 +10,7 @@ type Props = {
     current: number;
     max: number;
 };
-const BattleHPBar: React.FC<Props> = ({
+export const BattleHPBar: React.FC<Props> = ({
     x,
     y,
     label,
@@ -21,7 +20,7 @@ const BattleHPBar: React.FC<Props> = ({
 }: Props) => {
     const textStyle = useMemo(
         () =>
-            new TextStyle({
+            new PIXI.TextStyle({
                 fontSize: 32,
                 fill: '#ffffff',
                 fontWeight: 'bold',
@@ -31,7 +30,7 @@ const BattleHPBar: React.FC<Props> = ({
     );
     const textHPStyle = useMemo(
         () =>
-            new TextStyle({
+            new PIXI.TextStyle({
                 fontSize: 24,
                 fill: '#ffffff',
                 fontFamily: 'PixelMplus12',
@@ -79,5 +78,3 @@ const BattleHPBar: React.FC<Props> = ({
         </Container>
     );
 };
-
-export default BattleHPBar;

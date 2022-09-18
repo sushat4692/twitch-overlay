@@ -17,15 +17,15 @@ const state = atom({
     },
 });
 
-export const useState = () => {
+export const useBattleState = () => {
     return useRecoilState(state);
 };
 
-export const useSetter = () => {
-    const [, setState] = useState();
+export const useBattleSetter = () => {
+    const [, setState] = useBattleState();
     return setState;
 };
 
-export const useValue = () => {
+export const useBattleValue = () => {
     return useRecoilValue(state);
 };

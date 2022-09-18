@@ -3,7 +3,7 @@ import { Container, Graphics } from '@inlet/react-pixi';
 import * as PIXI from 'pixi.js';
 
 // Const
-import { sampleRate, threshold, graphMax } from '../const/App';
+import { sampleRate, threshold, graphMax } from '@/const';
 
 const GapSize = 15;
 const ContainerWidth = 420;
@@ -19,7 +19,7 @@ type Props = {
     float: Float32Array;
     byte: Uint8Array;
 };
-const AvatarVolume: React.FunctionComponent<Props> = ({
+export const AvatarVolume: React.FC<Props> = ({
     show,
     volume,
     bsw,
@@ -243,5 +243,3 @@ const AvatarVolume: React.FunctionComponent<Props> = ({
         </>
     ) : null;
 };
-
-export default AvatarVolume;

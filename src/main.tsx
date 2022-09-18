@@ -11,26 +11,28 @@ import 'swiper/css';
 import './index.css';
 
 // Components
-import App from './App';
+import { App } from './App';
 
+// Context
 import {
     ImageDescriptionContext,
     ImageDescriptionContextType,
-} from './context/ImageDescription';
-import {
-    DefaultSlider,
-    DefaultLabel,
-    DefaultMessage,
-} from './const/WireImages';
+} from '@/context';
 
-import { prepare as prepareMeowSound } from './util/useMeowSound';
-import { prepare as prepareBuildSound } from './util/useBuildSound';
-import { prepare as prepareCarSound } from './util/useCarSound';
-import { prepare as prepareDinoSound } from './util/useDinoSound';
-import { prepare as prepareAvatarSound } from './util/useAvatarSound';
-import { prepare as prepareAlertSound } from './util/useAlertSound';
-import { prepare as prepareWeatherSound } from './util/useWeatherSound';
-import { prepare as prepareBattleSound } from './util/useBattleSound';
+// Const
+import { DefaultSlider, DefaultLabel, DefaultMessage } from '@/const';
+
+// Utils
+import {
+    prepareMeowSound,
+    prepareBuildSound,
+    prepareCarSound,
+    prepareDinoSound,
+    prepareAvatarSound,
+    prepareAlertSound,
+    prepareWeatherSound,
+    prepareBattleSound,
+} from '@/util';
 
 Promise.all([
     (async () => {

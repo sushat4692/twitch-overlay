@@ -5,15 +5,15 @@ const state = atom({
     default: false,
 });
 
-export const useState = () => {
+export const useIsImageZoomState = () => {
     return useRecoilState(state);
 };
 
-export const useSetter = () => {
-    const [, setState] = useState();
+export const useIsImageZoomSetter = () => {
+    const [, setState] = useIsImageZoomState();
     return setState;
 };
 
-export const useValue = () => {
+export const useIsImageZoomValue = () => {
     return useRecoilValue(state);
 };

@@ -5,15 +5,15 @@ const state = atom<{ id: string }[]>({
     default: [],
 });
 
-export const useState = () => {
+export const useDinosState = () => {
     return useRecoilState(state);
 };
 
-export const useSetter = () => {
-    const [, setState] = useState();
+export const useDinosSetter = () => {
+    const [, setState] = useDinosState();
     return setState;
 };
 
-export const useValue = () => {
+export const useDinosValue = () => {
     return useRecoilValue(state);
 };

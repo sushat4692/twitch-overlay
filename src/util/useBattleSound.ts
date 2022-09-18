@@ -1,13 +1,13 @@
-import { audioCtx, playSound } from './playSound';
+import { audioCtx, playSound } from '@/util/playSound';
 
-import SoundEncount from '../assets/battle/encount.mp3';
-import SoundMiss from '../assets/battle/miss.mp3';
-import SoundYourAttack from '../assets/battle/your_attack.mp3';
-import SoundYourCritical from '../assets/battle/your_critical.mp3';
-import SoundEnemyAttack from '../assets/battle/enemy_attack.mp3';
-import SoundEnemyCritical from '../assets/battle/enemy_critical.mp3';
-import SoundGameClear from '../assets/battle/game_clear.mp3';
-import SoundGameOver from '../assets/battle/game_over.mp3';
+import SoundEncount from '@/assets/battle/encount.mp3';
+import SoundMiss from '@/assets/battle/miss.mp3';
+import SoundYourAttack from '@/assets/battle/your_attack.mp3';
+import SoundYourCritical from '@/assets/battle/your_critical.mp3';
+import SoundEnemyAttack from '@/assets/battle/enemy_attack.mp3';
+import SoundEnemyCritical from '@/assets/battle/enemy_critical.mp3';
+import SoundGameClear from '@/assets/battle/game_clear.mp3';
+import SoundGameOver from '@/assets/battle/game_over.mp3';
 
 let soundEncount: AudioBuffer;
 let soundMiss: AudioBuffer;
@@ -18,7 +18,7 @@ let soundEnemyCritical: AudioBuffer;
 let soundGameClear: AudioBuffer;
 let soundGameOver: AudioBuffer;
 
-export const prepare = async () => {
+export const prepareBattleSound = async () => {
     const setupSample = async (file: string) => {
         const response = await fetch(file);
         const arrayBuffer = await response.arrayBuffer();

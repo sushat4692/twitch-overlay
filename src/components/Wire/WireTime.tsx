@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { format } from 'date-fns';
 import styled from '@emotion/styled';
 import tw from 'twin.macro';
 
 // Context
-import { FrameCountContext } from '@/context';
+import { useTick } from '@pixi/react';
 
 // Components
 const Wrapper = styled('div')([
@@ -30,16 +30,15 @@ const Sep = styled('span')<{ showColon: boolean }>(({ showColon }) => [
 const Small = styled('span')({ fontSize: '36px', marginLeft: '10px' });
 
 const WireTime = () => {
-    const frameCount = useContext(FrameCountContext);
     const [date, setDate] = useState(new Date());
     const [showColon, setShowColon] = useState(true);
 
-    useEffect(() => {
+    useTick(() => {
         const date = new Date();
 
         setDate(date);
         setShowColon(Math.floor(date.getTime() / 1000) % 2 === 0);
-    }, [frameCount]);
+    });
 
     return (
         <Wrapper>

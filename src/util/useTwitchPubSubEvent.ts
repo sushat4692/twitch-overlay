@@ -55,7 +55,7 @@ let avatarBiggerTimer: ReturnType<typeof setTimeout> | null = null;
 let avatarFocusTimer: ReturnType<typeof setTimeout> | null = null;
 let avatarGlitchTimer: ReturnType<typeof setTimeout> | null = null;
 let weatherTimer: ReturnType<typeof setTimeout> | null = null;
-export const pubSubClient = new PubSubClient();
+export const pubSubClient = new PubSubClient({ authProvider });
 
 declare global {
     interface Window {
@@ -362,7 +362,7 @@ export const useTwitchPubSubEvent = () => {
 
         (async () => {
             await pubSubClient.onRedemption(
-                await pubSubClient.registerUserListener(authProvider),
+                import.meta.env.VITE_CHANNEL_USER_ID,
                 async (message) => {
                     await redemptionHandler(message.rewardId, message.userName);
                 }

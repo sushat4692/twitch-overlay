@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import axios from 'axios';
 import { RecoilRoot } from 'recoil';
 import * as PIXI from 'pixi.js';
@@ -34,70 +34,74 @@ import {
     prepareBattleSound,
 } from '@/util';
 
-Promise.all([
-    (async () => {
-        const result = await axios
-            .get(`/image.json?t=${Date.now().toString()}`)
-            .catch((e) => {
-                console.error(e);
-            });
+const rootDom = document.getElementById('root');
+if (!rootDom) {
+    console.error('Not found root dom');
+} else {
+    Promise.all([
+        (async () => {
+            const result = await axios
+                .get(`/image.json?t=${Date.now().toString()}`)
+                .catch((e) => {
+                    console.error(e);
+                });
 
-        if (!result) {
-            return {
-                label: DefaultLabel,
-                message: DefaultMessage,
-                images: DefaultSlider,
-                description: '',
-            };
-        }
+            if (!result) {
+                return {
+                    label: DefaultLabel,
+                    message: DefaultMessage,
+                    images: DefaultSlider,
+                    description: '',
+                };
+            }
 
-        const {
-            label,
-            message,
-            images,
-            description,
-        }: ImageDescriptionContextType = result.data;
-        if (
-            !label ||
-            !Array.isArray(label) ||
-            !message ||
-            !Array.isArray(message) ||
-            !images ||
-            !Array.isArray(images) ||
-            images.length <= 0
-        ) {
+            const {
+                label,
+                message,
+                images,
+                description,
+            }: ImageDescriptionContextType = result.data;
+            if (
+                !label ||
+                !Array.isArray(label) ||
+                !message ||
+                !Array.isArray(message) ||
+                !images ||
+                !Array.isArray(images) ||
+                images.length <= 0
+            ) {
+                return {
+                    label: DefaultLabel,
+                    message: DefaultMessage,
+                    images: DefaultSlider,
+                    description: description ?? '',
+                };
+            }
+
             return {
-                label: DefaultLabel,
-                message: DefaultMessage,
-                images: DefaultSlider,
+                label,
+                message,
+                images,
                 description: description ?? '',
             };
-        }
+        })(),
+        prepareMeowSound(),
+        prepareBuildSound(),
+        prepareCarSound(),
+        prepareDinoSound(),
+        prepareAvatarSound(),
+        prepareAlertSound(),
+        prepareWeatherSound(),
+        prepareBattleSound(),
+    ]).then(([image]) => {
+        const root = createRoot(rootDom);
 
-        return {
-            label,
-            message,
-            images,
-            description: description ?? '',
-        };
-    })(),
-    prepareMeowSound(),
-    prepareBuildSound(),
-    prepareCarSound(),
-    prepareDinoSound(),
-    prepareAvatarSound(),
-    prepareAlertSound(),
-    prepareWeatherSound(),
-    prepareBattleSound(),
-]).then(([image]) => {
-    ReactDOM.render(
-        <React.StrictMode>
+        root.render(
             <RecoilRoot>
                 <ImageDescriptionContext.Provider value={image}>
                     <App />
                 </ImageDescriptionContext.Provider>
             </RecoilRoot>
-        </React.StrictMode>,
-        document.getElementById('root')
-    );
-});
+        );
+    });
+}

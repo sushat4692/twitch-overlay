@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Text } from '@inlet/react-pixi';
+import { Text } from '@pixi/react';
 import { TextStyle } from 'pixi.js';
 
 type Props = {

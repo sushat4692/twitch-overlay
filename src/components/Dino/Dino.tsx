@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
-import { AnimatedSprite, useApp } from '@inlet/react-pixi';
+import React, { useState, useEffect, useRef } from 'react';
+import { AnimatedSprite, useTick } from '@pixi/react';
 import * as PIXI from 'pixi.js';
 
 // Const
@@ -9,22 +9,17 @@ import {
     getDinoRandomSpriteKey,
 } from '@/const';
 
-// Context
-import { FrameCountContext } from '@/context';
-
 const DinoWidth = 160;
 
 export const Dino = () => {
-    const app = useApp();
     const isInited = useRef(false);
-    const frameCount = useContext(FrameCountContext);
 
     const spriteKey = useRef(getDinoRandomSpriteKey());
     const speed = useRef<number>(0);
 
     const [x, updateX] = useState<number>(0);
     const [rail, updateRail] = useState<number>(0);
-    const [direction, updateDirection] = useState<number>(0);
+    const direction = useRef<number>(0);
     const [image, updateImage] = useState<PIXI.Texture[]>([]);
 
     useEffect(() => {
@@ -33,31 +28,32 @@ export const Dino = () => {
         }
         isInited.current = true;
 
-        const direction = Math.floor(Math.random() * 2);
-        const x = direction ? WindowWidth + DinoWidth : -DinoWidth;
+        const _direction = Math.floor(Math.random() * 2);
+        const x = _direction ? WindowWidth + DinoWidth : -DinoWidth;
         speed.current = 0.5;
 
         const sprite = getDinoCurrentSprite(spriteKey.current);
-        if (app.loader.resources[sprite.img]) {
+        const textures = PIXI.Assets.get(sprite.img);
+        if (textures) {
             updateImage(
-                Object.keys(app.loader.resources[sprite.img].data.frames).map(
-                    (frame) => PIXI.Texture.from(frame)
+                Object.keys(textures.data.frames).map((frame) =>
+                    PIXI.Texture.from(frame)
                 )
             );
         }
 
         updateX(x);
-        updateDirection(direction);
         updateRail(Math.floor(Math.random() * 3));
+        direction.current = _direction;
 
         return () => {
             isInited.current = false;
         };
     }, []);
 
-    useEffect(() => {
+    useTick(() => {
         updateX((prev) => {
-            const next = prev + speed.current * (direction ? 1 : -1);
+            const next = prev + speed.current * (direction.current ? 1 : -1);
 
             if (next < 0 - DinoWidth) {
                 return WindowWidth;
@@ -67,9 +63,9 @@ export const Dino = () => {
                 return -DinoWidth;
             }
 
-            return prev + speed.current * (direction ? 1 : -1);
+            return prev + speed.current * (direction.current ? 1 : -1);
         });
-    }, [frameCount, direction]);
+    });
 
     return image.length ? (
         <AnimatedSprite

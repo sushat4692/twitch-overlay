@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { Container } from '@inlet/react-pixi';
+import { Container } from '@pixi/react';
 
 import {
     getCatCurrentSprite,

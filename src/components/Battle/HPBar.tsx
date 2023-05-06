@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { Container, Graphics, Text } from '@inlet/react-pixi';
+import { Container, Graphics, Text } from '@pixi/react';
 import * as PIXI from 'pixi.js';
 
 type Props = {

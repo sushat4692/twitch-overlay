@@ -1,18 +1,9 @@
-import React, {
-    useCallback,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react';
-import { Container, Graphics, Sprite } from '@inlet/react-pixi';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Container, Graphics, Sprite, useTick } from '@pixi/react';
 import * as PIXI from 'pixi.js';
 
 // Const
 import { WindowHeight } from '@/const';
-
-// Context
-import { FrameCountContext } from '@/context';
 
 // Atoms
 import { useBattleState } from '@/atoms';
@@ -36,13 +27,19 @@ import {
 } from '@/util/useBattleSound';
 
 export const Battle: React.FC = () => {
-    const frameCount = useContext(FrameCountContext);
+    const [delta, setDelta] = useState(0);
     const [battle, setBattle] = useBattleState();
     const [isBrink, setIsBrink] = useState(false);
     const [isShake, setIsShake] = useState(false);
     const [isWin, setIsWin] = useState(false);
     const [isLose, setIsLose] = useState(false);
     const [enemyImage, setEnemyImage] = useState('');
+
+    useTick(() =>
+        setDelta((delta) =>
+            delta >= Number.MAX_SAFE_INTEGER - 100 ? 0 : delta + 1
+        )
+    );
 
     useEffect(() => {
         if (battle.is_battle) {
@@ -164,7 +161,7 @@ export const Battle: React.FC = () => {
 
     const usePosition = useMemo(() => {
         if (isShake) {
-            const index = Math.floor((frameCount / 8) % 2);
+            const index = Math.floor((delta / 8) % 2);
 
             return {
                 x: 32 + (index ? 5 : -5),
@@ -176,7 +173,7 @@ export const Battle: React.FC = () => {
                 y: WindowHeight - 32,
             };
         }
-    }, [isShake, frameCount]);
+    }, [isShake, delta]);
 
     const enemyAlpha = useMemo(() => {
         if (isWin) {
@@ -188,12 +185,12 @@ export const Battle: React.FC = () => {
         }
 
         if (isBrink) {
-            const index = Math.floor((frameCount / 8) % 2);
+            const index = Math.floor((delta / 8) % 2);
             return index ? 1 : 0;
         } else {
             return 1;
         }
-    }, [isBrink, isWin, isLose, frameCount]);
+    }, [isBrink, isWin, isLose, delta]);
 
     const wireDraw = useCallback((g: PIXI.Graphics) => {
         g.clear();

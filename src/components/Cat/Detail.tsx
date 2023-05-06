@@ -1,11 +1,8 @@
 import React, { useEffect, useState, useContext, useRef, Ref } from 'react';
-import { AnimatedSprite, useApp } from '@inlet/react-pixi';
+import { AnimatedSprite, useTick } from '@pixi/react';
 import * as PIXI from 'pixi.js';
 
 import { getCatCurrentSprite, CatSpriteType } from '@/const';
-
-// Context
-import { FrameCountContext } from '@/context';
 
 type Props = {
     spriteKey: CatSpriteType;
@@ -20,8 +17,7 @@ export const CatDetail: React.FC<Props> = ({
     step,
     next,
 }: Props) => {
-    const app = useApp();
-    const frameCount = useContext(FrameCountContext);
+    const [delta, setDelta] = useState(0);
     const animateSprite = useRef<PIXI.AnimatedSprite>();
 
     const initialize = useRef<boolean>(false);
@@ -34,16 +30,25 @@ export const CatDetail: React.FC<Props> = ({
     const [loop, updateLoop] = useState(false);
     const [animationSpeed, updateAnimationSpeed] = useState(0.2);
 
+    useTick(() =>
+        setDelta((delta) =>
+            delta >= Number.MAX_SAFE_INTEGER - 100 ? 0 : delta + 1
+        )
+    );
+
     useEffect(() => {
         initialize.current = true;
 
         const sprite = getCatCurrentSprite(spriteKey);
-        if (sprite.img && app.loader.resources[sprite.img]) {
-            updateImage(
-                Object.keys(app.loader.resources[sprite.img].data.frames).map(
-                    (frame) => PIXI.Texture.from(frame)
-                )
-            );
+        if (sprite.img) {
+            const textures = PIXI.Assets.get(sprite.img);
+            if (textures) {
+                updateImage(
+                    Object.keys(textures.data.frames).map((frame) =>
+                        PIXI.Texture.from(frame)
+                    )
+                );
+            }
         }
         updateLoop(sprite.loop);
         updateAnimationSpeed(sprite.speed);
@@ -85,11 +90,11 @@ export const CatDetail: React.FC<Props> = ({
         previousTime.current = currentTime;
 
         step(stepDuration);
-    }, [frameCount, duration, next, spriteKey, step]);
+    }, [delta, duration, next, spriteKey, step]);
 
     return (
         <>
-            {initialize && image.length ? (
+            {initialize.current && image.length ? (
                 <AnimatedSprite
                     key={spriteKey}
                     textures={image}

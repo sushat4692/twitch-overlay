@@ -4,7 +4,6 @@ export * from './playSound';
 export * from './Random';
 export * from './timer';
 export * from './useAlertSound';
-export * from './useAnimationFrameCount';
 export * from './useAvatarSound';
 export * from './useBattleSound';
 export * from './useBuildSound';

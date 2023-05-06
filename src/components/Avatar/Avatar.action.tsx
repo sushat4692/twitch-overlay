@@ -3,11 +3,10 @@ import React, {
     useEffect,
     useCallback,
     useState,
-    useContext,
     useMemo,
 } from 'react';
 import * as PIXI from 'pixi.js';
-import { Sprite } from '@inlet/react-pixi';
+import { Sprite, useTick } from '@pixi/react';
 import {
     ZoomBlurFilter,
     // AsciiFilter,
@@ -20,9 +19,6 @@ import { threshold, fftSize, avatarDuration } from '@/const';
 
 // Type
 import { AvatarFilter } from '@/types';
-
-// Context
-import { FrameCountContext } from '@/context';
 
 // Images
 import ImageNormalMute from '@/assets/avatar/image-normal-mute.png';
@@ -51,7 +47,7 @@ const lipSync = new Lipsync({ fftSize });
 
 export const useAvatar = () => {
     const isInited = useRef(false);
-    const frameCount = useContext(FrameCountContext);
+    const [delta, setDelta] = useState(0);
 
     const is8Bit = useIsAvatar8BitValue();
     const isGunya = useIsAvatarGunyaValue();
@@ -81,11 +77,17 @@ export const useAvatar = () => {
     const [float, updateFloat] = useState<Float32Array>(new Float32Array());
     const [byte, updateByte] = useState<Uint8Array>(new Uint8Array());
 
+    useTick(() =>
+        setDelta((delta) =>
+            delta >= Number.MAX_SAFE_INTEGER - 100 ? 0 : delta + 1
+        )
+    );
+
     const AvatarSprite = useCallback(() => {
         const filters: any[] = [];
 
         if (filter === AvatarFilter.Grayscale) {
-            const grayScaleFilter = new PIXI.filters.ColorMatrixFilter();
+            const grayScaleFilter = new PIXI.ColorMatrixFilter();
             grayScaleFilter.grayscale(0.3, false);
             filters.push(grayScaleFilter);
         }
@@ -93,7 +95,7 @@ export const useAvatar = () => {
         if (filter === AvatarFilter.Gaming) {
             filters.push(
                 new PIXI.Filter('', fragmentShader, {
-                    uTime: frameCount,
+                    uTime: delta,
                 })
             );
         }
@@ -114,7 +116,7 @@ export const useAvatar = () => {
                     boundary: 0,
                     amplitude: [10, 10],
                     waveLength: [200, 200],
-                    time: frameCount / 5,
+                    time: delta / 5,
                 })
             );
         }
@@ -153,7 +155,7 @@ export const useAvatar = () => {
                 )}
             </>
         );
-    }, [filter, isFocus, isGunya, isGlitch, muteTexture, texture, frameCount]);
+    }, [filter, isFocus, isGunya, isGlitch, muteTexture, texture, delta]);
 
     useEffect(() => {
         if (isInited.current) {
@@ -187,10 +189,7 @@ export const useAvatar = () => {
     }, []);
 
     useEffect(() => {
-        if (
-            volume > threshold &&
-            frameCount % avatarDuration < avatarDuration / 2
-        ) {
+        if (volume > threshold && delta % avatarDuration < avatarDuration / 2) {
             // Open
             if (is8Bit) {
                 // 8bit open
@@ -209,7 +208,7 @@ export const useAvatar = () => {
                 setTexture(PIXI.Texture.from(ImageNormalClose));
             }
         }
-    }, [is8Bit, frameCount, volume]);
+    }, [is8Bit, delta, volume]);
 
     const toggleShowVolume = useCallback(() => {
         updateShowVolume((prev) => !prev);

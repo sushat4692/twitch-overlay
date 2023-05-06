@@ -4,7 +4,7 @@ import tw from 'twin.macro';
 import { useRecoilBridgeAcrossReactRoots_UNSTABLE } from 'recoil';
 
 // Components
-import { Stage as PixiStage } from '@inlet/react-pixi';
+import { Stage as PixiStage } from '@pixi/react';
 import {
     Animate,
     Alert,
@@ -14,15 +14,8 @@ import {
     WireImages,
 } from '@/components';
 
-// Context
-import { FrameCountContext } from '@/context';
-
 // Util
-import {
-    useAnimationFrameCount,
-    useTwitchPubSubEvent,
-    useTwitchChatEvent,
-} from '@/util';
+import { useTwitchPubSubEvent, useTwitchChatEvent } from '@/util';
 
 // Const
 import { WindowWidth, WindowHeight } from '@/const';
@@ -58,67 +51,38 @@ const Wrapper = styled('div')([
 ]);
 
 // Bridge
-type ContextBridgeProps = {
-    Context: React.Context<number>;
-    render: (children: React.ReactNode) => React.ReactNode;
-};
-const ContextBridge: React.FC<ContextBridgeProps> = ({
-    children,
-    Context,
-    render,
-}) => {
+type StageProps = React.ComponentProps<typeof PixiStage>;
+const Stage: React.FC<StageProps> = ({ children, ...props }) => {
     const RecoilBridge = useRecoilBridgeAcrossReactRoots_UNSTABLE();
 
     return (
-        <Context.Consumer>
-            {(value) =>
-                render(
-                    <RecoilBridge>
-                        <Context.Provider value={value}>
-                            {children}
-                        </Context.Provider>
-                    </RecoilBridge>
-                )
-            }
-        </Context.Consumer>
-    );
-};
-
-type StageProps = React.ComponentProps<typeof PixiStage>;
-const Stage: React.FC<StageProps> = ({ children, ...props }) => {
-    return (
-        <ContextBridge
-            Context={FrameCountContext}
-            render={(children) => <PixiStage {...props}>{children}</PixiStage>}>
-            {children}
-        </ContextBridge>
+        <PixiStage {...props}>
+            <RecoilBridge>{children}</RecoilBridge>
+        </PixiStage>
     );
 };
 const StyledStage = styled(Stage)([tw`absolute inset-0 z-50`]);
 
 export const App: React.FC = () => {
-    const frameCount = useAnimationFrameCount();
     useTwitchPubSubEvent();
     const { topics, topicShow } = useTwitchChatEvent();
 
     return (
-        <FrameCountContext.Provider value={frameCount}>
-            <Wrapper>
-                <WireDesktop />
-                {/* <WireTime /> */}
-                <WireTopics topics={topics} topicShow={topicShow} />
+        <Wrapper>
+            <WireDesktop />
+            {/* <WireTime /> */}
+            <WireTopics topics={topics} topicShow={topicShow} />
 
-                <StyledStage
-                    width={WindowWidth}
-                    height={WindowHeight}
-                    options={{ backgroundAlpha: 0 }}>
-                    <Animate />
-                </StyledStage>
+            <StyledStage
+                width={WindowWidth}
+                height={WindowHeight}
+                options={{ backgroundAlpha: 0 }}>
+                <Animate />
+            </StyledStage>
 
-                <WireImages />
+            <WireImages />
 
-                <Alert />
-            </Wrapper>
-        </FrameCountContext.Provider>
+            <Alert />
+        </Wrapper>
     );
 };

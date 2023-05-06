@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { AnimatedSprite, useApp } from '@inlet/react-pixi';
+import { AnimatedSprite } from '@pixi/react';
 import * as PIXI from 'pixi.js';
 
 import { WindowWidth } from '@/const';
 import { getBuildingCurrentSprite, getBuildingRandomSpriteKey } from '@/const';
 
 export const Building = () => {
-    const app = useApp();
     const isInited = useRef(false);
 
     const spriteKey = useRef(getBuildingRandomSpriteKey());
@@ -24,10 +23,11 @@ export const Building = () => {
         const x = Math.floor(Math.random() * WindowWidth);
 
         const sprite = getBuildingCurrentSprite(spriteKey.current);
-        if (app.loader.resources[sprite.img]) {
+        const textures = PIXI.Assets.get(sprite.img);
+        if (textures) {
             updateImage(
-                Object.keys(app.loader.resources[sprite.img].data.frames).map(
-                    (frame) => PIXI.Texture.from(frame)
+                Object.keys(textures.data.frames).map((frame) =>
+                    PIXI.Texture.from(frame)
                 )
             );
         }

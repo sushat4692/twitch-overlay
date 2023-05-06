@@ -26,11 +26,9 @@ export const Alert: React.FC = () => {
         }
         isInited.current = true;
 
-        chatClient.onAnyMessage((message) => {
-            console.log(message);
-        });
-
         chatClient.onMessage((_, __, ___, message) => {
+            console.log(message);
+
             if (message.isCheer) {
                 toast(
                     `Thank you for cheering ${message.bits} bits, ${message.userInfo.displayName}!`
@@ -48,18 +46,6 @@ export const Alert: React.FC = () => {
             setTimeout(() => {
                 playRaid();
             }, 500);
-        });
-
-        chatClient.onHosted((_, byChannel, isAuto, viewers) => {
-            if (!isAuto) {
-                if (viewers) {
-                    toast(
-                        `Thank you for hosting, ${byChannel} with ${viewers} viewers!`
-                    );
-                } else {
-                    toast(`Thank you for hosting, ${byChannel}!`);
-                }
-            }
         });
 
         chatClient.onSub((_, __, subInfo) => {

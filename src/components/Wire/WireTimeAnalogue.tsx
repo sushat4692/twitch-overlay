@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import tw from 'twin.macro';
 
 // Context
-import { FrameCountContext } from '@/context';
+import { useTick } from '@pixi/react';
 
 // Components
 const Wrap = styled('div')([
@@ -56,12 +56,11 @@ const Second = styled('span')([
 ]);
 
 export const WireTimeAnalogue = () => {
-    const frameCount = useContext(FrameCountContext);
     const [hourDeg, setHourDeg] = useState(0);
     const [minuteDeg, setMinuteDeg] = useState(0);
     const [secondDeg, setSecondDeg] = useState(0);
 
-    useEffect(() => {
+    useTick(() => {
         const date = new Date();
 
         setHourDeg(
@@ -69,7 +68,7 @@ export const WireTimeAnalogue = () => {
         );
         setMinuteDeg((date.getMinutes() / 60) * 360);
         setSecondDeg((date.getSeconds() / 60) * 360);
-    }, [frameCount]);
+    });
 
     return (
         <Wrap>

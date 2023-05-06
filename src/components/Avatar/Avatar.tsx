@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Container, Sprite } from '@inlet/react-pixi';
+import { Container, Sprite } from '@pixi/react';
 
 // Utils
 import { sleep } from '@/util';

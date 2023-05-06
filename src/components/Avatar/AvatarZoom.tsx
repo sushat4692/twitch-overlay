@@ -1,11 +1,8 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import * as PIXI from 'pixi.js';
 
-// Context
-import { FrameCountContext } from '@/context';
-
 // Components
-import { Graphics } from '@inlet/react-pixi';
+import { Graphics, useTick } from '@pixi/react';
 
 const useFocusLine = (
     cs: { width: number; height: number },
@@ -140,7 +137,6 @@ const useFocusLine = (
 };
 
 export const AvatarZoom: React.FC = () => {
-    const frameCount = useContext(FrameCountContext);
     const focusLine = useFocusLine(
         { width: 800, height: 800 },
         0,
@@ -152,11 +148,18 @@ export const AvatarZoom: React.FC = () => {
         0xcccccc
     );
 
+    const [delta, setDelta] = useState(0);
+    useTick(() =>
+        setDelta((delta) =>
+            delta >= Number.MAX_SAFE_INTEGER - 100 ? 0 : delta + 1
+        )
+    );
+
     const draw = useCallback(
         (g: PIXI.Graphics) => {
             focusLine.render(g);
         },
-        [frameCount]
+        [delta]
     );
 
     return <Graphics draw={draw} pivot={[0, 170]} />;

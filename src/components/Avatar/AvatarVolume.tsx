@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Container, Graphics } from '@inlet/react-pixi';
+import { Container, Graphics } from '@pixi/react';
 import * as PIXI from 'pixi.js';
 
 // Const

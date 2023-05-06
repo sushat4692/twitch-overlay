@@ -1,24 +1,19 @@
-import React, { useCallback, useState, useEffect, useContext } from 'react';
-import { Graphics } from '@inlet/react-pixi';
+import React, { useCallback, useState } from 'react';
+import { Graphics, useTick } from '@pixi/react';
 import * as PIXI from 'pixi.js';
 import { random } from '@/util';
 
 // Const
 import { WindowWidth, WindowHeight } from '@/const';
 
-// Context
-import { FrameCountContext } from '@/context';
-
 const RainSize = 100;
 const RainSpeed = 50;
 
 export const WeatherRain: React.FC = () => {
-    const frameCount = useContext(FrameCountContext);
-
     const [x, setX] = useState(random(0, WindowWidth));
     const [y, setY] = useState(random(0, WindowHeight));
 
-    useEffect(() => {
+    useTick(() => {
         setY((prev) => {
             if (prev > WindowHeight + RainSize) {
                 prev = -RainSize;
@@ -27,7 +22,7 @@ export const WeatherRain: React.FC = () => {
 
             return prev + RainSpeed;
         });
-    }, [frameCount]);
+    });
 
     const draw = useCallback((g: PIXI.Graphics) => {
         g.clear();

@@ -138,7 +138,8 @@ export const WireImages: React.FC = () => {
                         autoplay={{ delay: 5000, disableOnInteraction: false }}
                         speed={1000}
                         spaceBetween={10}
-                        loop={true}>
+                        loop={true}
+                        style={{height: '100%'}}>
                         {images.map((slider, index) => {
                             return (
                                 <SwiperSlide key={index}>
